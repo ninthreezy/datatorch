@@ -1,0 +1,24 @@
+{
+  "name": "datatorch",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "shared/*",
+    "clients/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "yarn install && yarn dev:services",
+    "dev:services": "",
+    "dev:web": "",
+    "dev:cli": "go run ./clients/cli",
+    "build": "",
+    "lint": "python -m black .",
+    "start": "",
+    "ext:up": "docker-compose -f docker",
+    "test": ""
+  },
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
+}
