@@ -7,6 +7,8 @@
 </h1>
 <h4 align="center">Web-based tool for datasets at any scale.</h4>
 
+**Table of Contents**
+
 - [Requirements](#requirements)
 - [Layout](#layout)
 - [License](#license)
@@ -36,7 +38,7 @@ that contain specific types of packages:
 * **clients** contains packages that provide client packages to the various
   Stellar services.
 * **exp** contains experimental packages.  Use at your own risk.
-* **deployments** tools require for deployments. 
+* **deployments** contains tools require for deployments. 
 * **services** contains packages that compile to applications that are
   long-running processes (such as API servers).
 * **tools** contains packages and utils for building and managing.

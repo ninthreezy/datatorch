@@ -8,14 +8,16 @@ import (
 // NewCmdDev shows dev commands
 func NewCmdDev() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "auth",
+		Use:   "dev",
 		Short: "Tooling for setting up development",
 		Long: heredoc.Docf(`
 			Util commands for helping with DataTorch development.
 		`),
 	}
-	
 
+	cmd.AddCommand(NewCmdCheck())
+	cmd.AddCommand(NewCmdSetup())
+	cmd.AddCommand(NewCmdVscodeExtensions())
 
 	return cmd
 }
