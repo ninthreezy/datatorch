@@ -152,4 +152,17 @@ var Dependencies = map[string]Dependency{
 			return semver.NewVersion(version)
 		},
 	},
+	"terraform": {
+		Name:              "Terraform",
+		URL:               "https://www.terraform.io/downloads.html",
+		VersionContratins: ">= 0.14",
+		GetVersion: func() (*semver.Version, error) {
+			version, err := getCommandOutput("terraform", "-version")
+			if err != nil {
+				return nil, err
+			}
+			version = strings.Split(version, " ")[1]
+			return semver.NewVersion(version)
+		},
+	},
 }

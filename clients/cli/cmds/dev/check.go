@@ -20,9 +20,9 @@ func subsection(title string) {
 
 // NewCmdCheck setups environment check command.
 func NewCmdCheck() *cobra.Command {
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:   "check",
-		Short: "Checks enviroment for proper configuration.",
+		Short: "Checks environment for proper configuration.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 
 			section("Development Tools")
@@ -39,12 +39,12 @@ func NewCmdCheck() *cobra.Command {
 			subsection("Kubernetes")
 			checkForDep("kubectl")
 			checkForDep("helm")
+			subsection("Cloud")
+			checkForDep("terraform")
 
 			return nil
 		},
 	}
-
-	return cmd
 }
 
 func checkForDep(depName string) {
