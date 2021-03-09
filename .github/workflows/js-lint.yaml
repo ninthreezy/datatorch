@@ -1,0 +1,27 @@
+name: Javascript Lint
+
+on:
+  push:
+    paths:
+      - '**.js'
+      - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
+  pull_request:
+    paths:
+      - '**.js'
+      - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
+
+jobs:
+  eslint:
+    name: Javascript Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run ESLint
+        run: eslint --ext .tsx,.ts,.jsx,.js --max-warnings=0 --ignore-path .gitignore .

@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "arcanis.vscode-zipfs",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "hashicorp.terraform",
+    "Prisma.prisma",
+    "golang.go",
+    "stkb.rewrap",
+    "zxh404.vscode-proto3"
+  ]
+}

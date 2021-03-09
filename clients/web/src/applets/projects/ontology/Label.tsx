@@ -11,21 +11,10 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverHeader,
-  PopoverProps,
-  PopoverTrigger,
   Tooltip
 } from '@chakra-ui/react'
 import React from 'react'
-import {
-  FaCog,
-  FaExclamation,
-  FaExclamationTriangle,
-  FaGripVertical
-} from 'react-icons/fa'
+import { FaCog, FaExclamationTriangle, FaGripVertical } from 'react-icons/fa'
 
 export const LabelRowMoveIcon: React.FC<
   Omit<IconButtonProps, 'aria-label'>
@@ -105,7 +94,7 @@ export const LabelRowSettings: React.FC<{
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Configure "{name}"</ModalHeader>
+          <ModalHeader>Configure &quot;{name}&quot;</ModalHeader>
           <ModalBody>{children}</ModalBody>
         </ModalContent>
       </Modal>

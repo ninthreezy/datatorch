@@ -114,10 +114,9 @@ export const ClassificationTypeConfig: Record<ClassificationType, React.FC> = {
           Regex validation string
         </FormLabel>
         <InputGroup size="sm">
-          <InputLeftElement
-            pointerEvents="none"
-            children={<Icon as={VscRegex} color="gray.400" />}
-          />
+          <InputLeftElement pointerEvents="none">
+            <Icon as={VscRegex} color="gray.400" />
+          </InputLeftElement>
           <Input variant="filled" />
         </InputGroup>
         <ClassificationConfigOptions values={options} onChange={setOptions} />

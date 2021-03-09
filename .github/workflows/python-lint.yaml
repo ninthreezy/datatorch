@@ -1,4 +1,5 @@
 name: Python Lint
+
 on:
   push:
     paths:
@@ -8,7 +9,7 @@ on:
       - '**.py'
 
 jobs:
-  golangci:
+  lint:
     name: Python Linting
     runs-on: ubuntu-latest
     steps:
