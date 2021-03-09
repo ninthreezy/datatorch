@@ -31,8 +31,8 @@ func (worker *jobWorker) stop() {
 }
 
 func (worker *jobWorker) start() {
+	worker.done.Add(1)
 	go func() {
-		worker.done.Add(1)
 		for {
 			worker.ready <- worker.job
 			select {
@@ -61,7 +61,7 @@ type WorkerPool struct {
 // New contructs a worker pool
 func New(maxWorkers int) *WorkerPool {
 
-	workers := make([]*jobWorker, maxWorkers, maxWorkers)
+	workers := make([]*jobWorker, maxWorkers)
 	ready := make(chan chan Job, maxWorkers)
 	workersDone := &sync.WaitGroup{}
 
@@ -112,9 +112,9 @@ func (q *WorkerPool) start() {
 	for i := 0; i < len(q.workers); i++ {
 		q.workers[i].start()
 	}
-	go func() {
 
-		q.dispatcher.Add(1)
+	q.dispatcher.Add(1)
+	go func() {
 		stop := false
 		for {
 			select {
@@ -127,7 +127,7 @@ func (q *WorkerPool) start() {
 			}
 			if stop && q.IsEmpty() {
 				for i := 0; i < len(q.workers); i++ {
-					q.workers[i].quit <- true
+					q.workers[i].stop()
 				}
 				q.workersDone.Wait()
 				q.dispatcher.Done()

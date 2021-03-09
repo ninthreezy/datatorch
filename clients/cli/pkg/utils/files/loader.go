@@ -1,8 +1,6 @@
 package files
 
 import (
-	"sync"
-
 	"github.com/datatorch/datatorch/clients/cli/pkg/utils"
 )
 
@@ -15,7 +13,6 @@ type LoaderJob struct {
 
 type Loader struct {
 	pool *utils.WorkerPool
-	done *sync.WaitGroup
 
 	Loaded int64
 	loaded chan int64
