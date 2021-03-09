@@ -1,8 +1,16 @@
 name: golangci-lint
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   golangci:
-    name: lint
+    name: Golang Linting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
