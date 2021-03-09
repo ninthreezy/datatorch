@@ -92,7 +92,6 @@ func NewCmdVscodeExtensions() *cobra.Command {
 			fmt.Println("Ops - something went wrong.")
 			// fmt.Println("Done installing extensions.")
 			// fmt.Println("You may have to reopen Visual studio code to see changes.")
-			return
 		},
 	}
 }

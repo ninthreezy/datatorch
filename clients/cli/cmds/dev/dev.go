@@ -15,9 +15,12 @@ func NewCmdDev() *cobra.Command {
 		`),
 	}
 
-	cmd.AddCommand(NewCmdCheck())
 	cmd.AddCommand(NewCmdSetup())
+	cmd.AddCommand(NewCmdCheck())
 	cmd.AddCommand(NewCmdVscodeExtensions())
+
+	cmd.AddCommand(NewCmdDevWeb())
+	cmd.AddCommand(NewCmdDevInstall())
 
 	return cmd
 }

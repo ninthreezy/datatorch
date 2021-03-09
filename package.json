@@ -15,10 +15,13 @@
     "build": "",
     "lint": "python -m black .",
     "start": "",
-    "ext:up": "docker-compose -f docker",
+    "ext:up": "docker-compose -f docker-compose.service.up",
     "test": ""
   },
   "devDependencies": {
+    "eslint": "^7.21.0",
+    "husky": "^5.1.3",
+    "prettier": "^2.2.1",
     "typescript": "^4.2.3"
   }
 }

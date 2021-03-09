@@ -1281,26 +1281,24 @@ __metadata:
     "@emotion/react": ^11.1.5
     "@emotion/styled": ^11.1.5
     "@next/bundle-analyzer": ^10.0.7
-    "@react-three/drei": ^3.9.0
+    "@react-three/drei": ^3.10.2
     "@testing-library/react": ^11.2.5
     "@types/jest": ^26.0.20
     "@types/leaflet": ^1.5.23
     "@types/lodash": ^4.14.168
-    "@types/node": ^14.14.31
-    "@types/react": ^17.0.1
+    "@types/node": ^14.14.32
+    "@types/react": ^17.0.3
     "@types/react-dom": ^17.0.1
     "@types/wavesurfer.js": ^3.3.1
     "@typescript-eslint/eslint-plugin": ^4.15.2
     "@typescript-eslint/parser": ^4.15.2
     babel-jest: ^26.6.3
-    eslint: ^7.21.0
     eslint-config-prettier: ^8.1.0
     eslint-plugin-react: ^7.19.0
     eslint-plugin-react-hooks: ^4.2.0
     framer-motion: ^3.10.0
     golden-layout: ^2.0.2
     graphql: ^15.5.0
-    husky: ^5.1.1
     identity-obj-proxy: ^3.0.0
     immutability-helper: ^3.1.1
     is-hotkey: ^0.2.0
@@ -1314,7 +1312,6 @@ __metadata:
     match-sorter: ^6.3.0
     mitt: ^2.1.0
     next: latest
-    prettier: ^2.0.2
     react: ^17.0.1
     react-dom: ^17.0.1
     react-grid-layout: ^1.2.0
@@ -1332,7 +1329,7 @@ __metadata:
     slugify: ^1.4.7
     subscriptions-transport-ws: ^0.9.18
     three: ^0.126.0
-    typescript: ^4.2.2
+    typescript: ^4.2.3
     wavesurfer.js: ^4.5.0
   languageName: unknown
   linkType: soft
@@ -1982,9 +1979,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-three/drei@npm:^3.9.0":
-  version: 3.10.0
-  resolution: "@react-three/drei@npm:3.10.0"
+"@react-three/drei@npm:^3.10.2":
+  version: 3.10.2
+  resolution: "@react-three/drei@npm:3.10.2"
   dependencies:
     "@babel/runtime": ^7.11.2
     "@react-spring/web": ^9.0.0-rc.3
@@ -2006,7 +2003,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 94c268dc90bcbdb3d1f08dc53a3c291942c9dff579d7bba0b82bc77aa61b84c628378e959c438eb9b148ec87cd53d655bca0cb05bcadf88dd9fa9c21067064ca
+  checksum: 4144b16775510f02965b40422d3d03309f9e96631b2afe93f0cd396182ceb0550127ba39fe6d707877f213b24ab7f86077f84fffbae5f0c4203a2bf011ed8a4d
   languageName: node
   linkType: hard
 
@@ -2227,10 +2224,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^14.14.31":
+"@types/node@npm:*":
   version: 14.14.31
   resolution: "@types/node@npm:14.14.31"
   checksum: 635dc8a0898a923621e02ca179e17baa39fdfa44f0096fcc1b7046c9b32317e74a99956a7b45ca0e8069874f51f4e7873a418239a318a4b6e7936f6510ac5992
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^14.14.32":
+  version: 14.14.32
+  resolution: "@types/node@npm:14.14.32"
+  checksum: ae73f3b668242da660b4f4f2047114fc047f5a6a92b8f9f4ab2f8ca1325c914c08cf13b6f90e6e88016fafb7a662d1963b075a6220d2208651a98a1cb3407221
   languageName: node
   linkType: hard
 
@@ -2278,7 +2282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^17.0.1":
+"@types/react@npm:*":
   version: 17.0.2
   resolution: "@types/react@npm:17.0.2"
   dependencies:
@@ -2288,12 +2292,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:^17.0.3":
+  version: 17.0.3
+  resolution: "@types/react@npm:17.0.3"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 5bcaabadc90a23ad9008540eae98a5819b638c4cf1b968adc67be47d6a8dc8cb100061d877dae97618fb275e405dc484b37154080c7ac0ea7df5efcdd8f98c24
+  languageName: node
+  linkType: hard
+
 "@types/responselike@npm:^1.0.0":
   version: 1.0.0
   resolution: "@types/responselike@npm:1.0.0"
   dependencies:
     "@types/node": "*"
   checksum: e6e6613c800aeda63e2331e753e8d21df1a2c9aa7a4bc71ed792a848e4811fc96e609759089355314a2318c76eff1f161499cd242044838ab1e6f56e463ebb9c
+  languageName: node
+  linkType: hard
+
+"@types/scheduler@npm:*":
+  version: 0.16.1
+  resolution: "@types/scheduler@npm:0.16.1"
+  checksum: 0124c2e4dee5e9b8c8524fcd6b1b8ea0b807b132e593925db04cdcc92ca2779a0d27c79414e60454b4458361a4d8319fa2b59d20585054f21617d1e9acf46a6f
   languageName: node
   linkType: hard
 
@@ -4081,6 +4103,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "datatorch@workspace:."
   dependencies:
+    eslint: ^7.21.0
+    husky: ^5.1.3
+    prettier: ^2.2.1
     typescript: ^4.2.3
   languageName: unknown
   linkType: soft
@@ -5726,7 +5751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^5.1.1":
+"husky@npm:^5.1.3":
   version: 5.1.3
   resolution: "husky@npm:5.1.3"
   bin:
@@ -8480,7 +8505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.0.2, prettier@npm:^2.0.5":
+"prettier@npm:^2.0.5, prettier@npm:^2.2.1":
   version: 2.2.1
   resolution: "prettier@npm:2.2.1"
   bin:
@@ -10795,7 +10820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@^4.2.2, typescript@^4.2.3":
+typescript@^4.2.3:
   version: 4.2.3
   resolution: "typescript@npm:4.2.3"
   bin:
@@ -10805,7 +10830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.2.2#builtin<compat/typescript>, typescript@patch:typescript@^4.2.3#builtin<compat/typescript>":
+"typescript@patch:typescript@^4.2.3#builtin<compat/typescript>":
   version: 4.2.3
   resolution: "typescript@patch:typescript@npm%3A4.2.3#builtin<compat/typescript>::version=4.2.3&hash=a45b0e"
   bin:
