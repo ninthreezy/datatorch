@@ -1,0 +1,7 @@
+{
+  "name": "@datatorch/api",
+  "author": "@datatorch",
+  "private": true,
+  "license": "private",
+  "version": "1.0.0"
+}
