@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react'
 import { useScrollBarTheme } from '@/libs/hooks/useScrollbarTheme'
 import { Card } from '@/common/Card'
-import { FaBook, FaGithub } from 'react-icons/fa'
+import { FaBook } from 'react-icons/fa'
 import { SiGraphql } from 'react-icons/si'
 import { MdFeedback } from 'react-icons/md'
 

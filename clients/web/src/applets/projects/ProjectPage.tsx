@@ -1,14 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  chakra,
-  Container,
-  ContainerProps,
-  Divider,
-  Flex,
-  Heading,
-  Text
-} from '@chakra-ui/react'
+import { Container, ContainerProps, Divider } from '@chakra-ui/react'
 import { PageHeader, PageHeaderProps } from '@/common/PageHeader'
 
 export type ProjectHeaderProps = PageHeaderProps & { noDivider?: boolean }

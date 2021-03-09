@@ -5,7 +5,6 @@ import { ProjectHeader } from '@/applets/projects/ProjectPage'
 import {
   Box,
   Button,
-  chakra,
   Checkbox,
   Container,
   Divider,
@@ -15,14 +14,10 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Table,
   Tag,
   TagLabel,
   TagLeftIcon,
-  Tbody,
-  Td,
-  Text,
-  Tr
+  Text
 } from '@chakra-ui/react'
 import {
   FaCheck,

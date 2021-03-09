@@ -1,6 +1,6 @@
 import { ProjectLayout } from '@/applets/projects/layout/ProjectLayout'
 import { ProjectHeader } from '@/applets/projects/ProjectPage'
-import { Button, Container } from '@chakra-ui/react'
+import { Container } from '@chakra-ui/react'
 import React from 'react'
 
 const ProjectFileQueries: React.FC = () => {

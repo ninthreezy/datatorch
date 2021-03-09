@@ -21,7 +21,6 @@ export type PageHeaderProps = BoxProps & {
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({
-  children,
   header,
   title,
   subtitle,

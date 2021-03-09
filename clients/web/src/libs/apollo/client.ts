@@ -14,6 +14,7 @@ const createHttpLink = (uri: string) => new HttpLink({ uri })
 const createWebsocketLink = (uri: string) =>
   new WebSocketLink({ uri, options: { reconnect: true } })
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createHttpLinkWithSubscriptions = (uri: string) => {
   const httpLink = createHttpLink(uri)
   const wsLink = createWebsocketLink(uri)
@@ -32,7 +33,7 @@ const createHttpLinkWithSubscriptions = (uri: string) => {
 }
 
 export const createApollo = () => {
-  const apiEndpoint = `/api/graphql`
+  // const apiEndpoint = `/api/graphql`
   const fqdn = process.browser
     ? location.origin
     : (process.env.FQDN ?? 'http://localhost:3000').trim()

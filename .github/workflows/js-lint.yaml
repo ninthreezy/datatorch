@@ -7,12 +7,14 @@ on:
       - '**.jsx'
       - '**.ts'
       - '**.tsx'
+      - '**/.eslint**'
   pull_request:
     paths:
       - '**.js'
       - '**.jsx'
       - '**.ts'
       - '**.tsx'
+      - '**/.eslint**'
 
 jobs:
   eslint:

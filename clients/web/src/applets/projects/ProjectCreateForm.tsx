@@ -16,8 +16,7 @@ import {
   Heading,
   Button,
   TextProps,
-  useBreakpointValue,
-  chakra
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { MdLock, MdPublic } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'
@@ -48,6 +47,7 @@ export const ProjectCreateForm: React.FC = () => {
   const onSubmit = handleSubmit(inputs => {
     const slug = slugify(inputs.name)
     const variables = { ...inputs, slug }
+    // eslint-disable-next-line no-console
     console.log(variables)
   })
 

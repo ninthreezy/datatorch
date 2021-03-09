@@ -4,7 +4,6 @@ import {
   Flex,
   Heading,
   VStack,
-  Icon,
   Tag,
   TagLabel,
   TagLeftIcon,
@@ -14,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { memo } from 'react'
-import { FaComment, FaEye, FaHeart, FaShare } from 'react-icons/fa'
+import { FaComment, FaEye, FaHeart } from 'react-icons/fa'
 
 export const ArticleListItem: React.FC<{
   id: string

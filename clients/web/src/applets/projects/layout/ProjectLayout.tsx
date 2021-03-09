@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, BoxProps } from '@chakra-ui/react'
+import { BoxProps } from '@chakra-ui/react'
 import { AppNavbar } from '@/common/navbar/AppNavbar'
 import { LayoutNavbarSidebar } from '@/common/layouts/LayoutNavbarSidebar'
 import { ProjectSidebar } from './ProjectSidebar'
