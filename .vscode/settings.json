@@ -1,5 +1,7 @@
 {
+  "files.eol": "\n",
   "python.formatting.provider": "black",
+  "npm.packageManager": "yarn",
   "go.lintTool": "golangci-lint",
   "search.exclude": {
     "**/.yarn": true,
