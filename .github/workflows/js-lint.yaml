@@ -24,6 +24,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Install modules
-        run: yarn
+        run: |
+          yarn set version berry
+          yarn
       - name: Run ESLint
         run: eslint --ext .tsx,.ts,.jsx,.js --max-warnings=0 --ignore-path .gitignore .
