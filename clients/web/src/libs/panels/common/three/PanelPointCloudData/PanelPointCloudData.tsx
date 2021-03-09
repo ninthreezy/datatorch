@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { Suspense } from 'react'
 
 import * as THREE from 'three'
@@ -15,7 +16,7 @@ import { ForwardContext } from '../utils/ForwardCanvas'
 const url =
   'https://raw.githubusercontent.com/PointCloudLibrary/data/master/tutorials/room_scan2.pcd'
 
-const PointCloudObject: React.FC = () => {
+const PointCloudObject: React.FC = (): JSX.Element => {
   const points = useLoader(PCDLoader, url)
   const { camera } = useThree()
 
@@ -38,6 +39,7 @@ const PointCloudObject: React.FC = () => {
       <points geometry={points.geometry}>
         <pointsMaterial size={1 / 100} color={getColor(theme, pointColors)} />
       </points>
+      {/* @ts-ignore */}
       <TrackballControls target={points.geometry.boundingSphere.center} />
     </>
   )

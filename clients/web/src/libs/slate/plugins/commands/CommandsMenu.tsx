@@ -5,7 +5,7 @@ import { useSlate } from 'slate-react'
 import { Box, Divider, Text, useOutsideClick } from '@chakra-ui/react'
 import { useKey } from 'react-use'
 
-import groupBy from 'lodash/groupby'
+import groupBy from 'lodash/groupBy'
 import last from 'lodash/last'
 
 import { useMatchSorter } from '@/libs/hooks/useMatchSorter'

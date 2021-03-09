@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { Suspense, useRef } from 'react'
 
 import * as THREE from 'three'
@@ -19,9 +20,9 @@ const Atom: React.FC<{
   return (
     <>
       <mesh visible position={position}>
+        {/* @ts-ignore */}
         <Icosahedron attach="geometry" args={[1, 3]}>
           <meshPhongMaterial attach="material" color={color} />
-          {/* <meshPhongMaterial attach="material" args={[{ color: '#hotpink' }]} /> */}
         </Icosahedron>
         <Html>
           <Text
@@ -54,6 +55,7 @@ const AtomBond: React.FC<{ start: THREE.Vector3; end: THREE.Vector3 }> = ({
 
   return (
     <mesh ref={el} visible>
+      {/* @ts-ignore */}
       <Box args={[0.05, 0.05, 1]} attach="geometry">
         <meshPhongMaterial color="#ffffff" />
       </Box>
@@ -117,6 +119,7 @@ const Molecule: React.FC = () => {
       <ambientLight intensity={0.1} />
       {atoms}
       {bonds}
+      {/* @ts-ignore */}
       <TrackballControls />
     </>
   )
