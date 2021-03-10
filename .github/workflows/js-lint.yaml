@@ -23,9 +23,17 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+
+      - name: Cache package dependencies
+        uses: actions/cache@v2
+        with:
+          path: '**/.yarn/cache'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install modules
         run: |
           yarn set version berry
-          yarn
+          yarn install --immutable
+
       - name: Run ESLint
-        run: eslint --ext .tsx,.ts,.jsx,.js --max-warnings=0 --ignore-path .gitignore .
+        run: yarn run eslint --ext .tsx,.ts,.jsx,.js --max-warnings=0 --ignore-path .gitignore .

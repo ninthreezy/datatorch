@@ -1,29 +1,36 @@
-FROM node:alpine AS base
-
+# Stage for building application
+FROM node:alpine AS dev
 
 COPY . /dt
 WORKDIR /dt
-RUN yarn install --immutable
+RUN yarn workspaces focus @datatorch/web
 
 WORKDIR /dt/clients/web
 RUN yarn build
 
+# Production enviroment
 FROM node:alpine AS production
 ENV NODE_ENV=production
 
-RUN yarn set version berry
+COPY .yarn /dt/.yarn
+COPY .yarnrc.yml /dt
+COPY yarn.lock /dt
+COPY package.json /dt
 
-COPY clients/web/package.json /dt/web
-COPY yarn.lock /dt/app
-COPY .yarnrc.yml /dt/app
-COPY .yarn /dt/app
-COPY clients/web/next.config.js /dt/web
+RUN mkdir -p /dt/clients/web
+COPY clients/web/package.json /dt/clients/web
+COPY clients/web/next.config.js /dt/clients/web
 
-RUN yarn install --immutable --inline-builds
-COPY --from=build /app/clients/web/.next /dt/web/.next
+COPY --from=dev /dt/clients/web/.next /dt/clients/web/.next
+COPY --from=dev /dt/.yarn /dt/.yarn
+
+WORKDIR /dt
+RUN yarn workspaces focus @datatorch/web
+
+WORKDIR /dt/clients/web
+
+CMD ["yarn", "workspace", "@datatorch/web", "start"]
 
 EXPOSE 3000
-CMD ["yarn", "start"]
-ENV NODE_ENV=production
 
 HEALTHCHECK CMD ["curl", "localhost:3000"]

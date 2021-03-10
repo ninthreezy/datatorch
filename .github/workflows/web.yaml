@@ -1,0 +1,38 @@
+name: Web
+
+on:
+  push:
+    paths:
+      - 'clients/web/**'
+      - 'shared/js/**'
+      - 'package.json'
+      - 'yarn.lock'
+  pull_request:
+    paths:
+      - 'clients/web/**'
+      - 'shared/js/**'
+      - 'package.json'
+      - 'yarn.lock'
+
+jobs:
+  tests:
+    name: Web Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Cache package dependencies
+        uses: actions/cache@v2
+        with:
+          path: '**/.yarn/cache'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install web dependencies
+        run: yarn workspaces focus @datatorch/web
+
+      - name: Run web tests
+        run: yarn workspace @datatorch/web test --passWithNoTests
+
+      - name: Run web build
+        run: yarn workspace @datatorch/web build
