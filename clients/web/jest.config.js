@@ -1,6 +1,17 @@
 module.exports = {
-  roots: ['<rootDir>'],
+  rootDir: __dirname,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json', 'jsx'],
+  moduleNameMapper: {
+    '^@shared/(.*)$': '<rootDir>/../../shared/js/$1',
+    '^@web/(.*)$': '<rootDir>/$1',
+    '^@/(.*)$': '<rootDir>/$1',
+    '^~/(.*)$': '<rootDir>/$1',
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js'
+  },
+  coverageDirectory: 'coverage',
+  coverageReporters: ['html', 'lcov', 'text'],
+  collectCoverageFrom: ['src/**/*'],
   testPathIgnorePatterns: ['<rootDir>[/\\\\](node_modules|.next)[/\\\\]'],
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
   transform: {
@@ -9,9 +20,5 @@ module.exports = {
   watchPlugins: [
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname'
-  ],
-  moduleNameMapper: {
-    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
-    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js'
-  }
+  ]
 }

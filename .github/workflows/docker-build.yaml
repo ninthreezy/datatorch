@@ -1,0 +1,33 @@
+# name: Docker Build
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   web:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check out code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v1
+
+#       - name: Login to DockerHub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       - name: Build and push web image
+#         uses: docker/build-push-action@v2
+#         with:
+#           file: clients/web/Dockerfile
+#           context: .
+#           push: true
+#           tags:
+#             - datatorch/web:latest
+#           cache-from: type=registry,ref=datatorch/web:latest
+#           cache-to: type=inline

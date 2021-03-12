@@ -1,0 +1,13 @@
+{
+  "name": "@datatorch/e2e",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "cy": "cypress open",
+    "cy:run": "cypress run",
+    "cy:verify": "cypress verify"
+  },
+  "dependencies": {
+    "cypress": "^6.6.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "noEmit": true,
+    "lib": ["es5", "dom"],
+    "types": ["cypress"],
+    "paths": {
+      "@shared/*": ["./../../shared/js/*"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}

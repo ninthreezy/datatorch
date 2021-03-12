@@ -3,9 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "workspaces": [
-    "shared/*",
+    "shared/js/*",
     "clients/*",
-    "services/*"
+    "services/*",
+    "docs/*",
+    "tests/*"
   ],
   "scripts": {
     "dev": "yarn install && yarn dev:services",
