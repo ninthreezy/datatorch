@@ -31,9 +31,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install modules
-        run: |
-          yarn set version berry
-          yarn install --immutable
+        run: yarn install --immutable
 
       - name: Run ESLint
         run: yarn run eslint --ext .tsx,.ts,.jsx,.js --max-warnings=0 --ignore-path .gitignore .
