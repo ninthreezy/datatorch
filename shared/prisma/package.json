@@ -1,0 +1,19 @@
+{
+  "name": "@datatorch/prisma",
+  "author": "@datatorch",
+  "license": "private",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "generate": "prisma generate",
+    "postinstall": "yarn generate"
+  },
+  "devDependencies": {
+    "@prisma/client": "*",
+    "@types/node": "*"
+  },
+  "dependencies": {
+    "prisma": "^2.19.0"
+  }
+}
