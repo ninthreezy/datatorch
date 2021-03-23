@@ -36,9 +36,3 @@ jobs:
 
       - name: Install modules
         run: yarn install
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          spec: tests/e2e/cypress/integration/*.spec.js
-          project: tests/e2e
