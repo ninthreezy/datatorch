@@ -3,5 +3,26 @@
   "author": "@datatorch",
   "private": true,
   "license": "private",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node-dev --no-notify --respawn --transpile-only ./src/index"
+  },
+  "dependencies": {
+    "@datatorch/prisma": "workspace:shared/prisma",
+    "@prisma/client": "^2.19.0",
+    "@yarnpkg/pnpify": "^2.4.0",
+    "apollo-server-core": "^2.21.2",
+    "apollo-server-fastify": "next-v3",
+    "fastify": "^3.14.0",
+    "graphql": "^15.5.0",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-middleware": "^6.0.4",
+    "nexus": "^1.0.0",
+    "nexus-plugin-prisma": "^0.33.0",
+    "prisma": "^2.19.0"
+  },
+  "devDependencies": {
+    "@types/graphql-iso-date": "^3",
+    "ts-node-dev": "^1.1.6"
+  }
 }
