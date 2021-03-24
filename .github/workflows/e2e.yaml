@@ -34,5 +34,8 @@ jobs:
           path: '**/.yarn/cache'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Install dependencies
+        run: yarn install
+
       - name: Cypress run
         run: yarn run test
