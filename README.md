@@ -5,7 +5,15 @@
 <h1 align="center">
   DataTorch
 </h1>
-<h4 align="center">Web-based tool for datasets at any scale.</h4>
+<h4 align="center">Web-based tools for machine learning at any scale.</h4>
+
+<p align="center">Join our growing <a href="https://discord.gg/4zP5Qkj">discord community</a> of ML practitioner</p>
+<p align="center">
+  <a href="https://discord.gg/4zP5Qkj">
+    <img src="https://discord.com/assets/e4923594e694a21542a489471ecffa50.svg" width="120">
+  </a>
+</p>
+
 
 **Table of Contents**
 
