@@ -1,7 +1,9 @@
 /// <reference types="Cypress" />
 
-describe('My First Test', () => {
+describe('Public page sanity checks', () => {
   it('Successfully loads', () => {
     cy.visit('/')
+    cy.visit('/pricing')
+    cy.visit('/contact')
   })
 })
