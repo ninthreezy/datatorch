@@ -29,10 +29,10 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install web dependencies
-        run: yarn workspaces focus @datatorch/web
+        run: cd clients/web && yarn install
 
       - name: Run web tests
-        run: yarn workspace @datatorch/web test --passWithNoTests
+        run: cd clients/web && yarn test --passWithNoTests
 
       - name: Run web build
-        run: yarn workspace @datatorch/web build
+        run: cd clients/web && yarn build
