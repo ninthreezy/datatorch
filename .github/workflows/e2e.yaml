@@ -34,6 +34,9 @@ jobs:
           path: '**/.yarn/cache'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Install dependencies on root
+      - run: yarn install
+
       - name: Install dependencies on client
         run: cd clients/web && yarn install
 
