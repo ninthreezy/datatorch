@@ -9,11 +9,9 @@
     "generate": "prisma generate",
     "postinstall": "yarn generate"
   },
-  "devDependencies": {
-    "@prisma/client": "*",
-    "@types/node": "*"
-  },
   "dependencies": {
+    "@prisma/client": "*",
+    "@types/node": "*",
     "prisma": "^2.19.0"
   }
 }

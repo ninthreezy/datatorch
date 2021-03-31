@@ -37,11 +37,13 @@ export const ArticleListItem: React.FC<{
       padding={2}
       paddingX={3}
       alignItems="center"
-      _hover={{ bgColor: 'gray.700' }}
+      border="1px"
+      borderColor="transparent"
+      _hover={{ border: '1px', borderColor: 'gray.700' }}
     >
       <Box flexGrow={1} flexShrink={1} minWidth={0}>
         <Flex alignItems="center">
-          <Heading as="h4" fontSize="xl" marginY={1} isTruncated>
+          <Heading as="h4" fontSize="lg" marginY={1} isTruncated>
             {title}
           </Heading>
           {draft ? (
@@ -56,7 +58,7 @@ export const ArticleListItem: React.FC<{
             )
           )}
         </Flex>
-        <Text minWidth={0} isTruncated>
+        <Text minWidth={0} isTruncated color="gray.400" fontSize="sm">
           {description}
         </Text>
       </Box>
