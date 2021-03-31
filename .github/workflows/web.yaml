@@ -28,11 +28,11 @@ jobs:
           path: '**/.yarn/cache'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install web dependencies
-        run: cd clients/web && yarn install
+      - name: Install dependencies
+        run: yarn install
 
       - name: Run web tests
-        run: cd clients/web && yarn test --passWithNoTests
+        run: yarn workspace @datatorch/web test --passWithNoTests
 
       - name: Run web build
-        run: cd clients/web && yarn build
+        run: yarn workspace @datatorch/web build

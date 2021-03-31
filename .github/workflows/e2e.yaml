@@ -37,11 +37,5 @@ jobs:
       - name: Install dependencies on root
         run: yarn install
 
-      - name: Install dependencies on client
-        run: cd clients/web && yarn install
-
-      - name: Install dependencies for testing
-        run: cd tests/e2e && yarn install
-
       - name: Cypress run
         run: yarn run test

@@ -1,6 +1,12 @@
 {
   "name": "datatorch",
   "private": true,
+  "workspaces": [
+    "services/api",
+    "clients/web",
+    "tests/e2e",
+    "shared/prisma"
+  ],
   "version": "0.0.0",
   "scripts": {
     "dev:all": "yarn install && yarn dev:services && yarn dev:web",
@@ -18,8 +24,8 @@
     "start": "true",
     "ext:up": "docker-compose -f docker-compose.dev.yaml up -d",
     "ext:down": "docker-compose -f docker-compose.dev.yaml down",
-    "test:cy": "cd tests/e2e && cypress run",
-    "test:open": "cd tests/e2e && cypress open",
+    "test:cy": "yarn workspace @datatorch/e2e cypress run",
+    "test:open": "yarn workspace @datatorch/e2e cypress open",
     "test": "start-server-and-test dev:all http://localhost:3000 test:cy"
   },
   "devDependencies": {
