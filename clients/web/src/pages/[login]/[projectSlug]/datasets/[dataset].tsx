@@ -38,10 +38,10 @@ const ProjectDataset: NextPage = () => {
   return (
     <ProjectLayout>
       <Container maxWidth="7xl">
-        <ProjectHeader subtitle="Home / Datasets" title="Vars-23S" />
+        <ProjectHeader title="Vars-23S" />
+
         <Box marginBottom={6}>
           <Text color="gray.400">Description about the dataset goes here.</Text>
-
           <Box>
             <Tag variant="subtle" mr={2} my={1} colorScheme="blue">
               png
