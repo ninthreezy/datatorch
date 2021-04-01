@@ -2,3 +2,17 @@
 **/out/*
 **/.next/*
 shared/prisma/src/*
+
+# node
+node_modules
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+yarn-error.log
+
+tests/e2e/cypress/videos/*

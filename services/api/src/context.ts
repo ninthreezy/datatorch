@@ -1,7 +1,7 @@
 import { Context as ApolloContext, ContextFunction } from 'apollo-server-core'
 import { FastifyReply, FastifyRequest } from 'fastify'
 
-export interface Context extends ApolloContext {}
+export type Context = ApolloContext
 
 type CreateContextFunction = ContextFunction<
   { request: FastifyRequest; reply: FastifyReply },

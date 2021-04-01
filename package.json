@@ -20,7 +20,7 @@
     "lint:python": "python -m black .",
     "lint:terraform": "terraform fmt -recursive",
     "lint:terraform:ci": "terraform fmt -recursive -check",
-    "lint:js": "eslint --ext .tsx,.ts,.jsx,.js --ignore-path .gitignore . --fix",
+    "lint:js": "eslint --ext .tsx,.ts,.jsx,.js . --fix",
     "start": "true",
     "ext:up": "docker-compose -f docker-compose.dev.yaml up -d",
     "ext:down": "docker-compose -f docker-compose.dev.yaml down",
