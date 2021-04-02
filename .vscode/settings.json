@@ -4,8 +4,7 @@
   "npm.packageManager": "yarn",
   "go.lintTool": "golangci-lint",
   "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
+    "**/.yarn": true
   },
   "eslint.nodePath": ".yarn/sdks",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",

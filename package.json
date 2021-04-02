@@ -1,36 +1,38 @@
 {
   "name": "datatorch",
   "private": true,
-  "version": "0.0.0",
   "workspaces": [
-    "shared/*",
-    "shared/js/*",
-    "clients/*",
-    "services/*",
-    "docs/*",
-    "tests/*"
+    "services/api",
+    "clients/web",
+    "tests/e2e",
+    "shared/prisma"
   ],
+  "version": "0.0.0",
   "scripts": {
+    "dev:all": "yarn install && yarn dev:services && yarn dev:web",
     "dev": "yarn install && yarn dev:services",
-    "dev:services": "",
-    "dev:web": "",
+    "dev:services": "true",
+    "dev:web": "cd clients/web && yarn run dev",
     "dev:cli": "go run ./clients/cli",
-    "build": "",
+    "build": "true",
     "lint": "yarn lint:go && yarn lint:python && yarn lint:js && yarn lint:terraform",
     "lint:go": "golangci-lint run",
     "lint:python": "python -m black .",
     "lint:terraform": "terraform fmt -recursive",
     "lint:terraform:ci": "terraform fmt -recursive -check",
-    "lint:js": "eslint --ext .tsx,.ts,.jsx,.js --ignore-path .gitignore . --fix",
-    "start": "",
+    "lint:js": "eslint --ext .tsx,.ts,.jsx,.js . --fix",
+    "start": "true",
     "ext:up": "docker-compose -f docker-compose.dev.yaml up -d",
     "ext:down": "docker-compose -f docker-compose.dev.yaml down",
-    "test": ""
+    "test:cy": "yarn workspace @datatorch/e2e cypress run",
+    "test:open": "yarn workspace @datatorch/e2e cypress open",
+    "test": "start-server-and-test dev:all http://localhost:3000 test:cy"
   },
   "devDependencies": {
     "@prisma/client": "^2.19.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
+    "cypress": "^6.8.0",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-react": "^7.22.0",
@@ -38,6 +40,7 @@
     "husky": "^5.1.3",
     "prettier": "^2.2.1",
     "prisma": "^2.19.0",
+    "start-server-and-test": "^1.12.1",
     "typescript": "^4.2.3"
   }
 }

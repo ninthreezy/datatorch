@@ -8,5 +8,6 @@ node_modules
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
 yarn-error.log
+
+tests/e2e/cypress/videos/*

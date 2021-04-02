@@ -4,8 +4,6 @@
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
-
 **/backups/*
 **/dist/*
 **/.next/*
