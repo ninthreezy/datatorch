@@ -806,12 +806,12 @@
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.2"
 
-"@chakra-ui/theme-tools@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.2.tgz#09a8797f2ea227e2237bb70fa826837636d77f15"
-  integrity sha512-j3REtWeSgi1UNld3vt858Jgjxv853XBLV4C4eAppFgcgEzaM35348rZO9puyxgyCM36FAoiySKaU50Y1YHiSdQ==
+"@chakra-ui/theme-tools@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.4.tgz#e35c14ce4f768166771cf50302f0270b162bb033"
+  integrity sha512-TKOYwJh90zkZSn5wKlA3nxSSS2GR3DTPHEk/6w1W+6bfqCD2Mdsa9FEKiwiBgxk8sg2BwiAcqiBRH9rkEYtPoA==
   dependencies:
-    "@chakra-ui/utils" "1.5.0"
+    "@chakra-ui/utils" "1.5.2"
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.2"
 
@@ -865,10 +865,10 @@
     css-box-model "1.2.1"
     lodash.mergewith "4.6.2"
 
-"@chakra-ui/utils@1.5.0", "@chakra-ui/utils@^1.4.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.5.0.tgz#8ba5ac1353d85c7fbdfa843c8023d9a2b4a2915d"
-  integrity sha512-rHLGzAo7cwIF9LkfEFEqtmgZN4/e1kuu5fVO4DrLJHcOA7c+wibrNK8QaplBefpq+b5bnmmznE4YHpXqG8yiCQ==
+"@chakra-ui/utils@1.5.2", "@chakra-ui/utils@^1.4.0":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.5.2.tgz#48bcbaf4856bd9c1c877b69c7edc7cb767454dc9"
+  integrity sha512-oGBIx93b4bDHm6fpRZp6QQ5hJQOElVi2yI1/ptlSiCCSOKfyuqh8fu+PYMsinWXp44kmTQ4gfEhuRIY4Z/vhbg==
   dependencies:
     "@types/lodash.mergewith" "4.6.6"
     css-box-model "1.2.1"
@@ -6997,10 +6997,10 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-runtypes@^5.1.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/runtypes/-/runtypes-5.2.0.tgz#1751a17860807873f0fddb4b15a5cd80fe574947"
-  integrity sha512-ArcmkYvNWkHrwg4Ic7St365oUGAkiIcs6vNmoRNzADv7nBhrTQC8C562TYnIV9nxxMxdmAAHsehD78xuWeYPJA==
+runtypes@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/runtypes/-/runtypes-6.0.0.tgz#0010e7e050a41d4ab38b6138051dfb8774a53f07"
+  integrity sha512-hVBZ2S0i9MmyViSpwCU7TGFuEZxjPIeTMbhCpz59/8C3IGbPL6N03bIVALGfVWZQ+MTXORjWpWnZUP3hPyw96w==
 
 rxjs@^6.6.6:
   version "6.6.7"
