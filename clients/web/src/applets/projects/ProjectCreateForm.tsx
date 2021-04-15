@@ -100,7 +100,7 @@ export const ProjectCreateForm: React.FC = () => {
       <FormControl as="fieldset">
         <Controller
           control={control}
-          {...register('visibility')}
+          name="visibility"
           defaultValue="private"
           render={({ field }) => (
             <RadioGroup {...field}>
