@@ -28,7 +28,7 @@ const Index: NextPage = () => {
   } = useForm<Inputs>()
 
   // eslint-disable-next-line no-console
-  const onSubmit = data => console.log(data)
+  const onSubmit = (data, e) => console.log('onSubmit: ', data, e)
 
   return (
     <Container mt={5}>
@@ -36,23 +36,31 @@ const Index: NextPage = () => {
         Sign in to DataTorch
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={3}>
-          <FormLabel htmlFor="email">Email Address</FormLabel>
-          <Input type="email" {...register('email', { required: true })} />
+        <FormControl isInvalid={errors.email?.message.length > 0}>
+          <FormLabel mt={3} htmlFor="email">
+            Email Address
+          </FormLabel>
+          <Input
+            type="email"
+            {...register('email', { required: 'Email is required' })}
+          />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.password?.message.length > 0}>
           <FormLabel htmlFor="password" mt={4}>
             Password
           </FormLabel>
           <Input
             type="password"
-            {...register('password', { required: true })}
+            {...register('password', { required: 'Password is required' })}
           />
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-          <Checkbox mt={4} {...register('remember')}>
-            Remember me for one month
-          </Checkbox>
-          <br />
         </FormControl>
+
+        <Checkbox mt={4} {...register('remember')}>
+          Remember me for one month
+        </Checkbox>
+        <br />
         <Button
           width="100%"
           mt={5}

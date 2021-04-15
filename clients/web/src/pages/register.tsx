@@ -35,41 +35,53 @@ const Index: NextPage = () => {
         Create your account
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={4}>
-          <FormLabel htmlFor="username">Username</FormLabel>
-          <Input type="text" {...register('username', { required: true })} />
+        <FormControl isInvalid={errors.username?.message.length > 0}>
+          <FormLabel mt={4} htmlFor="username">
+            Username
+          </FormLabel>
+          <Input
+            type="text"
+            {...register('username', { required: 'Username is required' })}
+          />
           <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.email?.message.length > 0}>
           <FormLabel mt={4} htmlFor="email">
             Email
           </FormLabel>
-          <Input type="email" {...register('email', { required: true })} />
+          <Input
+            type="email"
+            {...register('email', { required: 'Email is requried' })}
+          />
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.password?.message.length > 0}>
           <FormLabel mt={4} htmlFor="passsword">
             Password
           </FormLabel>
           <Input
             type="password"
-            {...register('password', { required: true })}
+            {...register('password', { required: 'Password is required' })}
           />
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-          <br />
-          <Button
-            width="100%"
-            mt={5}
-            colorScheme="teal"
-            type="submit"
-            isLoading={isSubmitting}
-          >
-            Create Account
-          </Button>
-          <Text fontSize="small" mt={2}>
-            By creating an account, you agree to the{' '}
-            <Link href="/terms">
-              <ChakraLink color="teal.500">Terms of Service</ChakraLink>
-            </Link>
-            . We will occasionally send you account-related emails.{' '}
-          </Text>
         </FormControl>
+        <br />
+        <Button
+          width="100%"
+          mt={1}
+          colorScheme="teal"
+          type="submit"
+          isLoading={isSubmitting}
+        >
+          Create Account
+        </Button>
+        <Text fontSize="small" mt={2}>
+          By creating an account, you agree to the{' '}
+          <Link href="/terms">
+            <ChakraLink color="teal.500">Terms of Service</ChakraLink>
+          </Link>
+          . We will occasionally send you account-related emails.{' '}
+        </Text>
       </form>
 
       <Text mt={3}>
