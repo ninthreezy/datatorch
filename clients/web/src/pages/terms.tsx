@@ -14,13 +14,13 @@ const Index: NextPage = () => (
     <Text mt={2}>
       The following terms and conditions govern all use of the DataTorch.io
       website, or any other website owned and operated by DataTorch which
-      incorporate these terms and conditions (the “Website”), including all
-      content, services and support packages provided on via the Website. The
-      Website is offered subject to your acceptance without modification of all
-      of the terms and conditions contained herein and all other operating
-      rules, policies (including, without limitation, procedures that may be
-      published from time to time on this Website by DataTorch (collectively,
-      the “Agreement”).
+      incorporate these terms and conditions (the &quot;Website&quot;),
+      including all content, services and support packages provided on via the
+      Website. The Website is offered subject to your acceptance without
+      modification of all of the terms and conditions contained herein and all
+      other operating rules, policies (including, without limitation, procedures
+      that may be published from time to time on this Website by DataTorch
+      (collectively, the &quot;Agreement&quot;).
     </Text>
 
     <Text mt={2}>
@@ -69,9 +69,9 @@ const Index: NextPage = () => (
         <Text mt={2}>
           By accepting this Agreement, you agree not to use, encourage, promote,
           or facilitate others to use, the Website or your account in a way that
-          is harmful to others ("Acceptable Use"). Examples of harmful use
-          include, but are not limited to, engaging in illegal or fraudulent
-          activities, infringing upon others' intellectual property rights,
+          is harmful to others (&quot;Acceptable Use&quot;). Examples of harmful
+          use include, but are not limited to, engaging in illegal or fraudulent
+          activities, infringing upon others&apos; intellectual property rights,
           distributing harmful or offensive content that is defamatory, obscene,
           abusive, an invasion of privacy, or harassing, violating the security
           or integrity of any computer, network or communications system, and
@@ -123,16 +123,16 @@ const Index: NextPage = () => (
         <Text mt={2}>
           DataTorch has not reviewed, and cannot review, all of the material,
           including computer software, posted to the Website, and cannot
-          therefore be responsible for that material’s content, use or effects.
-          By operating the Website, DataTorch does not represent or imply that
-          it endorses the material there posted, or that it believes such
-          material to be accurate, useful or non-harmful. You are responsible
-          for taking precautions as necessary to protect yourself and your
-          computer systems from viruses, worms, Trojan horses, and other harmful
-          or destructive content. The Website may contain content that is
-          offensive, indecent, or otherwise objectionable, as well as content
-          containing technical inaccuracies, typographical mistakes, and other
-          errors. The Website may also contain material that violates the
+          therefore be responsible for that material&apos;s content, use or
+          effects. By operating the Website, DataTorch does not represent or
+          imply that it endorses the material there posted, or that it believes
+          such material to be accurate, useful or non-harmful. You are
+          responsible for taking precautions as necessary to protect yourself
+          and your computer systems from viruses, worms, Trojan horses, and
+          other harmful or destructive content. The Website may contain content
+          that is offensive, indecent, or otherwise objectionable, as well as
+          content containing technical inaccuracies, typographical mistakes, and
+          other errors. The Website may also contain material that violates the
           privacy or publicity rights, or infringes the intellectual property
           and other proprietary rights, of third parties, or the downloading,
           copying or use of which is subject to additional terms and conditions,
@@ -151,7 +151,7 @@ const Index: NextPage = () => (
         <Text mt={2}>
           We have not reviewed, and cannot review, all of the material,
           including computer software, made available through the websites and
-          webpages to which this website links, and that link to this website.{' '}
+          webpages to which this website links, and that link to this website.
           DataTorch does not have any control over those non DataTorch websites
           and webpages, and is not responsible for their contents or their use.
           By linking to a non DataTorch website or webpage, DataTorch does not
