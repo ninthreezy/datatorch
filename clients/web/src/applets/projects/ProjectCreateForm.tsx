@@ -64,7 +64,7 @@ export const ProjectCreateForm: React.FC = () => {
         models. Including, datasets, versions, pipelines and more.
       </Text>
 
-      <Divider marginY="5" />
+      <Divider my="5" />
 
       <FormControl>
         <Flex
