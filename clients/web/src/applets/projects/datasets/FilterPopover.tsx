@@ -6,7 +6,6 @@ import {
   IconButton,
   Icon,
   Popover,
-  Heading,
   FormLabel,
   Select,
   Checkbox

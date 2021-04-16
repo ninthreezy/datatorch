@@ -13,7 +13,6 @@ import {
   Divider,
   Flex,
   Icon,
-  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -29,7 +28,6 @@ import {
   FaChevronRight,
   FaExclamationTriangle,
   FaFile,
-  FaFilter,
   FaForward,
   FaSearch
 } from 'react-icons/fa'
