@@ -14,14 +14,21 @@ import { FaFilter } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 
 type Inputs = {
-  sort: string
-  numberOfItems: string
-  showCompleted: boolean
-  showSkipped: boolean
+  sort?: string
+  numberOfItems?: string
+  showCompleted?: boolean
+  showSkipped?: boolean
 }
 
 export const FilterPopover: React.FC<Inputs> = () => {
-  const { register, watch } = useForm<Inputs>()
+  const { register, watch } = useForm<Inputs>({
+    defaultValues: {
+      sort: 'name',
+      numberOfItems: '20',
+      showCompleted: true,
+      showSkipped: true
+    }
+  })
   const watchAllFields = watch()
   // eslint-disable-next-line no-console
   console.log(watchAllFields)
