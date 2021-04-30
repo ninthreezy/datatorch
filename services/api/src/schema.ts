@@ -1,22 +1,22 @@
 import { applyMiddleware } from 'graphql-middleware'
-// import { GraphQLDateTime as DateTime } from 'graphql-iso-date'
+import NexusPrismaScalars from 'nexus-prisma/scalars'
 import { makeSchema } from 'nexus'
-import { nexusPrisma } from 'nexus-plugin-prisma'
 
 import * as types from './modules/types'
-import { PrismaClient } from '@datatorch/prisma'
+import { join } from 'path'
 
 export const schema = applyMiddleware(
   makeSchema({
-    types,
-    plugins: [nexusPrisma({ prismaClient: () => new PrismaClient() })],
+    types: { ...types, ...NexusPrismaScalars },
     contextType: {
-      module: require.resolve('./context'),
+      // TODO: change to join
+      module: join(__dirname, 'context.ts'),
       export: 'Context'
     },
     outputs: {
-      schema: `${__dirname}/../generated/schema.graphql`,
-      typegen: `${__dirname}/../generated/typing.ts`
+      // TODO: change to join
+      schema: `${__dirname}/generated/schema.graphql`,
+      typegen: `${__dirname}/generated/typing.ts`
     },
     sourceTypes: { modules: [{ module: '@prisma/client', alias: 'prisma' }] }
   })

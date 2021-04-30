@@ -1,19 +1,16 @@
 import { ApolloServer } from 'apollo-server-fastify'
 import fastify from 'fastify'
 
-import { createContext } from './context'
+import { createContext as context } from './context'
 import { schema } from './schema'
 
 const GRAPHQL_API = '/api/graphql'
-const PORT = 3000
+const PORT = 4000
 
 // const c = new PrismaClient()
 
 const createApp = async () => {
-  const graphql = new ApolloServer({
-    schema,
-    context: createContext
-  })
+  const graphql = new ApolloServer({ schema, context })
 
   const app = fastify({ logger: true })
   app.register(graphql.createHandler({ path: GRAPHQL_API }))
