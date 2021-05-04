@@ -4,13 +4,12 @@
   "workspaces": [
     "services/api",
     "clients/web",
-    "tests/e2e",
-    "shared/prisma"
+    "tests/e2e"
   ],
   "version": "0.0.0",
   "scripts": {
-    "dev:all": "yarn install && yarn dev:services && yarn dev:web",
-    "dev": "yarn install && yarn dev:services",
+    "dev": "yarn install && yarn ext:up && yarn dev:services",
+    "dev:all": "yarn dev && yarn dev:web",
     "dev:services": "true",
     "dev:web": "cd clients/web && yarn run dev",
     "dev:cli": "go run ./clients/cli",
@@ -29,7 +28,6 @@
     "test": "start-server-and-test dev:all http://localhost:3000 test:cy"
   },
   "devDependencies": {
-    "@prisma/client": "^2.19.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.22.0",
     "cypress": "^6.8.0",
@@ -39,7 +37,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^6.0.0",
     "prettier": "^2.2.1",
-    "prisma": "^2.19.0",
     "start-server-and-test": "^1.12.1",
     "typescript": "^4.2.3"
   }

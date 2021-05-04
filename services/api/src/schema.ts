@@ -1,6 +1,7 @@
 import { applyMiddleware } from 'graphql-middleware'
-import NexusPrismaScalars from 'nexus-prisma/scalars'
+import NexusPrismaScalars from '../../../shared/prisma/node_modules/nexus-prisma/scalars'
 import { makeSchema } from 'nexus'
+import { PrismaClient } from '../../../shared/prisma/node_modules/@prisma/client'
 
 import * as types from './modules/types'
 import { join } from 'path'
@@ -9,15 +10,31 @@ export const schema = applyMiddleware(
   makeSchema({
     types: { ...types, ...NexusPrismaScalars },
     contextType: {
-      // TODO: change to join
       module: join(__dirname, 'context.ts'),
       export: 'Context'
     },
     outputs: {
-      // TODO: change to join
-      schema: `${__dirname}/generated/schema.graphql`,
-      typegen: `${__dirname}/generated/typing.ts`
+      schema: join(__dirname, 'generated', 'schema.graphql'),
+      typegen: join(__dirname, 'generated', 'typing.ts')
     },
-    sourceTypes: { modules: [{ module: '@prisma/client', alias: 'prisma' }] }
+    sourceTypes: {
+      modules: [
+        {
+          module: join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'shared',
+            'prisma',
+            'node_modules',
+            '@prisma',
+            'client',
+            'index.d.ts'
+          ),
+          alias: 'prismaclient'
+        }
+      ]
+    }
   })
 )

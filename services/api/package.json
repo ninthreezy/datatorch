@@ -9,7 +9,6 @@
     "generate": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^2.21.2",
     "apollo-server-core": "^2.21.2",
     "apollo-server-fastify": "next-v3",
     "fastify": "^3.14.0",
@@ -17,11 +16,11 @@
     "graphql-iso-date": "^3.6.1",
     "graphql-middleware": "^6.0.5",
     "nexus": "^1.0.0",
-    "nexus-prisma": "^0.25.0"
+    "nexus-prisma": "^0.25.0",
+    "prisma": "^2.21.2"
   },
   "devDependencies": {
     "@types/graphql-iso-date": "^3",
-    "prisma": "^2.21.2",
     "ts-node-dev": "^1.1.6"
   }
 }

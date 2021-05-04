@@ -21,8 +21,6 @@ services:
       - POSTGRES_PASSWORD=datatorch
     networks:
       - devtools
-    volumes:
-      - ~/volumes/postgres/data:/var/lib/postgresql/data
 
 networks:
   devtools:

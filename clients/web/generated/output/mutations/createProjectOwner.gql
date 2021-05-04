@@ -1,0 +1,14 @@
+mutation createProjectOwner($email: String!, $login: String!, $name: String!){
+    createProjectOwner(email: $email, login: $login, name: $name){
+        avatarUrl
+        createdAt
+        description
+        disabled
+        email
+        id
+        location
+        login
+        name
+        updatedAt
+    }
+}

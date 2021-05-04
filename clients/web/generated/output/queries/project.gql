@@ -1,0 +1,10 @@
+query project{
+    project{
+        createdAt
+        description
+        disabled
+        id
+        name
+        updatedAt
+    }
+}

@@ -7,8 +7,6 @@ import { schema } from './schema'
 const GRAPHQL_API = '/api/graphql'
 const PORT = 4000
 
-// const c = new PrismaClient()
-
 const createApp = async () => {
   const graphql = new ApolloServer({ schema, context })
 

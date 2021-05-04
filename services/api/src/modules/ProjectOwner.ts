@@ -1,5 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus'
-import { ProjectOwner } from 'nexus-prisma'
+import { ProjectOwner } from '../../../../shared/prisma/node_modules/nexus-prisma'
 
 export const ProjectOwnerQuery = extendType({
   type: 'Query',
@@ -75,41 +75,3 @@ export const NProjectOwner = createObjectTypeFromPrisma(ProjectOwner, [
   'disabled',
   'location'
 ])
-
-// export const NProjectOwner = objectType({
-//   name: ProjectOwner.$name,
-//   description: ProjectOwner.$description,
-//   definition(t) {
-//     t.field(ProjectOwner.id.name, {
-//       type: ProjectOwner.id.type
-//     })
-//     t.field(ProjectOwner.email.name, {
-//       type: ProjectOwner.email.type
-//     })
-//     t.field(ProjectOwner.login.name, {
-//       type: ProjectOwner.login.type
-//     })
-//     t.field(ProjectOwner.name.name, {
-//       type: ProjectOwner.name.type
-//     })
-//     t.field(ProjectOwner.avatarUrl.name, {
-//       type: ProjectOwner.avatarUrl.type
-//     })
-//     t.field(ProjectOwner.description.name, {
-//       type: ProjectOwner.description.type
-//     })
-//     t.field(ProjectOwner.location.name, {
-//       type: ProjectOwner.location.type
-//     })
-//     t.field(ProjectOwner.disabled.name, {
-//       type: ProjectOwner.disabled.type
-//     })
-//     t.field(ProjectOwner.createdAt.name, {
-//       type: ProjectOwner.createdAt.type
-//     })
-//     t.field(ProjectOwner.updatedAt.name, {
-//       type: ProjectOwner.updatedAt.type
-//     })
-//     // TODO: add projects
-//   }
-// })
