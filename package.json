@@ -11,8 +11,8 @@
   "scripts": {
     "dev": "yarn install && yarn ext:up && yarn dev:services",
     "dev:all": "yarn dev && yarn dev:web",
-    "dev:services": "true",
-    "dev:web": "cd clients/web && yarn run dev",
+    "dev:services": "yarn workspace @datatorch/api dev",
+    "dev:web": "yarn workspace @datatorch/web dev",
     "dev:cli": "go run ./clients/cli",
     "build": "true",
     "lint": "yarn lint:go && yarn lint:python && yarn lint:js && yarn lint:terraform",

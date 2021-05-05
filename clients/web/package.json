@@ -5,7 +5,7 @@
   "license": "private",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn generate && next dev",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc --pretty --noEmit",
@@ -15,7 +15,8 @@
     "test-all": "yarn lint && yarn type-check && yarn test",
     "generate:theme-typings": "chakra-cli tokens ./src/theme.ts",
     "postinstall": "npm run generate:theme-typings",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "generate:watch": "graphql-codegen --watch --config codegen.yml"
   },
   "husky": {
     "hooks": {
