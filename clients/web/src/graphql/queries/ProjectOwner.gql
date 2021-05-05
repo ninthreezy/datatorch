@@ -1,0 +1,5 @@
+query ProjectOwner($id: String!) {
+  projectOwner: projectOwner(id: $id) {
+    name
+  }
+}

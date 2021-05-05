@@ -10,6 +10,11 @@ generator prisma_client {
   provider = "prisma-client-js"
 }
 
+generator datatorch_prisma {
+  provider = "prisma-client-js"
+  output = "../../js/db"
+}
+
 generator nexusPrisma {
   provider = "nexus-prisma"
 }

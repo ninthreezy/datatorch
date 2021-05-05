@@ -1,6 +1,7 @@
 import { ContextFunction, Context as ApolloContext } from 'apollo-server-core'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { PrismaClient } from '../../../shared/prisma/node_modules/.prisma/client'
+// import { PrismaClient } from '../../../shared/prisma/node_modules/.prisma/client'
+import { PrismaClient } from '@shared/db'
 
 type FastifyResponse = { request: FastifyRequest; reply: FastifyReply }
 

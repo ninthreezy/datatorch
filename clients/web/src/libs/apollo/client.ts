@@ -34,12 +34,14 @@ const createHttpLinkWithSubscriptions = (uri: string) => {
 
 export const createApollo = () => {
   // const apiEndpoint = `/api/graphql`
-  const fqdn = process.browser
-    ? location.origin
-    : (process.env.FQDN ?? 'http://localhost:3000').trim()
+  // const fqdn = process.browser
+  //   ? location.origin
+  //   : (process.env.FQDN ?? 'http://localhost:4000/api/graphql').trim()
+  const fqdn = 'http://localhost:4000/api/graphql'
 
   const createLink = createHttpLink
   return new ApolloClient({
+    uri: fqdn,
     link: createLink(fqdn),
     ssrMode: typeof window === 'undefined',
     cache: new InMemoryCache()

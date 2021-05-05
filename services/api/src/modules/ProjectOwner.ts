@@ -1,5 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus'
-import { ProjectOwner } from '../../../../shared/prisma/node_modules/nexus-prisma'
+import { ProjectOwner } from 'nexus-prisma'
 
 export const ProjectOwnerQuery = extendType({
   type: 'Query',

@@ -1,8 +1,9 @@
 {
-  "name": "prisma",
+  "name": "@datatorch/db",
+  "author": "@datatorch",
+  "private": true,
+  "license": "private",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "dependencies": {
     "@prisma/client": "^2.21.2",
     "@types/node": "^15.0.1",

@@ -5,7 +5,7 @@
   "license": "private",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev --no-notify --respawn --transpile-only ./src/index",
+    "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only ./src/index",
     "generate": "prisma generate"
   },
   "dependencies": {
