@@ -1230,42 +1230,19 @@
     "@chakra-ui/form-control" "1.3.5"
     "@chakra-ui/utils" "1.8.0"
 
-<<<<<<< HEAD
-"@chakra-ui/theme-tools@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.2.tgz#09a8797f2ea227e2237bb70fa826837636d77f15"
-  integrity sha512-j3REtWeSgi1UNld3vt858Jgjxv853XBLV4C4eAppFgcgEzaM35348rZO9puyxgyCM36FAoiySKaU50Y1YHiSdQ==
-=======
 "@chakra-ui/theme-tools@1.1.7", "@chakra-ui/theme-tools@^1.1.4":
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.7.tgz#ffd3dc2d22a935e1a1df47b155c4cef60ff3f603"
   integrity sha512-i8KpxjgoQPsoWAyHX+4kRMSioN9WVfyky+2sdFDHhEuDNL/iNYfKQMZjt8RR67apK/dSswMqh5UF2lWSM+lQhw==
->>>>>>> 64acdef4aa095cae9f54b0363497b0f0e8f9988f
   dependencies:
     "@chakra-ui/utils" "1.8.0"
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.2"
 
-<<<<<<< HEAD
-"@chakra-ui/theme-tools@^1.1.4":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.1.5.tgz#eaeb8c72bc27b818e64ed4641ddff9e1f31dc5f4"
-  integrity sha512-X+fuWvmMmuIV4HPcIJBsLNGzOTWCADfpP0Q6yoym+Jd1824BkWMhEucw3pQ3CjxHmCETOy4qXpyvXaKzK0VP3Q==
-  dependencies:
-    "@chakra-ui/utils" "1.6.0"
-    "@types/tinycolor2" "1.4.2"
-    tinycolor2 "1.4.2"
-
-"@chakra-ui/theme@1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-1.8.0.tgz#fa85856b350a9b783071812a1942bf25edf5d451"
-  integrity sha512-5NmnQGO+DiRmtGZ5269ux0Ihj+PRWo1lUAUtLRYw/vqHXgFp9WvbU0fXHydyJCpL73usdz5D88GqEVm6CQ8sGQ==
-=======
 "@chakra-ui/theme@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-1.8.5.tgz#83c916c7d14c029a8124765252fc36ae22946439"
   integrity sha512-bFYJA4/kdqVmjEpxjh+30jejR3bJtUtTYfuLRtfdo7NkgY13H9OReP08nDdarhXq6rA/891lkYGWDXvWwXpaqw==
->>>>>>> 64acdef4aa095cae9f54b0363497b0f0e8f9988f
   dependencies:
     "@chakra-ui/theme-tools" "1.1.7"
     "@chakra-ui/utils" "1.8.0"
@@ -1321,27 +1298,10 @@
     css-box-model "1.2.1"
     lodash.mergewith "4.6.2"
 
-<<<<<<< HEAD
-"@chakra-ui/utils@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.6.0.tgz#36f2ab3469beac0c094218395f7ed62032666abf"
-  integrity sha512-hKk1yIXiAscq9PYm0wLaQe3HM9FpkeM4ARIYNERZB0S4Kb7wr+NQsYHgei2RrpK71f1ydzrnXyG6Axd3zzxwRw==
-  dependencies:
-    "@types/lodash.mergewith" "4.6.6"
-    css-box-model "1.2.1"
-    framesync "5.3.0"
-    lodash.mergewith "4.6.2"
-
-"@chakra-ui/visually-hidden@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/visually-hidden/-/visually-hidden-1.0.7.tgz#991a2987aca8591b5d3b4f5c0198ce2735cc521f"
-  integrity sha512-h7a6WaN4yNjl3BtwJvkvRRjihlQSjI0iS2dnDu8l2DlJflPT8w+bHYVxZbFZBytGV2iaacJytf8jSigTYnRNpw==
-=======
 "@chakra-ui/visually-hidden@1.0.12":
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/@chakra-ui/visually-hidden/-/visually-hidden-1.0.12.tgz#9a5cf5c65c2e933a891442c4dd66767cf2f5f75f"
   integrity sha512-CSRH1ySzI3QYP5QFrLFWgpy40rpddGn4Z+BjsZ5pf+FGp/KUEpFKUx8nZyGfHlT+flMCj6Tpu7ftPyWCh1HERg==
->>>>>>> 64acdef4aa095cae9f54b0363497b0f0e8f9988f
   dependencies:
     "@chakra-ui/utils" "1.8.0"
 
@@ -6519,7 +6479,6 @@ graphql-middleware@^6.0.5:
     "@graphql-tools/delegate" "^7.1.1"
     "@graphql-tools/schema" "^7.1.3"
 
-<<<<<<< HEAD
 graphql-request@^3.3.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-3.4.0.tgz#3a400cd5511eb3c064b1873afb059196bbea9c2b"
@@ -6542,9 +6501,6 @@ graphql-tag@^2.11.0:
   integrity sha512-VmsD5pJqWJnQZMUeRwrDhfgoyqcfwEkvtpANqcoUG8/tOLkwNgU9mzub/Mc78OJMhHjx7gfAMTxzdG43VGg3bA==
 
 graphql-tag@^2.12.0:
-=======
-graphql-tag@^2.11.0, graphql-tag@^2.12.0:
->>>>>>> 64acdef4aa095cae9f54b0363497b0f0e8f9988f
   version "2.12.3"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.3.tgz#ac47bf9d51c67c68ada8a33fd527143ed15bb647"
   integrity sha512-5wJMjSvj30yzdciEuk9dPuUBUR56AqDi3xncoYQl1i42pGdSqOJrJsdb/rz5BDoy+qoGvQwABcBeF0xXY3TrKw==
@@ -11885,14 +11841,11 @@ typescript@^4.2.4:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
   integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
 
-<<<<<<< HEAD
 ua-parser-js@^0.7.18:
   version "0.7.28"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
   integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
 
-=======
->>>>>>> 64acdef4aa095cae9f54b0363497b0f0e8f9988f
 unbox-primitive@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/unbox-primitive/-/unbox-primitive-1.0.1.tgz#085e215625ec3162574dc8859abee78a59b14471"

@@ -2,6 +2,8 @@
 **/out/*
 **/.next/*
 shared/prisma/src/*
+shared/js/db
+**/generated/*
 
 # node
 node_modules
