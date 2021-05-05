@@ -1,13 +1,6 @@
 name: Javascript Lint
 
 on:
-  push:
-    paths:
-      - '**.js'
-      - '**.jsx'
-      - '**.ts'
-      - '**.tsx'
-      - '**/.eslint**'
   pull_request:
     paths:
       - '**.js'
