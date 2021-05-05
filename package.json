@@ -13,6 +13,7 @@
     "dev:services": "yarn workspace @datatorch/api dev",
     "dev:web": "yarn workspace @datatorch/web dev",
     "dev:cli": "go run ./clients/cli",
+    "dev:all": "yarn install && yarn generate:all && (yarn dev & yarn dev:web)",
     "generate:all": "yarn workspace @datatorch/db generate && yarn workspace @datatorch/web generate",
     "build": "true",
     "lint": "yarn lint:go && yarn lint:python && yarn lint:js && yarn lint:terraform",
