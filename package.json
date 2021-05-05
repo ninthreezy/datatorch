@@ -9,11 +9,11 @@
   ],
   "version": "0.0.0",
   "scripts": {
-    "dev": "yarn install && yarn ext:up && yarn dev:services",
-    "dev:all": "yarn dev && yarn dev:web",
+    "dev": "yarn install && yarn ext:up && yarn workspace @datatorch/db generate && yarn dev:services",
     "dev:services": "yarn workspace @datatorch/api dev",
     "dev:web": "yarn workspace @datatorch/web dev",
     "dev:cli": "go run ./clients/cli",
+    "generate:all": "yarn workspace @datatorch/db generate && yarn workspace @datatorch/web generate",
     "build": "true",
     "lint": "yarn lint:go && yarn lint:python && yarn lint:js && yarn lint:terraform",
     "lint:go": "golangci-lint run",
