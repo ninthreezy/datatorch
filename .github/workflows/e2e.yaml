@@ -1,41 +1,41 @@
-name: E2E Tests
+# name: E2E Tests
 
-on: [pull_request]
+# on: [pull_request]
 
-jobs:
-  # Label of the container job
-  e2e:
-    name: End to End testing
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13-alpine
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis:6
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+# jobs:
+#   # Label of the container job
+#   e2e:
+#     name: End to End testing
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:13-alpine
+#         env:
+#           POSTGRES_PASSWORD: postgres
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#       redis:
+#         image: redis:6
+#         options: >-
+#           --health-cmd "redis-cli ping"
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
+#     steps:
+#       - name: Check out code
+#         uses: actions/checkout@v2
 
-      - name: Cache package dependencies
-        uses: actions/cache@v2
-        with:
-          path: '**/.yarn/cache'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+#       - name: Cache package dependencies
+#         uses: actions/cache@v2
+#         with:
+#           path: '**/.yarn/cache'
+#           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install dependencies on root
-        run: yarn install
+#       - name: Install dependencies on root
+#         run: yarn install
 
-      - name: Cypress run
-        run: yarn test:e2e
+#       - name: Cypress run
+#         run: yarn test:e2e
