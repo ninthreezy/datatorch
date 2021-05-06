@@ -1,13 +1,11 @@
 {
-  "name": "@datatorch/prisma",
+  "name": "@datatorch/db",
   "author": "@datatorch",
+  "private": true,
   "license": "private",
   "version": "1.0.0",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
   "scripts": {
-    "generate": "prisma generate",
-    "postinstall": "yarn generate"
+    "generate": "npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "*",

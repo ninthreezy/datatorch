@@ -1,16 +1,16 @@
-import { Context as ApolloContext, ContextFunction } from 'apollo-server-core'
+import { ContextFunction, Context as ApolloContext } from 'apollo-server-core'
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { PrismaClient } from '@shared/db'
 
-export type Context = ApolloContext
+type FastifyResponse = { request: FastifyRequest; reply: FastifyReply }
 
-type CreateContextFunction = ContextFunction<
-  { request: FastifyRequest; reply: FastifyReply },
-  Context
->
+const db = new PrismaClient()
+export interface Context extends ApolloContext {
+  db: PrismaClient
+  reply: FastifyReply
+  request: FastifyRequest
+}
 
-export const createContext: CreateContextFunction = ({ request, reply }) => {
-  return {
-    request,
-    reply
-  }
+export const createContext: ContextFunction<FastifyResponse, Context> = ctx => {
+  return { ...ctx, db }
 }
