@@ -38,4 +38,4 @@ jobs:
         run: yarn install
 
       - name: Cypress run
-        run: yarn test
+        run: yarn test:e2e

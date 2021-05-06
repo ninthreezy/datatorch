@@ -11,8 +11,6 @@
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test",
     "generate:theme-typings": "chakra-cli tokens ./src/theme.ts",
     "postinstall": "npm run generate:theme-typings",
     "generate": "graphql-codegen --config codegen.yml",
