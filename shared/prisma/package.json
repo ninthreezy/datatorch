@@ -8,11 +8,8 @@
     "generate": "npx prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^2.21.2",
-    "@types/node": "^15.0.1",
-    "nexus-prisma": "^0.25.0",
-    "prisma": "^2.21.2",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
+    "@prisma/client": "*",
+    "@types/node": "*",
+    "prisma": "^2.22.0"
   }
 }
