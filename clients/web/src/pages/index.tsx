@@ -5,7 +5,8 @@ import { AppNavbar } from '@/common/navbar/AppNavbar'
 import { useProjectOwnerQuery } from '@/generated/graphql'
 
 const Index: NextPage = () => {
-  const { data, error } = useProjectOwnerQuery({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const response = useProjectOwnerQuery({
     variables: {
       id: 'mockid'
     }
