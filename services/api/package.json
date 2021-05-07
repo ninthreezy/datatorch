@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --respawn --transpile-only ./src/index",
-    "generate": "prisma generate"
+    "generate": "ts-node -r tsconfig-paths/register ./src/schema.ts"
   },
   "dependencies": {
     "apollo-server-core": "^2.21.2",

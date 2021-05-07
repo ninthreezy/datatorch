@@ -9,14 +9,14 @@
   ],
   "version": "0.0.0",
   "scripts": {
-    "dev": "yarn install && yarn ext:up && yarn generate:all && yarn dev:services",
-    "dev:services": "yarn workspace @datatorch/api dev",
-    "dev:web": "yarn workspace @datatorch/web dev",
+    "dev:setup": "yarn && yarn ext:up && yarn generate",
+    "dev:services": "yarn dev:setup && yarn workspace @datatorch/api dev",
+    "dev:web": "yarn dev:setup && yarn workspace @datatorch/web dev",
     "dev:cli": "go run ./clients/cli",
-    "dev:all": "yarn dev & (wait-on http://localhost:4000 && yarn dev:web)",
+    "generate": "yarn generate:db && yarn generate:api && yarn generate:web",
     "generate:db": "yarn workspace @datatorch/db generate",
+    "generate:api": "yarn workspace @datatorch/api generate",
     "generate:web": "yarn workspace @datatorch/web generate",
-    "generate:all": "yarn generate:db && yarn generate:web",
     "build": "true",
     "lint": "yarn lint:go && yarn lint:python && yarn lint:js && yarn lint:terraform",
     "lint:go": "golangci-lint run",
@@ -27,9 +27,10 @@
     "start": "true",
     "ext:up": "docker-compose -f docker-compose.dev.yaml up -d",
     "ext:down": "docker-compose -f docker-compose.dev.yaml down",
+    "test:web": "yarn workspace @datatorch/unit test",
     "test:cy": "yarn workspace @datatorch/e2e cypress run",
     "test:open": "yarn workspace @datatorch/e2e cypress open",
-    "test:e2e": "start-server-and-test dev:all http://localhost:3000 test:cy"
+    "test:e2e": "start-server-and-test dev:web http://localhost:3000 test:cy"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.17.0",
