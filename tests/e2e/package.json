@@ -6,7 +6,6 @@
     "cy": "cypress open",
     "cy:run": "cypress run",
     "cy:verify": "cypress verify",
-    "test": "jest",
     "test:web": "yarn lint && yarn type-check && yarn test"
   },
   "dependencies": {

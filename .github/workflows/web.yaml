@@ -1,32 +1,32 @@
-# name: Web
+name: Web
 
-# on:
-#   pull_request:
-#     paths:
-#       - 'clients/web/**'
-#       - 'shared/js/**'
-#       - 'package.json'
-#       - 'yarn.lock'
+on:
+  pull_request:
+    paths:
+      - 'clients/web/**'
+      - 'shared/js/**'
+      - 'package.json'
+      - 'yarn.lock'
 
-# jobs:
-#   tests:
-#     name: Web Tests
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check out code
-#         uses: actions/checkout@v2
+jobs:
+  tests:
+    name: Web Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-#       - name: Cache package dependencies
-#         uses: actions/cache@v2
-#         with:
-#           path: '**/.yarn/cache'
-#           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Cache package dependencies
+        uses: actions/cache@v2
+        with:
+          path: '**/.yarn/cache'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-#       - name: Install dependencies and boot up backend
-#         run: yarn dev:all
+      - name: Install dependencies and boot up backend
+        run: yarn dev:all
 
-#       - name: Run web tests
-#         run: yarn test:web --passWithNoTests
+      - name: Run web tests
+        run: yarn test:web --passWithNoTests
 
-#       - name: Run web build
-#         run: yarn workspace @datatorch/web build
+      - name: Run web build
+        run: yarn workspace @datatorch/web build
