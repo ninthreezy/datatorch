@@ -22,8 +22,8 @@ jobs:
           path: '**/.yarn/cache'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install dependencies and boot up backend
-        run: yarn dev:all
+      - name: Install dependencies
+        run: yarn dev:setup
 
       - name: Run web tests
         run: yarn test:web --passWithNoTests
