@@ -5,7 +5,8 @@
   "scripts": {
     "cy": "cypress open",
     "cy:run": "cypress run",
-    "cy:verify": "cypress verify"
+    "cy:verify": "cypress verify",
+    "test:web": "yarn lint && yarn type-check && yarn test"
   },
   "dependencies": {
     "cypress": "^6.8.0"

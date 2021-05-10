@@ -1,12 +1,6 @@
 name: Web
 
 on:
-  push:
-    paths:
-      - 'clients/web/**'
-      - 'shared/js/**'
-      - 'package.json'
-      - 'yarn.lock'
   pull_request:
     paths:
       - 'clients/web/**'
@@ -25,14 +19,14 @@ jobs:
       - name: Cache package dependencies
         uses: actions/cache@v2
         with:
-          path: '**/.yarn/cache'
+          path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn dev:setup
 
       - name: Run web tests
-        run: yarn workspace @datatorch/web test --passWithNoTests
+        run: yarn test:web --passWithNoTests
 
       - name: Run web build
         run: yarn workspace @datatorch/web build

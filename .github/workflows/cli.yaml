@@ -1,11 +1,5 @@
 name: Go Tests
 on:
-  push:
-    paths:
-      - 'clients/cli/**'
-      - '**.go'
-      - go.mod
-      - go.sum
   pull_request:
     paths:
       - 'clients/cli/**'
