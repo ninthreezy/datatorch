@@ -27,7 +27,7 @@
     "start": "true",
     "ext:up": "docker-compose -f docker-compose.dev.yaml up -d",
     "ext:down": "docker-compose -f docker-compose.dev.yaml down",
-    "test:web": "yarn workspace @datatorch/unit test",
+    "test:web": "yarn workspace @datatorch/web test:unit",
     "test:cy": "yarn workspace @datatorch/e2e cypress run",
     "test:open": "yarn workspace @datatorch/e2e cypress open",
     "test:e2e": "start-server-and-test dev:web http://localhost:3000 test:cy"
