@@ -21,7 +21,7 @@ type Inputs = {
 }
 
 export const FilterPopover: React.FC<Inputs> = () => {
-  const { register, watch } = useForm<Inputs>({
+  const { register } = useForm<Inputs>({
     defaultValues: {
       sort: 'name',
       numberOfItems: '20',
@@ -29,9 +29,6 @@ export const FilterPopover: React.FC<Inputs> = () => {
       showSkipped: true
     }
   })
-  const watchAllFields = watch()
-  // eslint-disable-next-line no-console
-  console.log(watchAllFields)
   return (
     <Popover placement="top-start">
       <PopoverTrigger>

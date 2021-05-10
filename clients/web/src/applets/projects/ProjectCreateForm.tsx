@@ -30,7 +30,7 @@ const Slash: React.FC<TextProps> = props => (
 )
 
 interface ProjectCreateFormInputs {
-  owner: string
+  ownerId: string
   name: string
   description: string
   visibility: 'public' | 'private'
@@ -77,7 +77,7 @@ export const ProjectCreateForm: React.FC = () => {
             marginBottom={{ base: 2, md: 0 }}
           >
             <FormLabel fontSize="sm">Owner</FormLabel>
-            <Input {...register('owner')} size="sm" />
+            <Input {...register('ownerId')} size="sm" />
           </FormControl>
           {isGteMd && <Slash />}
           <FormControl isRequired>
