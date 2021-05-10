@@ -14,7 +14,6 @@
   </a>
 </p>
 
-
 **Table of Contents**
 
 - [Requirements](#requirements)
@@ -43,14 +42,15 @@ build-essential, and libpq-dev in addition to the above).
 In addition to the other top-level packages, there are a few special directories
 that contain specific types of packages:
 
-* **clients** contains packages that provide client packages to the various
+- **clients** contains packages that provide client packages to the various
   Stellar services.
-* **exp** contains experimental packages.  Use at your own risk.
-* **deployments** contains tools require for deployments. 
-* **services** contains packages that compile to applications that are
+- **exp** contains experimental packages. Use at your own risk.
+- **deployments** contains tools require for deployments.
+- **services** contains packages that compile to applications that are
   long-running processes (such as API servers).
-* **tools** contains packages and utils for building and managing.
+- **tools** contains packages and utils for building and managing.
 
 ## License
 
-TBD
+Source code in this repository is covered by a dual license under the Server
+Side Public License, v 1 and the Elastic License 2.0.
