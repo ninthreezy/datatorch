@@ -47,4 +47,4 @@ jobs:
         run: yarn dev:setup
 
       - name: Run Cypress
-        run: yarn test:e2e --config video=false,screenshotOnRunFailure=false
+        run: yarn test:e2e
