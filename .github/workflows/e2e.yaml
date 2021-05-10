@@ -2,9 +2,6 @@ name: E2E Tests
 
 on: [pull_request]
 
-env:
-  CYPRESS_CACHE_FOLDER: cypress/cache
-
 jobs:
   # Label of the container job
   e2e:
@@ -35,13 +32,16 @@ jobs:
         uses: actions/cache@v2
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-v2
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Cache Cypress binary
         uses: actions/cache@v2
         with:
-          path: 'cypress/cache'
+          path: '/home/runner/.cache/Cypress'
           key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Cypress binary
+        run: npx cypress install
 
       - name: Setup dependencies
         run: yarn dev:setup
