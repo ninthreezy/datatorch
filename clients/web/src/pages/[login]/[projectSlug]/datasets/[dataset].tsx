@@ -2,6 +2,9 @@ import React from 'react'
 import { NextPage } from 'next'
 import { ProjectLayout } from '@/applets/projects/layout/ProjectLayout'
 import { ProjectHeader } from '@/applets/projects/ProjectPage'
+import { UploadModal } from '@/applets/projects/datasets/UploadModal'
+import { DeleteFileModal } from '@/applets/projects/datasets/DeleteFileModal'
+import { FilterPopover } from '@/applets/projects/datasets/FilterPopover'
 import {
   Box,
   Button,
@@ -10,7 +13,6 @@ import {
   Divider,
   Flex,
   Icon,
-  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -26,11 +28,8 @@ import {
   FaChevronRight,
   FaExclamationTriangle,
   FaFile,
-  FaFilter,
   FaForward,
-  FaSearch,
-  FaTrash,
-  FaUpload
+  FaSearch
 } from 'react-icons/fa'
 import { Card } from '@/common/Card'
 
@@ -68,27 +67,9 @@ const ProjectDataset: NextPage = () => {
               <Input placeholder="Filter files" />
             </InputGroup>
 
-            <IconButton
-              size="sm"
-              aria-label="File filter"
-              marginLeft={2}
-              variant="ghost"
-              icon={<Icon as={FaFilter} />}
-            />
-            <IconButton
-              size="sm"
-              aria-label="File filter"
-              marginLeft={0.5}
-              variant="ghost"
-              icon={<Icon as={FaUpload} />}
-            />
-            <IconButton
-              size="sm"
-              aria-label="File filter"
-              marginLeft={0.5}
-              variant="ghost"
-              icon={<Icon as={FaTrash} />}
-            />
+            <FilterPopover />
+            <UploadModal />
+            <DeleteFileModal />
           </Flex>
 
           <Divider />

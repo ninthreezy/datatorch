@@ -64,7 +64,7 @@ export const ProjectCreateForm: React.FC = () => {
         models. Including, datasets, versions, pipelines and more.
       </Text>
 
-      <Divider marginY="5" />
+      <Divider my="5" />
 
       <FormControl>
         <Flex
@@ -77,12 +77,12 @@ export const ProjectCreateForm: React.FC = () => {
             marginBottom={{ base: 2, md: 0 }}
           >
             <FormLabel fontSize="sm">Owner</FormLabel>
-            <Input name="owner" size="sm" ref={register()} />
+            <Input {...register('ownerId')} size="sm" />
           </FormControl>
           {isGteMd && <Slash />}
           <FormControl isRequired>
             <FormLabel fontSize="sm">Project name</FormLabel>
-            <Input name="name" size="sm" ref={register()} />
+            <Input {...register('name')} size="sm" />
           </FormControl>
         </Flex>
         <FormHelperText fontSize="xs">
@@ -92,7 +92,7 @@ export const ProjectCreateForm: React.FC = () => {
 
       <FormControl id="description" marginTop="2">
         <FormLabel fontSize="sm">Description</FormLabel>
-        <Input name="description" size="sm" ref={register()} />
+        <Input {...register('description')} size="sm" />
       </FormControl>
 
       <Divider marginY="7" />
@@ -102,7 +102,7 @@ export const ProjectCreateForm: React.FC = () => {
           control={control}
           name="visibility"
           defaultValue="private"
-          render={field => (
+          render={({ field }) => (
             <RadioGroup {...field}>
               <VStack spacing="2" alignItems="flex-start">
                 <Radio value="private">
