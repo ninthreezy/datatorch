@@ -1,14 +1,13 @@
-import { extendType, objectType } from 'nexus'
+import { extendType, nonNull, objectType, stringArg } from 'nexus'
+import { Project } from 'nexus-prisma'
 
-export const Project = objectType({
-  name: 'Project',
+export const NProject = objectType({
+  name: Project.$name,
+  description: Project.$description,
   definition(t) {
-    t.int('id')
-    t.string('name')
-    t.string('description')
-    t.boolean('disabled')
-    t.string('createdAt')
-    t.string('updatedAt')
+    t.id(Project.id.name, Project.id)
+    t.string(Project.name.name, Project.name)
+    t.string(Project.description.name, Project.description)
   }
 })
 
@@ -16,7 +15,13 @@ export const ProjectQuery = extendType({
   type: 'Query',
   definition(t) {
     t.nonNull.field('project', {
-      type: 'Project'
+      type: Project.$name,
+      args: {
+        id: nonNull(stringArg())
+      },
+      resolve(_root, args, ctx) {
+        return ctx.db.project.findUnique({ where: args })
+      }
     })
   }
 })

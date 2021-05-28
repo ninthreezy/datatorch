@@ -1,5 +1,11 @@
-query ProjectOwner($id: String!) {
-  projectOwner: projectOwner(id: $id) {
+# query ProjectOwner($id: String!) {
+#   projectOwner: projectOwner(id: $id) {
+#     name
+#   }
+# }
+
+query Project($id: String!) {
+  project: project(id: $id) {
     name
   }
 }

@@ -10,7 +10,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev:setup": "yarn && yarn ext:up && yarn generate",
-    "dev:services": "yarn dev:setup && yarn workspace @datatorch/api dev",
+    "dev:services": " yarn dev:setup && yarn workspace @datatorch/api dev",
     "dev:web": "yarn dev:setup && yarn workspace @datatorch/web dev",
     "dev:cli": "go run ./clients/cli",
     "generate": "yarn generate:db && yarn generate:api && yarn generate:web",
