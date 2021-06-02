@@ -9,3 +9,9 @@ query Project($id: String!) {
     name
   }
 }
+
+# mutation Login($login: String!, $password: String!, $remember: Boolean!) {
+#   login: login(login: $login, password: $password, remember: $remember) {
+#     login
+#   }
+# }

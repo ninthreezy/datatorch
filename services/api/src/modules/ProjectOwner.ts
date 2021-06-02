@@ -8,8 +8,7 @@ import {
 } from 'nexus'
 import { ProjectOwner as PO, Role, ProjectOwnerType } from 'nexus-prisma'
 import argon2 from 'argon2'
-import { sign } from 'jsonwebtoken'
-import { addMinutes, addDays, addHours } from 'date-fns'
+import { issueTokens, LoginOrRegister } from '@api/tokens'
 
 export const projectOwner = objectType({
   name: PO.$name,
@@ -17,9 +16,9 @@ export const projectOwner = objectType({
   definition(t) {
     t.id(PO.id.name, PO.id)
     t.string(PO.name.name, PO.name)
-    t.field(PO.createdAt.name, { type: 'DateTime', ...PO.createdAt })
-    t.field(PO.updatedAt.name, { type: 'DateTime', ...PO.updatedAt })
-    t.field(PO.lastSeenAt.name, { type: 'DateTime', ...PO.lastSeenAt })
+    t.dateTime(PO.createdAt.name, PO.createdAt)
+    t.dateTime(PO.updatedAt.name, PO.updatedAt)
+    t.dateTime(PO.lastSeenAt.name, PO.lastSeenAt)
     t.boolean(PO.disabled.name, PO.disabled)
     t.field(PO.type.name, PO.type)
     t.field(PO.role.name, PO.role)
@@ -45,7 +44,7 @@ export const register = extendType({
   type: 'Mutation',
   definition(t) {
     t.field('register', {
-      type: projectOwner,
+      type: 'AuthPayload',
       args: {
         name: nonNull(stringArg()),
         email: nonNull(stringArg()),
@@ -54,47 +53,39 @@ export const register = extendType({
       },
       async resolve(_root, args, ctx) {
         const hashedPassword = await argon2.hash(args.password)
-        const projectOwner = await ctx.db.projectOwner.create({
-          data: {
-            type: 'USER',
-            name: args.name,
-            userCredentials: {
-              create: {
-                email: args.email,
-                login: args.login,
-                password: hashedPassword
+        try {
+          const projectOwner = await ctx.db.projectOwner.create({
+            data: {
+              type: 'USER',
+              name: args.name,
+              userCredentials: {
+                create: {
+                  email: args.email,
+                  login: args.login,
+                  password: hashedPassword
+                }
               }
             }
-          }
-        })
-        const refreshToken = sign(
-          {
+          })
+
+          const userData = {
             userId: projectOwner.id,
-            count: 0
-          },
-          ctx.TOKEN_SECRET,
-          {
-            expiresIn: '7d'
+            siteRole: projectOwner.role,
+            email: args.email,
+            login: args.login
           }
-        )
-        const accessToken = sign(
-          { userId: projectOwner.id },
-          ctx.TOKEN_SECRET,
-          {
-            expiresIn: '15min'
-          }
-        )
-        ctx.reply.cookie('access-token', accessToken, {
-          expires: addMinutes(new Date(), 15),
-          httpOnly: true,
-          signed: true
-        })
-        ctx.reply.cookie('refresh-token', refreshToken, {
-          expires: addDays(new Date(), 7),
-          httpOnly: true,
-          signed: true
-        })
-        return projectOwner
+
+          const authPayload = issueTokens({
+            reply: ctx.reply,
+            userData,
+            loginOrRegister: LoginOrRegister.REGISTER,
+            count: 0,
+            remember: false
+          })
+          return authPayload
+        } catch (e) {
+          return null
+        }
       }
     })
   }
@@ -104,7 +95,7 @@ export const login = extendType({
   type: 'Mutation',
   definition(t) {
     t.field('login', {
-      type: 'String',
+      type: 'AuthPayload',
       args: {
         login: nonNull(stringArg()),
         password: nonNull(stringArg()),
@@ -119,43 +110,26 @@ export const login = extendType({
         if (!userCredentials) return null
 
         // check for valid password
-        const valid = argon2.verify(userCredentials.password, args.password)
+        const valid = await argon2.verify(
+          userCredentials.password,
+          args.password
+        )
         if (!valid) return null
 
-        const refreshExpiresIn = args.remember ? '30d' : '4h'
-
-        const refreshToken = sign(
-          {
-            userId: userCredentials.projectOwnerId,
-            count: userCredentials.count
-          },
-          ctx.TOKEN_SECRET,
-          {
-            expiresIn: refreshExpiresIn
-          }
-        )
-
-        const accessToken = sign(
-          { userId: userCredentials.projectOwnerId },
-          ctx.TOKEN_SECRET,
-          {
-            expiresIn: '15min'
-          }
-        )
-
-        ctx.reply.cookie('access-token', accessToken, {
-          expires: addMinutes(new Date(), 15),
-          httpOnly: true,
-          signed: true
+        const userData = {
+          userId: userCredentials.projectOwnerId,
+          siteRole: userCredentials.projectOwner.role,
+          email: userCredentials.email,
+          login: userCredentials.login
+        }
+        const authPayload = issueTokens({
+          reply: ctx.reply,
+          userData,
+          loginOrRegister: LoginOrRegister.LOGIN,
+          count: userCredentials.count,
+          remember: args.remember
         })
-        ctx.reply.cookie('refresh-token', refreshToken, {
-          expires: args.remember
-            ? addDays(new Date(), 30)
-            : addHours(new Date(), 4),
-          httpOnly: true,
-          signed: true
-        })
-        return userCredentials.projectOwnerId
+        return authPayload
       }
     })
   }
@@ -167,8 +141,8 @@ export const logout = extendType({
     t.field('logout', {
       type: 'Boolean',
       resolve(_root, _args, ctx) {
-        ctx.reply.clearCookie('refresh-token')
-        ctx.reply.clearCookie('access-token')
+        ctx.reply.clearCookie('refresh-token', { path: '/api' })
+        ctx.reply.clearCookie('access-token', { path: '/api' })
         return true
       }
     })
@@ -185,24 +159,13 @@ export const projectOwnerType = enumType({
   members: ProjectOwnerType.members
 })
 
-// export const ProjectOwnerMutation = extendType({
-//   type: 'Mutation',
-//   definition(t) {
-//     t.field('createProjectOwner', {
-//       type: 'ProjectOwner',
-//       args: {
-//         email: nonNull(stringArg()),
-//         login: nonNull(stringArg()),
-//         name: nonNull(stringArg())
-//       },
-//       resolve(_root, args, ctx) {
-//         return ctx.db.projectOwner.create({
-//           data: args
-//         })
-//       }
-//     })
-//   }
-// })
+export const AuthPayload = objectType({
+  name: 'AuthPayload',
+  definition(t) {
+    t.string('accessToken')
+    t.string('refreshToken')
+  }
+})
 
 // interface NexusPrismaEntity {
 //   $name: string
