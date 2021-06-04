@@ -15,6 +15,7 @@ const createApp = async () => {
   const app = fastify()
   app.register(graphql.createHandler({ path: GRAPHQL_API }))
   app.register(cookie, { secret: TOKEN_SECRET })
+  app.decorateRequest('user', null)
   app.addHook('onRequest', tokenHook)
   return app
 }

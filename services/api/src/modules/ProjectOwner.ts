@@ -1,9 +1,10 @@
 import {
   booleanArg,
   enumType,
-  extendType,
+  mutationField,
   nonNull,
   objectType,
+  queryField,
   stringArg
 } from 'nexus'
 import { ProjectOwner as PO, Role, ProjectOwnerType } from 'nexus-prisma'
@@ -25,127 +26,16 @@ export const projectOwner = objectType({
   }
 })
 
-export const projectOwnerQuery = extendType({
-  type: 'Query',
-  definition(t) {
-    t.nonNull.field('projectOwner', {
-      type: PO.$name,
-      args: {
-        id: nonNull(stringArg())
-      },
-      resolve(_root, args, ctx) {
-        return ctx.db.projectOwner.findUnique({ where: args })
-      }
+export const projectOwnerQuery = queryField('projectOwner', {
+  type: PO.$name,
+  args: {
+    id: nonNull(stringArg())
+  },
+  async resolve(_root, args, ctx) {
+    const projectOwner = await ctx.db.projectOwner.findUnique({
+      where: args
     })
-  }
-})
-
-export const register = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('register', {
-      type: 'AuthPayload',
-      args: {
-        name: nonNull(stringArg()),
-        email: nonNull(stringArg()),
-        login: nonNull(stringArg()),
-        password: nonNull(stringArg())
-      },
-      async resolve(_root, args, ctx) {
-        const hashedPassword = await argon2.hash(args.password)
-        try {
-          const projectOwner = await ctx.db.projectOwner.create({
-            data: {
-              type: 'USER',
-              name: args.name,
-              userCredentials: {
-                create: {
-                  email: args.email,
-                  login: args.login,
-                  password: hashedPassword
-                }
-              }
-            }
-          })
-
-          const userData = {
-            userId: projectOwner.id,
-            siteRole: projectOwner.role,
-            email: args.email,
-            login: args.login
-          }
-
-          const authPayload = issueTokens({
-            reply: ctx.reply,
-            userData,
-            loginOrRegister: LoginOrRegister.REGISTER,
-            count: 0,
-            remember: false
-          })
-          return authPayload
-        } catch (e) {
-          return null
-        }
-      }
-    })
-  }
-})
-
-export const login = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('login', {
-      type: 'AuthPayload',
-      args: {
-        login: nonNull(stringArg()),
-        password: nonNull(stringArg()),
-        remember: nonNull(booleanArg())
-      },
-      async resolve(_root, args, ctx) {
-        // check for existing credentials
-        const userCredentials = await ctx.db.userCredentials.findUnique({
-          where: { login: args.login },
-          include: { projectOwner: true }
-        })
-        if (!userCredentials) return null
-
-        // check for valid password
-        const valid = await argon2.verify(
-          userCredentials.password,
-          args.password
-        )
-        if (!valid) return null
-
-        const userData = {
-          userId: userCredentials.projectOwnerId,
-          siteRole: userCredentials.projectOwner.role,
-          email: userCredentials.email,
-          login: userCredentials.login
-        }
-        const authPayload = issueTokens({
-          reply: ctx.reply,
-          userData,
-          loginOrRegister: LoginOrRegister.LOGIN,
-          count: userCredentials.count,
-          remember: args.remember
-        })
-        return authPayload
-      }
-    })
-  }
-})
-
-export const logout = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('logout', {
-      type: 'Boolean',
-      resolve(_root, _args, ctx) {
-        ctx.reply.clearCookie('refresh-token', { path: '/api' })
-        ctx.reply.clearCookie('access-token', { path: '/api' })
-        return true
-      }
-    })
+    return projectOwner
   }
 })
 
@@ -167,43 +57,98 @@ export const AuthPayload = objectType({
   }
 })
 
-// interface NexusPrismaEntity {
-//   $name: string
-//   $description: string
-//   [prop: string]:
-//     | {
-//         type: unknown
-//         name: string
-//         description?: string
-//       }
-//     | any
-// }
+export const register = mutationField('register', {
+  type: 'AuthPayload',
+  args: {
+    name: nonNull(stringArg()),
+    email: nonNull(stringArg()),
+    login: nonNull(stringArg()),
+    password: nonNull(stringArg())
+  },
+  async resolve(_root, args, ctx) {
+    const hashedPassword = await argon2.hash(args.password)
+    try {
+      const projectOwner = await ctx.db.projectOwner.create({
+        data: {
+          type: 'USER',
+          name: args.name,
+          userCredentials: {
+            create: {
+              email: args.email,
+              login: args.login,
+              password: hashedPassword
+            }
+          }
+        }
+      })
 
-// const createObjectTypeFromPrisma = <Entity extends NexusPrismaEntity>(
-//   entity: Entity,
-//   properties: Array<Exclude<keyof Entity, '$name' | '$description'>>
-// ) => {
-//   return objectType({
-//     name: entity.$name,
-//     description: entity.$description,
-//     definition(t) {
-//       for (const prop of properties) {
-//         const { name, type } = entity[prop]
-//         t.field(name, { type })
-//       }
-//     }
-//   })
-// }
+      const userData = {
+        userId: projectOwner.id,
+        siteRole: projectOwner.role,
+        email: args.email,
+        login: args.login,
+        remember: false,
+        count: 0
+      }
 
-// export const NProjectOwner = createObjectTypeFromPrisma(ProjectOwner, [
-//   'id',
-//   'email',
-//   'login',
-//   'name',
-//   'avatarUrl',
-//   'description',
-//   'createdAt',
-//   'updatedAt',
-//   'disabled',
-//   'location'
-// ])
+      const authPayload = issueTokens(
+        ctx.reply,
+        userData,
+        LoginOrRegister.REGISTER
+      )
+      return authPayload
+    } catch (e) {
+      return null
+    }
+  }
+})
+
+export const login = mutationField('login', {
+  type: 'AuthPayload',
+  args: {
+    login: nonNull(stringArg()),
+    password: nonNull(stringArg()),
+    remember: nonNull(booleanArg())
+  },
+  async resolve(_root, args, ctx) {
+    // check for existing credentials
+    const userCredentials = await ctx.db.userCredentials.findUnique({
+      where: { login: args.login },
+      include: { projectOwner: true }
+    })
+    if (!userCredentials) return null
+
+    // check for valid password
+    const valid = await argon2.verify(userCredentials.password, args.password)
+    if (!valid) return null
+
+    const userData = {
+      userId: userCredentials.projectOwnerId,
+      siteRole: userCredentials.projectOwner.role,
+      email: userCredentials.email,
+      login: userCredentials.login,
+      count: userCredentials.count,
+      remember: args.remember
+    }
+
+    const authPayload = issueTokens(ctx.reply, userData, LoginOrRegister.LOGIN)
+    return authPayload
+  }
+})
+
+export const logout = mutationField('logout', {
+  type: 'Boolean',
+  resolve(_root, _args, ctx) {
+    ctx.reply.clearCookie('refresh-token', { path: '/api' })
+    ctx.reply.clearCookie('access-token', { path: '/api' })
+    return true
+  }
+})
+
+export const viewer = queryField('viewer', {
+  type: 'Json',
+  resolve(_root, args, ctx) {
+    if (ctx.request.user) return ctx.request.user
+    return null
+  }
+})

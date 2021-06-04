@@ -43,13 +43,13 @@ model UserCredentials {
   count           Int               @default(0)
   isVerified      Boolean           @default(false)
   projectOwner    ProjectOwner      @relation(fields: [projectOwnerId], references: [id])
-  projectOwnerId  String
+  projectOwnerId  String            @unique
 }
 
 model Profile {
   id              String            @id @default(uuid())
   projectOwner    ProjectOwner      @relation(fields: [projectOwnerId], references: [id])
-  projectOwnerId  String
+  projectOwnerId  String            @unique
   publicEmail     String?
   company         String?
   avatarUrl       String?

@@ -5,7 +5,7 @@
   "license": "private",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --transpile-only ./src/index",
+    "dev": "ts-node-dev -r tsconfig-paths/register --no-notify --transpile-only --respawn ./src/index",
     "generate": "ts-node -r tsconfig-paths/register --transpile-only ./src/schema"
   },
   "dependencies": {

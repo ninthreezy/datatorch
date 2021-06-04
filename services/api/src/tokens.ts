@@ -1,35 +1,13 @@
-import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify'
+import { FastifyReply } from 'fastify'
+import { FastifyDecoratedRequest } from './context'
 import { TOKEN_SECRET } from './context'
-import { sign } from 'jsonwebtoken'
+import { sign, verify } from 'jsonwebtoken'
 import { addDays, addHours, addMinutes } from 'date-fns'
-import { Role } from '@prisma/client'
-
-export function tokenHook(
-  request: FastifyRequest,
-  reply: FastifyReply,
-  done: HookHandlerDoneFunction
-) {
-  const refreshToken = request.cookies['refresh-token']
-  const accessToken = request.cookies['access-token']
-
-  if (!refreshToken && !accessToken) return done()
-  // try {
-  //   const data = verify
-  // }
-  done()
-}
+import { Role, PrismaClient } from '@prisma/client'
 
 export enum LoginOrRegister {
   LOGIN,
   REGISTER
-}
-
-type issueTokensOptions = {
-  reply: FastifyReply
-  userData: UserData
-  loginOrRegister: LoginOrRegister
-  count: number
-  remember: boolean
 }
 
 export type UserData = {
@@ -37,19 +15,19 @@ export type UserData = {
   siteRole: Role
   email: string
   login: string
+  count: number
+  remember: boolean
 }
 
-function createToken(userOptions: UserData, count: number, expiresIn: string) {
-  return sign(
-    {
-      ...userOptions,
-      count
-    },
-    TOKEN_SECRET,
-    {
-      expiresIn
-    }
-  )
+// Two different types of payloads for refresh and access tokens
+type AccessData = Pick<UserData, 'userId' | 'siteRole' | 'email' | 'login'>
+type RefreshData = Pick<UserData, 'userId' | 'remember'>
+
+// Function that signs
+function createToken(userOptions: AccessData | RefreshData, expiresIn: string) {
+  return sign(userOptions, TOKEN_SECRET, {
+    expiresIn
+  })
 }
 
 function setToken(
@@ -66,11 +44,14 @@ function setToken(
   })
 }
 
-export function issueTokens(opts: issueTokensOptions) {
-  const { reply, count, loginOrRegister, remember, userData } = opts
+export function issueTokens(
+  reply: FastifyReply,
+  userData: UserData,
+  loginOrRegister: LoginOrRegister
+) {
   let expiresIn: string, expires: Date
   if (loginOrRegister === LoginOrRegister.LOGIN) {
-    if (remember) {
+    if (userData.remember) {
       expiresIn = '30d'
       expires = addDays(new Date(), 30)
     } else {
@@ -82,10 +63,83 @@ export function issueTokens(opts: issueTokensOptions) {
     expires = addDays(new Date(), 7)
   }
 
-  const refreshToken = createToken(userData, count, expiresIn)
-  const accessToken = createToken(userData, count, '15min')
+  const refreshData: RefreshData = {
+    userId: userData.userId,
+    remember: userData.remember
+  }
+
+  const accessData: AccessData = {
+    userId: userData.userId,
+    login: userData.login,
+    email: userData.email,
+    siteRole: userData.siteRole
+  }
+
+  const refreshToken = createToken(refreshData, expiresIn)
+  const accessToken = createToken(accessData, '15min')
 
   setToken(reply, 'refresh-token', refreshToken, expires)
   setToken(reply, 'access-token', accessToken, addMinutes(new Date(), 15))
   return { refreshToken, accessToken }
+}
+
+// hook function to run before accessing pages that require auth.
+export async function tokenHook(
+  request: FastifyDecoratedRequest,
+  reply: FastifyReply
+) {
+  // retrieve tokens from the request
+  const signedRefreshToken = request.cookies['refresh-token']
+  const signedAccessToken = request.cookies['access-token']
+
+  // if we don't find any, continue onwards
+  if (!signedRefreshToken && !signedAccessToken) return
+
+  // if we have a valid access token, use the data inside.
+  try {
+    // check if the signature is valid
+    const unsignedAccessToken = request.unsignCookie(signedAccessToken)
+    if (!unsignedAccessToken.valid) return
+
+    const accessToken = unsignedAccessToken.value
+    const data = verify(accessToken, TOKEN_SECRET) as UserData
+    request.user = data
+    return
+  } catch {}
+
+  // if we don't have a valid access token, check the validity of our
+  // refresh token.
+  try {
+    // check if the signature is valid
+    const unsignedRefreshToken = request.unsignCookie(signedRefreshToken)
+    if (!unsignedRefreshToken.valid) return
+
+    const refreshToken = unsignedRefreshToken.value
+    const data = verify(refreshToken, TOKEN_SECRET) as UserData
+    const prisma = new PrismaClient()
+    const userCredentials = await prisma.userCredentials.findUnique({
+      where: { projectOwnerId: data.userId },
+      include: { projectOwner: true }
+    })
+
+    // if the refresh token has been invalidated server-side, return
+    if (!userCredentials || userCredentials.count !== data.count) return
+
+    const userData = {
+      userId: data.userId,
+      siteRole: data.siteRole,
+      email: data.email,
+      login: data.login,
+      count: data.count,
+      remember: data.remember
+    }
+
+    // reissue tokens
+    issueTokens(reply, userData, LoginOrRegister.LOGIN)
+    request.user = userData
+  } catch {
+    return
+  }
+
+  return
 }
