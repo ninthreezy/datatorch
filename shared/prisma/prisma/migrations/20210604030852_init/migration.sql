@@ -10,7 +10,7 @@ CREATE TYPE "ProjectVisibility" AS ENUM ('PUBLIC', 'PRIVATE');
 -- CreateTable
 CREATE TABLE "ProjectOwner" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" TEXT NOT NULL DEFAULT E'',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "lastSeenAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -96,16 +96,10 @@ CREATE UNIQUE INDEX "UserCredentials.email_unique" ON "UserCredentials"("email")
 CREATE UNIQUE INDEX "UserCredentials.login_unique" ON "UserCredentials"("login");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserCredentials_projectOwnerId_unique" ON "UserCredentials"("projectOwnerId");
+CREATE UNIQUE INDEX "UserCredentials.projectOwnerId_unique" ON "UserCredentials"("projectOwnerId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Profile_projectOwnerId_unique" ON "Profile"("projectOwnerId");
-
--- AddForeignKey
-ALTER TABLE "Profile" ADD FOREIGN KEY ("projectOwnerId") REFERENCES "ProjectOwner"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ProjectRole" ADD FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE UNIQUE INDEX "Profile.projectOwnerId_unique" ON "Profile"("projectOwnerId");
 
 -- AddForeignKey
 ALTER TABLE "UserCredentials" ADD FOREIGN KEY ("projectOwnerId") REFERENCES "ProjectOwner"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -115,3 +109,9 @@ ALTER TABLE "ApiKey" ADD FOREIGN KEY ("projectOwnerId") REFERENCES "ProjectOwner
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD FOREIGN KEY ("projectOwnerId") REFERENCES "ProjectOwner"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectRole" ADD FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Profile" ADD FOREIGN KEY ("projectOwnerId") REFERENCES "ProjectOwner"("id") ON DELETE CASCADE ON UPDATE CASCADE;

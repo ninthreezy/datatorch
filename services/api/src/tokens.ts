@@ -50,8 +50,9 @@ export function issueTokens(
   loginOrRegister: LoginOrRegister
 ) {
   let expiresIn: string, expires: Date
+  const { remember } = userData
   if (loginOrRegister === LoginOrRegister.LOGIN) {
-    if (userData.remember) {
+    if (remember) {
       expiresIn = '30d'
       expires = addDays(new Date(), 30)
     } else {
@@ -63,16 +64,18 @@ export function issueTokens(
     expires = addDays(new Date(), 7)
   }
 
+  const { userId, login, email, siteRole } = userData
+
   const refreshData: RefreshData = {
-    userId: userData.userId,
-    remember: userData.remember
+    userId,
+    remember
   }
 
   const accessData: AccessData = {
-    userId: userData.userId,
-    login: userData.login,
-    email: userData.email,
-    siteRole: userData.siteRole
+    userId,
+    login,
+    email,
+    siteRole
   }
 
   const refreshToken = createToken(refreshData, expiresIn)
@@ -80,7 +83,7 @@ export function issueTokens(
 
   setToken(reply, 'refresh-token', refreshToken, expires)
   setToken(reply, 'access-token', accessToken, addMinutes(new Date(), 15))
-  return { refreshToken, accessToken }
+  return { refreshToken, accessToken, userId }
 }
 
 // hook function to run before accessing pages that require auth.

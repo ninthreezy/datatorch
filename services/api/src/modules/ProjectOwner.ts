@@ -7,7 +7,13 @@ import {
   queryField,
   stringArg
 } from 'nexus'
-import { ProjectOwner as PO, Role, ProjectOwnerType } from 'nexus-prisma'
+
+import {
+  ProjectOwner as PO,
+  Profile as P,
+  Role,
+  ProjectOwnerType
+} from 'nexus-prisma'
 import argon2 from 'argon2'
 import { issueTokens, LoginOrRegister } from '@api/tokens'
 
@@ -26,16 +32,30 @@ export const projectOwner = objectType({
   }
 })
 
+export const profile = objectType({
+  name: P.$name,
+  description: P.$description,
+  definition(t) {
+    t.id(P.id.name, P.id)
+    t.string(P.publicEmail.name, P.publicEmail)
+    t.string(P.company.name, P.company)
+    t.string(P.avatarUrl.name, P.avatarUrl)
+    t.string(P.websiteUrl.name, P.websiteUrl)
+    t.string(P.description.name, P.description)
+    t.string(P.location.name, P.location)
+    t.string(P.githubId.name, P.githubId)
+    t.string(P.facebookId.name, P.facebookId)
+    t.string(P.twitterId.name, P.twitterId)
+  }
+})
+
 export const projectOwnerQuery = queryField('projectOwner', {
   type: PO.$name,
   args: {
     id: nonNull(stringArg())
   },
-  async resolve(_root, args, ctx) {
-    const projectOwner = await ctx.db.projectOwner.findUnique({
-      where: args
-    })
-    return projectOwner
+  resolve(_root, args, ctx) {
+    return ctx.db.projectOwner.findUnique({ where: args })
   }
 })
 
@@ -54,13 +74,14 @@ export const AuthPayload = objectType({
   definition(t) {
     t.string('accessToken')
     t.string('refreshToken')
+    t.string('userId')
   }
 })
 
+// Register
 export const register = mutationField('register', {
   type: 'AuthPayload',
   args: {
-    name: nonNull(stringArg()),
     email: nonNull(stringArg()),
     login: nonNull(stringArg()),
     password: nonNull(stringArg())
@@ -71,7 +92,6 @@ export const register = mutationField('register', {
       const projectOwner = await ctx.db.projectOwner.create({
         data: {
           type: 'USER',
-          name: args.name,
           userCredentials: {
             create: {
               email: args.email,
@@ -98,11 +118,12 @@ export const register = mutationField('register', {
       )
       return authPayload
     } catch (e) {
-      return null
+      throw new Error('Registration failed.')
     }
   }
 })
 
+// Login
 export const login = mutationField('login', {
   type: 'AuthPayload',
   args: {
@@ -132,6 +153,7 @@ export const login = mutationField('login', {
     }
 
     const authPayload = issueTokens(ctx.reply, userData, LoginOrRegister.LOGIN)
+
     return authPayload
   }
 })
@@ -146,9 +168,20 @@ export const logout = mutationField('logout', {
 })
 
 export const viewer = queryField('viewer', {
-  type: 'Json',
-  resolve(_root, args, ctx) {
-    if (ctx.request.user) return ctx.request.user
+  type: 'ProjectOwner',
+  async resolve(_root, _, ctx) {
+    if (ctx.request.user) {
+      const user = ctx.request.user
+      const projectOwner = await ctx.db.projectOwner.findUnique({
+        where: { id: user.userId },
+        include: { profile: true }
+      })
+      ctx.db.projectOwner.update({
+        where: { id: user.userId },
+        data: { lastSeenAt: new Date() }
+      })
+      return projectOwner
+    }
     return null
   }
 })
