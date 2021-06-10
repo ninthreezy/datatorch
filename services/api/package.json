@@ -23,9 +23,9 @@
     "graphql-scalars": "^1.9.3",
     "jsonwebtoken": "^8.5.1",
     "nexus": "^1.0.0",
-    "nexus-prisma": "^0.25.0",
+    "nexus-prisma": "^0.28.0",
     "passport": "^0.4.1",
-    "prisma": "^2.22.0"
+    "prisma": "^2.23.0"
   },
   "devDependencies": {
     "@types/graphql-iso-date": "^3",
