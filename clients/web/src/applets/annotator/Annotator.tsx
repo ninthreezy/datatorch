@@ -1,10 +1,4 @@
 import React from 'react'
-import { createPortal } from 'react-dom'
-import { useEvent } from 'react-use'
-
-import { Box } from '@chakra-ui/react'
-
-import { useGoldenLayout, LayoutConfig } from './layout'
 
 import {
   AnnotatorConfig,
@@ -12,21 +6,13 @@ import {
   AnnotatorPanel
 } from './AnnotatorContext'
 
-import { tabs, panels } from './tabs'
+import * as panels from './panels'
 import { usePanels } from '@/libs/panels/'
-
-const config: LayoutConfig = {
-  settings: {
-    constrainDragToContainer: false
-  },
-  root: {
-    type: 'row',
-    content: [
-      { type: 'component', componentType: 'Visualizer' },
-      { type: 'component', componentType: 'TabsList', width: 10 }
-    ]
-  }
-}
+import { Box, Flex } from '@chakra-ui/react'
+import { Classification } from './tabs/Classification'
+import { Objects } from './tabs/Objects'
+import { Tools } from './tabs/Tools'
+import { Panel } from './tabs/Panel'
 
 export interface AnnotatorProps {
   context: AnnotatorContext
@@ -34,9 +20,6 @@ export interface AnnotatorProps {
 
   config: AnnotatorContext
   setConfig: (config: AnnotatorConfig) => void
-
-  layout: Omit<LayoutConfig, 'content' | 'labels'>
-  setLayout: (layout: LayoutConfig) => void
 
   setFileStatus: (status: string) => Promise<void>
   updateMetadata: () => Promise<void>
@@ -58,8 +41,7 @@ export const Annotator: React.FC = () => {
   const panel = usePanels<AnnotatorContext, AnnotatorConfig>(
     {
       file: {
-        url:
-          'https://i.picsum.photos/id/0/200/300.jpg?hmac=0pq7Zy79Vy4K-8w1qAMo1ppYmPvl-7lvwSx-LyZ7vNY',
+        url: 'https://i.picsum.photos/id/0/200/300.jpg?hmac=0pq7Zy79Vy4K-8w1qAMo1ppYmPvl-7lvwSx-LyZ7vNY',
         blob: null
       }
     },
@@ -67,24 +49,27 @@ export const Annotator: React.FC = () => {
     panels
   )
 
-  const { element, renderPanels, layout } = useGoldenLayout(config, tabs)
-  useEvent('resize', () => {
-    if (layout.current == null) return
-    layout.current.setSize(window.innerWidth, window.innerHeight)
-  })
-
-  const componentsToRender = Object.values(
-    renderPanels
-  ).map(([Component, container]) =>
-    createPortal(<Component layout={layout} />, container)
-  )
-
   return (
-    <>
-      <AnnotatorPanel.Provider value={panel}>
-        {componentsToRender}
-      </AnnotatorPanel.Provider>
-      <Box ref={element} width="full" height="full" overflow="hidden" />
-    </>
+    <AnnotatorPanel.Provider value={panel}>
+      <Flex height="full">
+        <Flex
+          width={350}
+          p={2}
+          height="full"
+          borderRight="4px"
+          borderColor="gray.900"
+          direction="column"
+        >
+          <Classification />
+          <Objects />
+        </Flex>
+        <Box borderRight="4px" borderColor="gray.900" p={1}>
+          <Tools />
+        </Box>
+        <Box flexGrow="1">
+          <Panel />
+        </Box>
+      </Flex>
+    </AnnotatorPanel.Provider>
   )
 }

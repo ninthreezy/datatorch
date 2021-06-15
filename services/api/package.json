@@ -9,15 +9,15 @@
     "generate": "ts-node -r tsconfig-paths/register ./src/schema.ts"
   },
   "dependencies": {
-    "apollo-server-core": "^2.21.2",
+    "apollo-server-core": "^2.25.1",
     "apollo-server-fastify": "next-v3",
-    "fastify": "^3.14.0",
+    "fastify": "^3.17.0",
     "graphql": "^15.5.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-middleware": "^6.0.10",
     "nexus": "^1.0.0",
     "nexus-prisma": "^0.28.0",
-    "prisma": "^2.23.0"
+    "prisma": "^2.25.0"
   },
   "devDependencies": {
     "@types/graphql-iso-date": "^3",

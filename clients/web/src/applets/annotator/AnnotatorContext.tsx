@@ -1,10 +1,14 @@
 import { createPanelContext } from '@/libs/panels'
+import { useContext } from 'react'
 
 export interface AnnotatorContext {
   file: {
     url: string
     blob: Blob | null
     mimeType?: string
+  }
+  tool?: {
+    name: string
   }
 }
 
@@ -25,7 +29,6 @@ const updateConfig = NOOP
 const activePanelRenderer = () => (
   <span>Default active panel context render.</span>
 )
-const panelRender = () => <span>Default panel render.</span>
 
 export const AnnotatorPanel = createPanelContext<
   AnnotatorContext,
@@ -33,8 +36,14 @@ export const AnnotatorPanel = createPanelContext<
 >({
   context: defaultContext,
   updateContext,
+
   config: defaultConfig,
   updateConfig,
-  activePanelRenderer,
-  panelRender
+
+  activePanelName: '',
+  activePanelRenderer
 })
+
+export const useAnnotator = () => {
+  return useContext(AnnotatorPanel)
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Button,
   Code,
+  Icon,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -9,6 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { Runtype } from 'runtypes'
 import { DeepPartial } from './utils'
+import { FaBug } from 'react-icons/fa'
 
 export type UpdateFunction<T> = (newValues: DeepPartial<T>) => void
 export type RelevanceFunction<Context> = (context: Context) => number
@@ -27,6 +29,7 @@ export interface PanelOptions<Context, Config> {
   config?: Runtype<Config>
   available?: AvailableFunction<Context>
   relevance?: number | RelevanceFunction<Context>
+  ConfigComponent?: React.ComponentType<PanelProps<Context, Config>>
   Component: React.ComponentType<PanelProps<Context, Config>>
 }
 
@@ -42,7 +45,15 @@ export function definePanel<Context, Config = any>(
       <>
         <Popover isLazy>
           <PopoverTrigger>
-            <Button position="absolute" right="0" size="xs" zIndex="9999">
+            <Button
+              leftIcon={<Icon as={FaBug} />}
+              position="absolute"
+              right="0"
+              size="xs"
+              zIndex="9999"
+              m={1}
+              bgColor="blackAlpha.500"
+            >
               Debug
             </Button>
           </PopoverTrigger>

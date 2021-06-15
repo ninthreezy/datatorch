@@ -1,7 +1,7 @@
 import { Box, Text } from '@chakra-ui/react'
 import React from 'react'
 
-export const Classification: React.FC = () => {
+export const Objects: React.FC = () => {
   return (
     <Box>
       <Text
@@ -11,7 +11,7 @@ export const Classification: React.FC = () => {
         fontSize="sm"
         casing="uppercase"
       >
-        Classification
+        Objects
       </Text>
     </Box>
   )
