@@ -31,7 +31,6 @@ const Register: NextPage = () => {
   const [success, setSuccess] = useState('')
   const [registerMutation, registerStatus] = useRegisterMutation()
 
-  // eslint-disable-next-line no-console
   const onSubmit = async data => {
     const { username, email, password } = data
     try {

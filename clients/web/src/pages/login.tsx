@@ -30,10 +30,9 @@ const Login: NextPage = () => {
 
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [loginMutation, loginStatus] = useLoginMutation()
+  const [loginMutation] = useLoginMutation()
 
-  // eslint-disable-next-line no-console
-  const onSubmit = async (data, e) => {
+  const onSubmit = async (data, _) => {
     const { username, password, remember } = data
     try {
       const result = await loginMutation({
