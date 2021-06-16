@@ -12,6 +12,9 @@ import {
 import { objectType } from 'nexus'
 import { Prisma } from '@shared/db'
 import { NexusGenObjects } from '@api/generated/typing'
+import { FieldAuthorizeResolver } from 'nexus/dist/plugins/fieldAuthorizePlugin'
+
+const PrismaSchema = Prisma.dmmf.schema
 
 type EntityProperty = {
   type: NexusNonNullDef<any>
@@ -39,7 +42,7 @@ const firstLower = (v: string) => v.charAt(0).toLowerCase() + v.slice(1)
  * Gets entity input object type information from DMMF
  */
 const getEntityInputObjectTypes = (inputName: string) => {
-  const input = Prisma.dmmf.schema.inputObjectTypes.prisma.find(
+  const input = PrismaSchema.inputObjectTypes.prisma.find(
     s => s.name === inputName
   )
   if (input == null)
@@ -50,7 +53,7 @@ const getEntityInputObjectTypes = (inputName: string) => {
 /**
  * Creates an input graphql object from the DMMF
  */
-const createInputFromEntityInputType = (
+const createGraphqlInputFromPrisma = (
   entity: NexusPrismaEntity,
   inputName: string,
   options?: { exclude?: (string | number | symbol)[] }
@@ -85,6 +88,22 @@ const createInputFromEntityInputType = (
 }
 
 /**
+ * Create a GraphQL enum from an enum defined in Prisma
+ */
+const createGraphqlEnumFromPrisma = (name: string) => {
+  const enumModels = [
+    ...PrismaSchema.enumTypes.model,
+    ...PrismaSchema.enumTypes.prisma
+  ]
+  const e = enumModels.find(e => e.name === name)
+  if (e == null) throw new Error(`Could not find ${name} enum in prisma`)
+  return enumType({
+    name,
+    members: Object.fromEntries(e.values.map(v => [v, v]))
+  })
+}
+
+/**
  * Create a GraphQL type for a prisma entity
  */
 export const entityCreateType = <Entity extends NexusPrismaEntity>({
@@ -96,18 +115,12 @@ export const entityCreateType = <Entity extends NexusPrismaEntity>({
   properties: NexusPrismaEntityProperties<Entity>
   definition?: (t: ObjectDefinitionBlock<string>) => void
 }) => {
-  // Generate any required enums
-  const enumModels = Prisma.dmmf.schema.enumTypes.model
+  const enumModels = PrismaSchema.enumTypes.model
   const enumsToCreate = properties
     .map(p => entity[p]?.type?.ofNexusType)
     .map(name => enumModels.find(e => e.name == name))
     .filter(p => p != null)
-    .map(({ name, values }) =>
-      enumType({
-        name,
-        members: values
-      })
-    )
+    .map(({ name }) => createGraphqlEnumFromPrisma(name))
 
   return [
     ...enumsToCreate,
@@ -134,19 +147,23 @@ export const entityCreateType = <Entity extends NexusPrismaEntity>({
  */
 export function entityReadUnique(
   entity: NexusPrismaEntity,
-  options?: { definition?: (t: OutputDefinitionBlock<'Query'>) => void }
+  options?: {
+    definition?: (t: OutputDefinitionBlock<'Query'>) => void
+    authorize?: FieldAuthorizeResolver<'Query', any>
+  }
 ) {
   const entityName = entity.$name as keyof NexusGenObjects
   const entityNameCamel = firstLower(entityName)
   const inputName = `${entityName}WhereUniqueInput`
   return {
-    input: createInputFromEntityInputType(entity, inputName),
+    input: createGraphqlInputFromPrisma(entity, inputName),
     query: extendType({
       type: 'Query',
       definition(t) {
         t.field(`${entityNameCamel}`, {
           type: entityName,
           args: { input: nonNull(arg({ type: inputName })) },
+          authorize: options?.authorize,
           description: `Retrieve a single ${entityName} record by ID or by a unique attribute.`,
           resolve: (_, args, ctx) => ctx.db.project.findUnique({ where: args })
         })
@@ -161,11 +178,12 @@ export function entityReadUnique(
  *
  * It uses the Prisma DMMF to generate the requires unique input.
  */
-export function entityCreateSingle<Entity extends NexusPrismaEntity>(
-  entity: NexusPrismaEntity,
+export function entityCreate<Entity extends NexusPrismaEntity>(
+  entity: Entity,
   options?: {
     definition?: (t: OutputDefinitionBlock<'Mutation'>) => void
     exclude?: NexusPrismaEntityProperties<Entity>
+    authorize?: FieldAuthorizeResolver<'Mutation', any>
   }
 ) {
   const entityName = entity.$name as keyof NexusGenObjects
@@ -173,7 +191,7 @@ export function entityCreateSingle<Entity extends NexusPrismaEntity>(
   const inputName = `${entityName}CreateInput`
 
   return {
-    input: createInputFromEntityInputType(entity, inputName, {
+    input: createGraphqlInputFromPrisma(entity, inputName, {
       exclude: options?.exclude
     }),
     mutation: extendType({
@@ -181,10 +199,40 @@ export function entityCreateSingle<Entity extends NexusPrismaEntity>(
       definition(t) {
         t.field(`create${entityName}`, {
           type: entityName,
+          authorize: options?.authorize,
           args: { input: nonNull(arg({ type: inputName })) },
           description: `Create a ${entityName}.`,
           resolve: (_, args, ctx) =>
             ctx.db[entityNameCamel].create({ data: args })
+        })
+        options?.definition?.(t)
+      }
+    })
+  }
+}
+
+export function entityDelete<Entity extends NexusPrismaEntity>(
+  entity: Entity,
+  options?: {
+    definition?: (t: OutputDefinitionBlock<'Mutation'>) => void
+    authorize?: FieldAuthorizeResolver<'Mutation', any>
+  }
+) {
+  const entityName = entity.$name as keyof NexusGenObjects
+  const entityNameCamel = firstLower(entityName)
+  const inputName = `${entityName}WhereUniqueInput`
+
+  return {
+    mutation: extendType({
+      type: 'Mutation',
+      definition(t) {
+        t.field(`delete${entityName}`, {
+          type: entityName,
+          authorize: options?.authorize,
+          args: { input: nonNull(arg({ type: inputName })) },
+          description: `Delete an ${entityName}.`,
+          resolve: (_, args, ctx) =>
+            ctx.db[entityNameCamel].delete({ where: args })
         })
         options?.definition?.(t)
       }

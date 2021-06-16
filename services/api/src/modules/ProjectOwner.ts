@@ -1,12 +1,14 @@
 import { ProjectOwner as ProjectOwnerEntity } from 'nexus-prisma'
 import {
-  entityCreateSingle,
+  entityCreate,
   entityCreateType,
+  entityDelete,
   entityReadUnique
 } from './utils/graphqlPrisma'
 
 export const ProjectOwnerReadUniqueQuery = entityReadUnique(ProjectOwnerEntity)
-export const ProjectOwnerCreateMutation = entityCreateSingle(ProjectOwnerEntity)
+export const ProjectOwnerCreateMutation = entityCreate(ProjectOwnerEntity)
+export const ProjectOwnerDeleteMutation = entityDelete(ProjectOwnerEntity)
 export const ProjectOwner = entityCreateType({
   entity: ProjectOwnerEntity,
   properties: [
