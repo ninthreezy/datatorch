@@ -43,7 +43,6 @@ const Login: NextPage = () => {
           remember
         }
       })
-      console.log(result.data)
       setSuccess(
         `Login succeeded for ${result.data.login.userId}. Redirecting.`
       )

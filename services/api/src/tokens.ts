@@ -35,7 +35,7 @@ function setToken(
   name: string,
   token: string,
   expires: Date
-) {
+): void {
   reply.setCookie(name, token, {
     expires,
     httpOnly: true,
@@ -48,7 +48,7 @@ export function issueTokens(
   reply: FastifyReply,
   userData: UserData,
   loginOrRegister: LoginOrRegister
-) {
+): { refreshToken: string; accessToken: string; userId: string } {
   let expiresIn: string, expires: Date
   const { remember } = userData
   if (loginOrRegister === LoginOrRegister.LOGIN) {

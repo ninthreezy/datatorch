@@ -1,0 +1,7 @@
+mutation Login($login: String!, $password: String!, $remember: Boolean!) {
+  login(login: $login, password: $password, remember: $remember) {
+    userId
+    refreshToken
+    accessToken
+  }
+}

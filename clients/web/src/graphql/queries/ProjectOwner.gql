@@ -3,36 +3,3 @@ query ProjectOwner($id: String!) {
     name
   }
 }
-
-query Project($id: String!) {
-  project: project(id: $id) {
-    name
-  }
-}
-
-mutation Register($email: String!, $login: String!, $password: String!) {
-  register(email: $email, login: $login, password: $password) {
-    userId
-    refreshToken
-    accessToken
-  }
-}
-
-mutation Login($login: String!, $password: String!, $remember: Boolean!) {
-  login(login: $login, password: $password, remember: $remember) {
-    userId
-    refreshToken
-    accessToken
-  }
-}
-
-# query Viewer {
-#   viewer {
-#     id
-#     name
-#     profile {
-#       publicEmail
-#       description
-#     }
-#   }
-# }
