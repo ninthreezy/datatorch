@@ -4,7 +4,8 @@ import { PrismaClient } from '@shared/db'
 
 type FastifyResponse = { request: FastifyRequest; reply: FastifyReply }
 
-const db = new PrismaClient()
+export const db = new PrismaClient()
+
 export interface Context extends ApolloContext {
   db: PrismaClient
   reply: FastifyReply

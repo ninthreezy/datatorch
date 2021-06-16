@@ -6,16 +6,9 @@ export const ClassificationType = enumType({
     RADIO: 'radio',
     CHECKBOX: 'checkbox',
     TEXT: 'text',
-    DROPDOWN: 'dropbox'
-  }
-})
+    DROPDOWN: 'dropbox',
 
-export const ClassificationOption = objectType({
-  name: 'ClassificationOption',
-  definition(t) {
-    t.string('name')
-    t.string('value')
-    t.list.field('children', { type: 'ClassificationOption' })
+    OPTION: 'option'
   }
 })
 
@@ -24,8 +17,10 @@ export const Classification = objectType({
   definition(t) {
     t.nonNull.id('id')
     t.nonNull.string('type')
+    t.nonNull.string('name')
     t.nonNull.string('instructions')
-    t.list.field('options', { type: 'ClassificationOption' })
+    t.id('parent')
+    t.field('instance', { type: 'Instance' })
   }
 })
 
@@ -57,7 +52,7 @@ export const Object = objectType({
   definition(t) {
     t.nonNull.id('id')
     t.nonNull.field('instanceOf', { type: 'Instance' })
-    t.nonNull.json('data')
-    t.nonNull.json('properties')
+    // t.nonNull.json('data')
+    // t.nonNull.json('properties')
   }
 })

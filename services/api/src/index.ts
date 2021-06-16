@@ -1,27 +1,13 @@
-import { ApolloServer } from 'apollo-server-fastify'
-import fastify from 'fastify'
-
-import { createContext as context } from './context'
-import { schema } from './schema'
-
-const GRAPHQL_API = '/api/graphql'
-const PORT = 4000
-
-const createApp = async () => {
-  const graphql = new ApolloServer({ schema, context })
-
-  const app = fastify({ logger: true })
-  app.register(graphql.createHandler({ path: GRAPHQL_API }))
-  return app
-}
+import { createApp } from './app'
+import * as Config from './config'
 
 /**
  * Start API server on specified endpoint
  */
 const startApp = async () => {
-  const app = await createApp()
+  const app = createApp()
   try {
-    await app.listen(PORT)
+    await app.listen(Config.PORT)
   } catch (err) {
     app.log.error(err)
     process.exit(1)
