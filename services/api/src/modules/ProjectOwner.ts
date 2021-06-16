@@ -10,7 +10,7 @@ import {
 
 import { ProjectOwner, Profile, Role, ProjectOwnerType } from 'nexus-prisma'
 import argon2 from 'argon2'
-import { issueTokens, LoginOrRegister } from '@api/tokens'
+import { issueTokens, AuthAction } from '@api/tokens'
 
 export const projectOwner = objectType({
   name: ProjectOwner.$name,
@@ -106,11 +106,7 @@ export const register = mutationField('register', {
         count: 0
       }
 
-      const authPayload = issueTokens(
-        ctx.reply,
-        userData,
-        LoginOrRegister.REGISTER
-      )
+      const authPayload = issueTokens(ctx.reply, userData, AuthAction.REGISTER)
       return authPayload
     } catch (e) {
       throw new Error('Registration failed.')
@@ -147,7 +143,7 @@ export const login = mutationField('login', {
       remember: args.remember
     }
 
-    const authPayload = issueTokens(ctx.reply, userData, LoginOrRegister.LOGIN)
+    const authPayload = issueTokens(ctx.reply, userData, AuthAction.LOGIN)
 
     return authPayload
   }

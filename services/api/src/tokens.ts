@@ -1,11 +1,11 @@
-import { FastifyReply } from 'fastify'
+import { FastifyReply, onRequestAsyncHookHandler } from 'fastify'
 import { FastifyDecoratedRequest } from './context'
 import { TOKEN_SECRET } from './context'
 import { sign, verify } from 'jsonwebtoken'
 import { addDays, addHours, addMinutes } from 'date-fns'
 import { Role, PrismaClient } from '@prisma/client'
 
-export enum LoginOrRegister {
+export enum AuthAction {
   LOGIN,
   REGISTER
 }
@@ -47,11 +47,11 @@ function setToken(
 export function issueTokens(
   reply: FastifyReply,
   userData: UserData,
-  loginOrRegister: LoginOrRegister
+  authAction: AuthAction
 ): { refreshToken: string; accessToken: string; userId: string } {
   let expiresIn: string, expires: Date
   const { remember } = userData
-  if (loginOrRegister === LoginOrRegister.LOGIN) {
+  if (authAction === AuthAction.LOGIN) {
     if (remember) {
       expiresIn = '30d'
       expires = addDays(new Date(), 30)
@@ -86,11 +86,17 @@ export function issueTokens(
   return { refreshToken, accessToken, userId }
 }
 
-// hook function to run before accessing pages that require auth.
+/**
+ * Hook that should be run before every API request in order to
+ * transform cookies, if present, into usable info available in
+ * the request.
+ * @param request the request object from fastify
+ * @param reply the reply object from fastify
+ */
 export async function tokenHook(
   request: FastifyDecoratedRequest,
   reply: FastifyReply
-) {
+): Promise<onRequestAsyncHookHandler> {
   // retrieve tokens from the request
   const signedRefreshToken = request.cookies['refresh-token']
   const signedAccessToken = request.cookies['access-token']
@@ -101,10 +107,10 @@ export async function tokenHook(
   // if we have a valid access token, use the data inside.
   try {
     // check if the signature is valid
-    const unsignedAccessToken = request.unsignCookie(signedAccessToken)
-    if (!unsignedAccessToken.valid) return
+    const { valid, value: accessToken } =
+      request.unsignCookie(signedAccessToken)
+    if (!valid) return
 
-    const accessToken = unsignedAccessToken.value
     const data = verify(accessToken, TOKEN_SECRET) as UserData
     request.user = data
     return
@@ -138,11 +144,9 @@ export async function tokenHook(
     }
 
     // reissue tokens
-    issueTokens(reply, userData, LoginOrRegister.LOGIN)
+    issueTokens(reply, userData, AuthAction.LOGIN)
     request.user = userData
-  } catch {
-    return
-  }
+  } catch {}
 
   return
 }
