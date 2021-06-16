@@ -12,7 +12,7 @@ export interface Context extends ApolloContext {
   request: FastifyDecoratedRequest
 }
 
-export const TOKEN_SECRET = 'REPLACETHISWITHSOMETHINGELSE'
+export const TOKEN_SECRET = process.env.TOKEN_SECRET ?? 'default'
 
 export const createContext: ContextFunction<FastifyResponse, Context> = ctx => {
   return { ...ctx, db }

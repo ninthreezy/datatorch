@@ -8,49 +8,44 @@ import {
   stringArg
 } from 'nexus'
 
-import {
-  ProjectOwner as PO,
-  Profile as P,
-  Role,
-  ProjectOwnerType
-} from 'nexus-prisma'
+import { ProjectOwner, Profile, Role, ProjectOwnerType } from 'nexus-prisma'
 import argon2 from 'argon2'
 import { issueTokens, LoginOrRegister } from '@api/tokens'
 
 export const projectOwner = objectType({
-  name: PO.$name,
-  description: PO.$description,
+  name: ProjectOwner.$name,
+  description: ProjectOwner.$description,
   definition(t) {
-    t.id(PO.id.name, PO.id)
-    t.string(PO.name.name, PO.name)
-    t.dateTime(PO.createdAt.name, PO.createdAt)
-    t.dateTime(PO.updatedAt.name, PO.updatedAt)
-    t.dateTime(PO.lastSeenAt.name, PO.lastSeenAt)
-    t.boolean(PO.disabled.name, PO.disabled)
-    t.field(PO.type.name, PO.type)
-    t.field(PO.role.name, PO.role)
+    t.id(ProjectOwner.id.name, ProjectOwner.id)
+    t.string(ProjectOwner.name.name, ProjectOwner.name)
+    t.dateTime(ProjectOwner.createdAt.name, ProjectOwner.createdAt)
+    t.dateTime(ProjectOwner.updatedAt.name, ProjectOwner.updatedAt)
+    t.dateTime(ProjectOwner.lastSeenAt.name, ProjectOwner.lastSeenAt)
+    t.boolean(ProjectOwner.disabled.name, ProjectOwner.disabled)
+    t.field(ProjectOwner.type.name, ProjectOwner.type)
+    t.field(ProjectOwner.role.name, ProjectOwner.role)
   }
 })
 
 export const profile = objectType({
-  name: P.$name,
-  description: P.$description,
+  name: Profile.$name,
+  description: Profile.$description,
   definition(t) {
-    t.id(P.id.name, P.id)
-    t.string(P.publicEmail.name, P.publicEmail)
-    t.string(P.company.name, P.company)
-    t.string(P.avatarUrl.name, P.avatarUrl)
-    t.string(P.websiteUrl.name, P.websiteUrl)
-    t.string(P.description.name, P.description)
-    t.string(P.location.name, P.location)
-    t.string(P.githubId.name, P.githubId)
-    t.string(P.facebookId.name, P.facebookId)
-    t.string(P.twitterId.name, P.twitterId)
+    t.id(Profile.id.name, Profile.id)
+    t.string(Profile.publicEmail.name, Profile.publicEmail)
+    t.string(Profile.company.name, Profile.company)
+    t.string(Profile.avatarUrl.name, Profile.avatarUrl)
+    t.string(Profile.websiteUrl.name, Profile.websiteUrl)
+    t.string(Profile.description.name, Profile.description)
+    t.string(Profile.location.name, Profile.location)
+    t.string(Profile.githubId.name, Profile.githubId)
+    t.string(Profile.facebookId.name, Profile.facebookId)
+    t.string(Profile.twitterId.name, Profile.twitterId)
   }
 })
 
 export const projectOwnerQuery = queryField('projectOwner', {
-  type: PO.$name,
+  type: ProjectOwner.$name,
   args: {
     id: nonNull(stringArg())
   },
