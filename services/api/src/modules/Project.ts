@@ -6,7 +6,7 @@ import {
   entityReadUnique
 } from './utils/graphqlPrisma'
 
-export const ProjectE = entityCreateType({
+export const Project = entityCreateType({
   entity: ProjectEntity,
   properties: ['id', 'owner']
 })

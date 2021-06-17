@@ -11,7 +11,7 @@
   "dependencies": {
     "apollo-server-core": "^2.25.1",
     "apollo-server-fastify": "next-v3",
-    "fastify": "^3.17.0",
+    "fastify": "^3.18.0",
     "graphql": "^15.5.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-middleware": "^6.0.10",
