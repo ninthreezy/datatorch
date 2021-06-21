@@ -1,27 +1,15 @@
-import { extendType, nonNull, objectType, stringArg } from 'nexus'
-import { Project } from 'nexus-prisma'
+import { Project as ProjectEntity } from 'nexus-prisma'
+import {
+  entityCreate,
+  entityCreateType,
+  entityDelete,
+  entityReadUnique
+} from './utils/graphqlPrisma'
 
-export const NProject = objectType({
-  name: Project.$name,
-  description: Project.$description,
-  definition(t) {
-    t.id(Project.id.name, Project.id)
-    t.string(Project.name.name, Project.name)
-    t.string(Project.description.name, Project.description)
-  }
+export const Project = entityCreateType({
+  entity: ProjectEntity,
+  properties: ['id', 'visibility']
 })
-
-export const ProjectQuery = extendType({
-  type: 'Query',
-  definition(t) {
-    t.nonNull.field('project', {
-      type: Project.$name,
-      args: {
-        id: nonNull(stringArg())
-      },
-      resolve(_root, args, ctx) {
-        return ctx.db.project.findUnique({ where: args })
-      }
-    })
-  }
-})
+export const ProjectReadUniqueQuery = entityReadUnique(ProjectEntity)
+export const ProjectCreate = entityCreate(ProjectEntity)
+export const ProjectDelete = entityDelete(ProjectEntity)

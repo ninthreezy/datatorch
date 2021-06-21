@@ -1,6 +1,6 @@
 import { applyMiddleware } from 'graphql-middleware'
 import NexusPrismaScalars from 'nexus-prisma/scalars'
-import { makeSchema } from 'nexus'
+import { fieldAuthorizePlugin, makeSchema } from 'nexus'
 
 import * as types from './modules/types'
 import { join } from 'path'
@@ -18,6 +18,7 @@ export const schema = applyMiddleware(
     },
     sourceTypes: {
       modules: [{ module: '@shared/db', alias: 'prismaclient' }]
-    }
+    },
+    plugins: [fieldAuthorizePlugin()]
   })
 )

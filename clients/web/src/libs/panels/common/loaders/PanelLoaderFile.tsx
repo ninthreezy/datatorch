@@ -1,4 +1,5 @@
 import * as rt from 'runtypes'
+
 import { useEffect } from 'react'
 import { useAsync } from 'react-use'
 
@@ -10,28 +11,26 @@ const context = rt.Record({
   file: rt.Record({
     url: rt.String,
     blob: BlobFile.Or(rt.Null).Or(rt.Undefined),
-    mimetype: rt.String.Or(rt.Null).Or(rt.Undefined),
-    size: rt.Number.Or(rt.Null).Or(rt.Undefined)
+    mimetype: rt.String.optional(),
+    size: rt.Number.optional()
   })
 })
 
 export const PanelLoaderFile = definePanel({
   displayName: 'Loading File',
   context,
-  available: context => {
-    return context.file.blob == null
-  },
+  available: context => context.file.blob == null,
   Component: ({ context, updateContext }) => {
-    const { value: blob } = useAsync(async () => {
-      const result = await fetch(context.file.url)
-      if (!result.ok) throw new Error('Network response was not ok.')
-      return result.blob()
-    }, [context.file.url])
+    const { value: blob } = useAsync(
+      async () => (await fetch(context.file.url)).blob(),
+      [context.file.url]
+    )
 
     useEffect(() => {
       if (blob != null)
         updateContext({ file: { blob, mimetype: blob.type, size: blob.size } })
     }, [blob, updateContext])
+
     return <Loading message="Loading file data..." />
   }
 })

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { merge } from 'lodash'
+import merge from 'lodash/merge'
+
 import { Panel } from './definePanel'
 import { DeepPartial } from './utils'
 import { Center, Text } from '@chakra-ui/react'
@@ -8,12 +9,6 @@ export type PanelsMap = Record<string, Panel<any, any>>
 
 export function isAvailable(context: unknown, panel: Panel<unknown, unknown>) {
   const available = panel.available != null ? panel.available : () => true
-  // console.log(
-  //   panel.displayName,
-  //   panel.context.guard(context),
-  //   available(context),
-  //   context
-  // )
   return panel.context.guard(context) && available(context)
 }
 
@@ -57,47 +52,35 @@ export const usePanels = <Context, Config>(
   )
   const { context } = panelObjects
 
-  const available = useMemo(() => {
-    return Object.values(panels)
-      .filter(p => isAvailable(context, p))
-      .sort((a, b) => relevances(context, b) - relevances(context, a))
-  }, [panels, context])
+  const available = useMemo(
+    () =>
+      Object.values(panels)
+        .filter(p => isAvailable(context, p))
+        .sort((a, b) => relevances(context, b) - relevances(context, a)),
+    [panels, context]
+  )
 
-  const activePanelFirst = available[0]
+  const [activePanelFirst] = available
   const [activePanelName, setActivePanelName] = useState('')
 
   const ActivePanel =
-    (panels[activePanelName] ?? activePanelFirst).Component ?? options?.fallback
+    (panels[activePanelName] ?? activePanelFirst)?.Component ??
+    options?.fallback
 
-  const panelRender = (panel: Panel<any, any>, Fallback?: React.FC) => {
-    if (!isAvailable(context, panel))
-      return Fallback != null ? (
-        <Fallback />
-      ) : (
-        <Center h="full">
-          <Text>Panel is not available for this context.</Text>
-        </Center>
-      )
-
-    return <panel.Component {...panelObjects} />
-  }
-
-  const activePanelRenderer = () => {
-    if (ActivePanel == null)
-      return (
-        <Center h="full">
-          <Text>No panel available for this context.</Text>
-        </Center>
-      )
-    return <ActivePanel {...panelObjects} />
-  }
+  const activePanelRenderer = () =>
+    ActivePanel == null ? (
+      <Center h="full">
+        <Text>No panel available for this context.</Text>
+      </Center>
+    ) : (
+      <ActivePanel {...panelObjects} />
+    )
 
   return {
     ...panelObjects,
     available,
     activePanelName,
     setActivePanelName,
-    activePanelRenderer,
-    panelRender
+    activePanelRenderer
   }
 }

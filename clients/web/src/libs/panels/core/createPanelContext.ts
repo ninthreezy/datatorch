@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { Panel, UpdateFunction } from './definePanel'
+import { UpdateFunction } from './definePanel'
 
 export interface PanelContext<Context, Config> {
   context: Context
@@ -8,8 +8,8 @@ export interface PanelContext<Context, Config> {
   config: Config
   updateConfig: UpdateFunction<Config>
 
+  activePanelName: string
   activePanelRenderer: () => JSX.Element
-  panelRender: (panel: Panel<any, any>, fallback?: React.FC) => JSX.Element
 }
 
 export const createPanelContext = <Context, Config>(
