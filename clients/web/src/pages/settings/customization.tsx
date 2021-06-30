@@ -14,8 +14,9 @@ const DarkModeCard: React.FC = () => {
   const {
     register,
     handleSubmit,
+
     formState: { isSubmitting }
-  } = useForm<DarkModeInputs>()
+  } = useForm<DarkModeInputs>({ mode: 'onChange' })
 
   const onSubmit: SubmitHandler<DarkModeInputs> = (data, event) =>
     // eslint-disable-next-line no-console
@@ -23,7 +24,7 @@ const DarkModeCard: React.FC = () => {
 
   return (
     <CardWithHeading name="Dark Mode">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onChange={handleSubmit(onSubmit)}>
         <FormToggle
           displayName="Enable dark mode?"
           field="darkMode"
