@@ -48,27 +48,35 @@ interface PasswordInputs {
   confirmPassword: string
 }
 
-const SettingsFormLabel: React.FC<SettingsFieldProps> = props => {
+const SettingsFormLabel: React.FC<SettingsFieldProps> = ({ id, fieldName }) => {
   return (
-    <FormLabel htmlFor={props.id} mt={2}>
-      {props.fieldName}
+    <FormLabel htmlFor={id} mt={2}>
+      {fieldName}
     </FormLabel>
   )
 }
 
-const SettingsInput: React.FC<SettingsFieldProps> = props => {
-  const { type, id, fieldName, register, error } = props
+const SettingsInput: React.FC<SettingsFieldProps> = ({
+  type,
+  id,
+  fieldName,
+  register,
+  error
+}) => {
   return (
     <FormControl>
       <SettingsFormLabel type={type} id={id} fieldName={fieldName} />
-      <Input type={type} {...register(id)} />
-      <FormErrorMessage>{error?.message}</FormErrorMessage>
+      <Input type={type} {...register(id, { required: true })} />
+      {error && <FormErrorMessage>{fieldName} is required</FormErrorMessage>}
     </FormControl>
   )
 }
 
-const SettingsTextarea: React.FC<SettingsFieldProps> = props => {
-  const { id, fieldName, error } = props
+const SettingsTextarea: React.FC<SettingsFieldProps> = ({
+  id,
+  fieldName,
+  error
+}) => {
   return (
     <FormControl>
       <SettingsFormLabel id={id} fieldName={fieldName} />
@@ -78,8 +86,10 @@ const SettingsTextarea: React.FC<SettingsFieldProps> = props => {
   )
 }
 
-const SettingsButton: React.FC<SettingsButtonProps> = props => {
-  const { isSubmitting, name } = props
+const SettingsButton: React.FC<SettingsButtonProps> = ({
+  isSubmitting,
+  name
+}) => {
   return (
     <Button mt={3} type="submit" colorScheme="teal" isLoading={isSubmitting}>
       {name}
@@ -87,11 +97,11 @@ const SettingsButton: React.FC<SettingsButtonProps> = props => {
   )
 }
 
-const CardWithHeading: React.FC<CardTitleProps> = props => {
+const CardWithHeading: React.FC<CardTitleProps> = ({ name, children }) => {
   return (
     <Card>
-      <CardHeading>{props.name}</CardHeading>
-      {props.children}
+      <CardHeading>{name}</CardHeading>
+      {children}
     </Card>
   )
 }
