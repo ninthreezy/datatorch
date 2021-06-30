@@ -31,6 +31,23 @@ interface SettingsButtonProps {
   isSubmitting: boolean
 }
 
+interface CardTitleProps {
+  name: string
+}
+
+interface ProfileInputs {
+  name: string
+  bio: string
+  company: string
+  location: string
+}
+
+interface PasswordInputs {
+  oldPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
 const SettingsFormLabel: React.FC<SettingsFieldProps> = props => {
   return (
     <FormLabel htmlFor={props.id} mt={2}>
@@ -70,17 +87,13 @@ const SettingsButton: React.FC<SettingsButtonProps> = props => {
   )
 }
 
-interface ProfileInputs {
-  name: string
-  bio: string
-  company: string
-  location: string
-}
-
-interface PasswordInputs {
-  oldPassword: string
-  newPassword: string
-  confirmPassword: string
+const CardWithHeading: React.FC<CardTitleProps> = props => {
+  return (
+    <Card>
+      <CardHeading>{props.name}</CardHeading>
+      {props.children}
+    </Card>
+  )
 }
 
 const ProfileCard: React.FC = () => {
@@ -94,8 +107,7 @@ const ProfileCard: React.FC = () => {
     // eslint-disable-next-line no-console
     console.log(data, event)
   return (
-    <Card>
-      <CardHeading>Public Profile</CardHeading>
+    <CardWithHeading name="Public Profile">
       <form onSubmit={handleSubmit(onSubmit)}>
         <SettingsInput
           id="name"
@@ -123,7 +135,7 @@ const ProfileCard: React.FC = () => {
         />
         <SettingsButton name="Update Profile" isSubmitting={isSubmitting} />
       </form>
-    </Card>
+    </CardWithHeading>
   )
 }
 
@@ -139,8 +151,7 @@ const PasswordCard: React.FC = () => {
     console.log(data, event)
 
   return (
-    <Card>
-      <CardHeading>Change Password</CardHeading>
+    <CardWithHeading name="Change Password">
       <form onSubmit={handleSubmit(onSubmit)}>
         <SettingsInput
           id="oldPassword"
@@ -165,7 +176,7 @@ const PasswordCard: React.FC = () => {
         />
         <SettingsButton name="Update" isSubmitting={isSubmitting} />
       </form>
-    </Card>
+    </CardWithHeading>
   )
 }
 
