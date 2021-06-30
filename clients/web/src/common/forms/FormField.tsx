@@ -3,28 +3,24 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Switch,
   Input,
   Textarea
 } from '@chakra-ui/react'
+import { FormControlInline } from './FormControlInline'
 import { FieldError, UseFormRegister } from 'react-hook-form'
 
-export interface SettingsFieldProps {
+export interface FormFieldProps {
   displayName: string
   register?: UseFormRegister<any>
   field: string
   type?: string
   error?: FieldError
   required?: boolean
+  isSubmitting?: boolean
 }
 
-export const SettingsFormLabel: React.FC<SettingsFieldProps> = ({
-  field,
-  displayName
-}) => {
-  return <FormLabel htmlFor={field}>{displayName}</FormLabel>
-}
-
-export const FormInput: React.FC<SettingsFieldProps> = ({
+export const FormInput: React.FC<FormFieldProps> = ({
   type,
   required,
   field,
@@ -34,7 +30,7 @@ export const FormInput: React.FC<SettingsFieldProps> = ({
 }) => {
   return (
     <FormControl isInvalid={error?.message.length > 0} mt={3}>
-      <SettingsFormLabel type={type} field={field} displayName={displayName} />
+      <FormLabel htmlFor={field}>{displayName}</FormLabel>
       <Input
         type={type}
         {...register(field, {
@@ -46,16 +42,31 @@ export const FormInput: React.FC<SettingsFieldProps> = ({
   )
 }
 
-export const FormTextarea: React.FC<SettingsFieldProps> = ({
+export const FormTextarea: React.FC<FormFieldProps> = ({
   field,
   displayName,
-  error
+  error,
+  register
 }) => {
   return (
-    <FormControl>
-      <SettingsFormLabel field={field} displayName={displayName} />
-      <Textarea />
+    <FormControl mt={3}>
+      <FormLabel htmlFor={field}>{displayName}</FormLabel>
+      <Textarea {...register(field)} />
       <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
+  )
+}
+
+export const FormToggle: React.FC<FormFieldProps> = ({
+  field,
+  displayName,
+  register,
+  isSubmitting
+}) => {
+  return (
+    <FormControlInline>
+      <FormLabel htmlFor={field}>{displayName}</FormLabel>
+      <Switch isDisabled={isSubmitting} {...register(field)} />
+    </FormControlInline>
   )
 }
