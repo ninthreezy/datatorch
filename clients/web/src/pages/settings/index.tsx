@@ -1,41 +1,11 @@
 import React from 'react'
 import { NextPage } from 'next'
-import {
-  FieldError,
-  SubmitHandler,
-  useForm,
-  UseFormRegister
-} from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { Card, CardHeading } from '@/common/Card'
+import { FormButton } from '@/common/forms/FormButton'
+import { CardWithHeading } from '@/common/Card'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
-import {
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Textarea
-} from '@chakra-ui/react'
-
-interface SettingsFieldProps {
-  displayName: string
-  register?: UseFormRegister<any>
-  field: string
-  type?: string
-  error?: FieldError
-  required?: boolean
-}
-
-interface SettingsButtonProps {
-  name: string
-  isSubmitting: boolean
-}
-
-interface CardTitleProps {
-  name: string
-}
-
+import { FormInput, FormTextarea } from '@/common/forms/FormField'
 interface ProfileInputs {
   name: string
   bio: string
@@ -47,73 +17,6 @@ interface PasswordInputs {
   oldPassword: string
   newPassword: string
   confirmPassword: string
-}
-
-const SettingsFormLabel: React.FC<SettingsFieldProps> = ({
-  field,
-  displayName
-}) => {
-  return (
-    <FormLabel htmlFor={field} mt={2}>
-      {displayName}
-    </FormLabel>
-  )
-}
-
-const SettingsInput: React.FC<SettingsFieldProps> = ({
-  type,
-  required,
-  field,
-  displayName,
-  register,
-  error
-}) => {
-  return (
-    <FormControl isInvalid={error?.message.length > 0}>
-      <SettingsFormLabel type={type} field={field} displayName={displayName} />
-      <Input
-        type={type}
-        {...register(field, {
-          required: required && `${displayName} Required`
-        })}
-      />
-      {error && <FormErrorMessage>{error.message}</FormErrorMessage>}
-    </FormControl>
-  )
-}
-
-const SettingsTextarea: React.FC<SettingsFieldProps> = ({
-  field,
-  displayName,
-  error
-}) => {
-  return (
-    <FormControl>
-      <SettingsFormLabel field={field} displayName={displayName} />
-      <Textarea />
-      <FormErrorMessage>{error?.message}</FormErrorMessage>
-    </FormControl>
-  )
-}
-
-const SettingsButton: React.FC<SettingsButtonProps> = ({
-  isSubmitting,
-  name
-}) => {
-  return (
-    <Button mt={3} type="submit" colorScheme="teal" isLoading={isSubmitting}>
-      {name}
-    </Button>
-  )
-}
-
-const CardWithHeading: React.FC<CardTitleProps> = ({ name, children }) => {
-  return (
-    <Card>
-      <CardHeading>{name}</CardHeading>
-      {children}
-    </Card>
-  )
 }
 
 const ProfileCard: React.FC = () => {
@@ -129,31 +32,31 @@ const ProfileCard: React.FC = () => {
   return (
     <CardWithHeading name="Public Profile">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SettingsInput
+        <FormInput
           field="name"
           displayName="Name"
           register={register}
           error={errors.name}
         />
-        <SettingsTextarea
+        <FormTextarea
           field="bio"
           displayName="Bio"
           register={register}
           error={errors.bio}
         />
-        <SettingsInput
+        <FormInput
           field="company"
           displayName="Company"
           register={register}
           error={errors.company}
         />
-        <SettingsInput
+        <FormInput
           field="location"
           displayName="Location"
           register={register}
           error={errors.location}
         />
-        <SettingsButton name="Update Profile" isSubmitting={isSubmitting} />
+        <FormButton name="Update Profile" isSubmitting={isSubmitting} />
       </form>
     </CardWithHeading>
   )
@@ -173,7 +76,7 @@ const PasswordCard: React.FC = () => {
   return (
     <CardWithHeading name="Change Password">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <SettingsInput
+        <FormInput
           field="oldPassword"
           displayName="Old Password"
           register={register}
@@ -181,7 +84,7 @@ const PasswordCard: React.FC = () => {
           required
           error={errors.oldPassword}
         />
-        <SettingsInput
+        <FormInput
           field="newPassword"
           displayName="New Password"
           register={register}
@@ -189,7 +92,7 @@ const PasswordCard: React.FC = () => {
           required
           error={errors.newPassword}
         />
-        <SettingsInput
+        <FormInput
           field="confirmPassword"
           displayName="Confirm New Password"
           register={register}
@@ -197,7 +100,7 @@ const PasswordCard: React.FC = () => {
           required
           error={errors.confirmPassword}
         />
-        <SettingsButton name="Update" isSubmitting={isSubmitting} />
+        <FormButton name="Update" isSubmitting={isSubmitting} />
       </form>
     </CardWithHeading>
   )

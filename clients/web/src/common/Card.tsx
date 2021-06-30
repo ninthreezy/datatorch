@@ -16,3 +16,19 @@ export const Card: React.FC<BoxProps> = ({ children, ...props }) => {
     </Box>
   )
 }
+
+interface CardTitleProps {
+  name: string
+}
+
+export const CardWithHeading: React.FC<CardTitleProps> = ({
+  name,
+  children
+}) => {
+  return (
+    <Card>
+      <CardHeading>{name}</CardHeading>
+      {children}
+    </Card>
+  )
+}
