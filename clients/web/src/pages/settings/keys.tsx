@@ -1,13 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { NextPage } from 'next'
 import { CardWithHeading } from '@/common/Card'
-import { Table, Tr, Th, Td, Thead, Tbody, Checkbox } from '@chakra-ui/react'
+import {
+  Table,
+  Tr,
+  Th,
+  Td,
+  Thead,
+  Tbody,
+  Checkbox,
+  Icon,
+  Button
+} from '@chakra-ui/react'
+import { SubmitHandler, useForm, UseFormRegister } from 'react-hook-form'
+import { FaTrash } from 'react-icons/fa'
 
 interface ApiRowProps {
   name: string
   lastAccessed: string | Date
   created: string | Date
+  id: string
+  isChecked: boolean
+  onChange: (event: any) => void
+  register: UseFormRegister<any>
 }
 
 const testData = [
@@ -31,7 +47,15 @@ const testData = [
   }
 ]
 
-const ApiRow: React.FC<ApiRowProps> = ({ name, lastAccessed, created }) => {
+const ApiRow: React.FC<ApiRowProps> = ({
+  name,
+  lastAccessed,
+  created,
+  id,
+  isChecked,
+  onChange,
+  register
+}) => {
   let accessString, createdString
   typeof lastAccessed === 'string'
     ? (accessString = lastAccessed)
@@ -42,7 +66,7 @@ const ApiRow: React.FC<ApiRowProps> = ({ name, lastAccessed, created }) => {
   return (
     <Tr>
       <Td>
-        <Checkbox />
+        <Checkbox isChecked={isChecked} onChange={onChange} {...register(id)} />
       </Td>
       <Td>{name}</Td>
       <Td>{accessString}</Td>
@@ -51,29 +75,66 @@ const ApiRow: React.FC<ApiRowProps> = ({ name, lastAccessed, created }) => {
   )
 }
 
+interface ApiInputs {
+  [key: string]: boolean
+}
+
 const ApiCard: React.FC = () => {
+  const { register, handleSubmit } = useForm<ApiInputs>()
+  const apiKeys = testData
+  const [checkedItems, setCheckedItems] = useState(apiKeys.map(d => false))
+
+  const allChecked = checkedItems.every(Boolean)
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked
+
+  // eslint-disable-next-line no-console
+  const onSubmit: SubmitHandler<ApiInputs> = (data, e) => console.log(data, e)
+
+  const onCheckboxChange = event => {
+    console.log('WEEW', event)
+    const newCheckedItems = [...checkedItems]
+    newCheckedItems
+  }
+
   return (
     <CardWithHeading name="Api Keys">
-      <Table>
-        <Thead>
-          <Th>
-            <Checkbox />
-          </Th>
-          <Th>Name</Th>
-          <Th>Last Accessed</Th>
-          <Th>Created</Th>
-        </Thead>
-        <Tbody>
-          {testData.map(({ name, lastAccessed, created }, index) => (
-            <ApiRow
-              name={name}
-              lastAccessed={lastAccessed}
-              created={created}
-              key={index}
-            />
-          ))}
-        </Tbody>
-      </Table>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Button type="submit">
+          <Icon as={FaTrash} />
+        </Button>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>
+                <Checkbox
+                  isChecked={allChecked}
+                  isIndeterminate={isIndeterminate}
+                  onChange={e =>
+                    setCheckedItems(apiKeys.map(_ => e.target.checked))
+                  }
+                />
+              </Th>
+              <Th>Name</Th>
+              <Th>Last Accessed</Th>
+              <Th>Created</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {testData.map(({ name, lastAccessed, created, id }, index) => (
+              <ApiRow
+                name={name}
+                lastAccessed={lastAccessed}
+                created={created}
+                register={register}
+                key={index}
+                isChecked={checkedItems[index]}
+                onChange={onCheckboxChange}
+                id={id}
+              />
+            ))}
+          </Tbody>
+        </Table>
+      </form>
     </CardWithHeading>
   )
 }
