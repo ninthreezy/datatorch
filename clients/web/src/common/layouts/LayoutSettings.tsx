@@ -10,17 +10,27 @@ import {
   TextProps,
   VStack
 } from '@chakra-ui/react'
+import Link from 'next/link'
 
-export const SettingsButton: React.FC = ({ children }) => {
+interface ButtonProps {
+  href?: string
+}
+
+export const SettingsButton: React.FC<ButtonProps> = ({
+  children,
+  href = '/settings'
+}) => {
   return (
-    <Button
-      isFullWidth
-      variant="ghost"
-      flexDirection="column"
-      alignItems="flex-start"
-    >
-      {children}
-    </Button>
+    <Link href={href}>
+      <Button
+        isFullWidth
+        variant="ghost"
+        flexDirection="column"
+        alignItems="flex-start"
+      >
+        {children}
+      </Button>
+    </Link>
   )
 }
 

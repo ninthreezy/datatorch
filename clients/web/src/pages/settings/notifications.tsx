@@ -19,7 +19,7 @@ interface PasswordInputs {
   confirmPassword: string
 }
 
-const ProfileCard: React.FC = () => {
+const NotificationsCard: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -30,34 +30,8 @@ const ProfileCard: React.FC = () => {
     // eslint-disable-next-line no-console
     console.log(data, event)
   return (
-    <CardWithHeading name="Public Profile">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
-          field="name"
-          displayName="Name"
-          register={register}
-          error={errors.name}
-        />
-        <FormTextarea
-          field="bio"
-          displayName="Bio"
-          register={register}
-          error={errors.bio}
-        />
-        <FormInput
-          field="company"
-          displayName="Company"
-          register={register}
-          error={errors.company}
-        />
-        <FormInput
-          field="location"
-          displayName="Location"
-          register={register}
-          error={errors.location}
-        />
-        <FormButton name="Update Profile" isSubmitting={isSubmitting} />
-      </form>
+    <CardWithHeading name="Notification Settings">
+      Notifications Settings
     </CardWithHeading>
   )
 }
@@ -65,7 +39,7 @@ const ProfileCard: React.FC = () => {
 const SettingsProfile: NextPage = () => {
   return (
     <SettingsLayout>
-      <ProfileCard />
+      <NotificationsCard />
     </SettingsLayout>
   )
 }
