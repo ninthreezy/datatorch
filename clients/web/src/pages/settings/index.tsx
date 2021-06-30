@@ -19,11 +19,12 @@ import {
 } from '@chakra-ui/react'
 
 interface SettingsFieldProps {
-  fieldName: string
+  displayName: string
   register?: UseFormRegister<any>
-  id: string
+  field: string
   type?: string
   error?: FieldError
+  required?: boolean
 }
 
 interface SettingsButtonProps {
@@ -48,38 +49,47 @@ interface PasswordInputs {
   confirmPassword: string
 }
 
-const SettingsFormLabel: React.FC<SettingsFieldProps> = ({ id, fieldName }) => {
+const SettingsFormLabel: React.FC<SettingsFieldProps> = ({
+  field,
+  displayName
+}) => {
   return (
-    <FormLabel htmlFor={id} mt={2}>
-      {fieldName}
+    <FormLabel htmlFor={field} mt={2}>
+      {displayName}
     </FormLabel>
   )
 }
 
 const SettingsInput: React.FC<SettingsFieldProps> = ({
   type,
-  id,
-  fieldName,
+  required,
+  field,
+  displayName,
   register,
   error
 }) => {
   return (
-    <FormControl>
-      <SettingsFormLabel type={type} id={id} fieldName={fieldName} />
-      <Input type={type} {...register(id, { required: true })} />
-      {error && <FormErrorMessage>{fieldName} is required</FormErrorMessage>}
+    <FormControl isInvalid={error?.message.length > 0}>
+      <SettingsFormLabel type={type} field={field} displayName={displayName} />
+      <Input
+        type={type}
+        {...register(field, {
+          required: required && `${displayName} Required`
+        })}
+      />
+      {error && <FormErrorMessage>{error.message}</FormErrorMessage>}
     </FormControl>
   )
 }
 
 const SettingsTextarea: React.FC<SettingsFieldProps> = ({
-  id,
-  fieldName,
+  field,
+  displayName,
   error
 }) => {
   return (
     <FormControl>
-      <SettingsFormLabel id={id} fieldName={fieldName} />
+      <SettingsFormLabel field={field} displayName={displayName} />
       <Textarea />
       <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
@@ -120,26 +130,26 @@ const ProfileCard: React.FC = () => {
     <CardWithHeading name="Public Profile">
       <form onSubmit={handleSubmit(onSubmit)}>
         <SettingsInput
-          id="name"
-          fieldName="Name"
+          field="name"
+          displayName="Name"
           register={register}
           error={errors.name}
         />
         <SettingsTextarea
-          id="bio"
-          fieldName="Bio"
+          field="bio"
+          displayName="Bio"
           register={register}
           error={errors.bio}
         />
         <SettingsInput
-          id="company"
-          fieldName="Company"
+          field="company"
+          displayName="Company"
           register={register}
           error={errors.company}
         />
         <SettingsInput
-          id="location"
-          fieldName="Location"
+          field="location"
+          displayName="Location"
           register={register}
           error={errors.location}
         />
@@ -164,24 +174,27 @@ const PasswordCard: React.FC = () => {
     <CardWithHeading name="Change Password">
       <form onSubmit={handleSubmit(onSubmit)}>
         <SettingsInput
-          id="oldPassword"
-          fieldName="Old Password"
+          field="oldPassword"
+          displayName="Old Password"
           register={register}
           type="password"
+          required
           error={errors.oldPassword}
         />
         <SettingsInput
-          id="newPassword"
-          fieldName="New Password"
+          field="newPassword"
+          displayName="New Password"
           register={register}
           type="password"
+          required
           error={errors.newPassword}
         />
         <SettingsInput
-          id="confirmPassword"
-          fieldName="Confirm New Password"
+          field="confirmPassword"
+          displayName="Confirm New Password"
           register={register}
           type="password"
+          required
           error={errors.confirmPassword}
         />
         <SettingsButton name="Update" isSubmitting={isSubmitting} />
