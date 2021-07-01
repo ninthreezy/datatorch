@@ -91,7 +91,6 @@ const ApiCard: React.FC = () => {
   const onSubmit: SubmitHandler<ApiInputs> = (data, e) => console.log(data, e)
 
   const onCheckboxChange = event => {
-    console.log('WEEW', event)
     const newCheckedItems = [...checkedItems]
     newCheckedItems
   }
