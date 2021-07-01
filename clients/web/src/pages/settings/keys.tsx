@@ -56,7 +56,7 @@ const ApiRow: React.FC<ApiRowProps> = ({
   onChange,
   register
 }) => {
-  let accessString, createdString
+  let accessString: string, createdString: string
   typeof lastAccessed === 'string'
     ? (accessString = lastAccessed)
     : (accessString = lastAccessed.toDateString())
