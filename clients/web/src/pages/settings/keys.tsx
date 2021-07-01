@@ -82,7 +82,7 @@ interface ApiInputs {
 const ApiCard: React.FC = () => {
   const { register, handleSubmit } = useForm<ApiInputs>()
   const apiKeys = testData
-  const [checkedItems, setCheckedItems] = useState(apiKeys.map(d => false))
+  const [checkedItems, setCheckedItems] = useState(apiKeys.map(_ => false))
 
   const allChecked = checkedItems.every(Boolean)
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked
@@ -90,7 +90,7 @@ const ApiCard: React.FC = () => {
   // eslint-disable-next-line no-console
   const onSubmit: SubmitHandler<ApiInputs> = (data, e) => console.log(data, e)
 
-  const onCheckboxChange = event => {
+  const onCheckboxChange = _ => {
     const newCheckedItems = [...checkedItems]
     newCheckedItems
   }
