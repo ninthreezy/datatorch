@@ -1,7 +1,19 @@
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { CardWithHeading } from '@/common/Card'
+import StatWithNumber from '@/common/StatWithNumber'
 import TableRow from '@/common/tables/TableRow'
-import { Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
+import {
+  HStack,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr
+} from '@chakra-ui/react'
 import { NextPage } from 'next'
 import React, { useState } from 'react'
 
@@ -15,6 +27,11 @@ interface BillingHistoryItem {
 }
 
 type BillingHistoryProps = Omit<BillingHistoryItem, 'id'>
+
+interface BillStatProps {
+  cost: string
+  date: string
+}
 
 const testData: BillingHistoryItem[] = [
   {
@@ -43,8 +60,37 @@ const testData: BillingHistoryItem[] = [
   }
 ]
 
+const testMonthlyStats = {
+  cost: '$10.00',
+  date: '06/10/2021 – 07/08/2021'
+}
+
+const testNextStats = {
+  cost: '$10.00',
+  date: '06/10/2021 – 07/08/2021'
+}
+
+const CurrentMonthlyBillStat: React.FC<BillStatProps> = ({ cost, date }) => {
+  return <StatWithNumber label="Monthly Costs" number={cost} helpText={date} />
+}
+
+const NextMonthlyBillStat: React.FC<BillStatProps> = ({ cost, date }) => {
+  return (
+    <StatWithNumber label="Next Month's Costs" number={cost} helpText={date} />
+  )
+}
+
 const BillingInfoCard: React.FC = () => {
-  return <CardWithHeading name="Billing Info"></CardWithHeading>
+  const [monthlyCosts] = useState(testMonthlyStats)
+  const [nextCosts] = useState(testNextStats)
+  return (
+    <CardWithHeading name="Billing Info">
+      <HStack>
+        <CurrentMonthlyBillStat {...monthlyCosts} />
+        <NextMonthlyBillStat {...nextCosts} />
+      </HStack>
+    </CardWithHeading>
+  )
 }
 
 const BillingHistoryRow: React.FC<BillingHistoryProps> = ({
