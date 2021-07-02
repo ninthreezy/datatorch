@@ -2,24 +2,15 @@ import React, { useState } from 'react'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { NextPage } from 'next'
 import { CardWithHeading } from '@/common/Card'
-import {
-  Table,
-  Tr,
-  Th,
-  Td,
-  Thead,
-  Tbody,
-  Checkbox,
-  Icon,
-  Button
-} from '@chakra-ui/react'
+import TableRow from '@/common/tables/TableRow'
+import { Table, Tbody, Checkbox, Icon, Button } from '@chakra-ui/react'
 import { SubmitHandler, useForm, UseFormRegister } from 'react-hook-form'
 import { FaTrash } from 'react-icons/fa'
-
+import TableHeaderRow from '@/common/tables/TableHeaderRow'
 interface ApiRowProps {
   name: string
-  lastAccessed: string | Date
-  created: string | Date
+  lastAccessed: string
+  created: string
   id: string
   isChecked: boolean
   onChange: (event: any) => void
@@ -56,36 +47,32 @@ const ApiRow: React.FC<ApiRowProps> = ({
   onChange,
   register
 }) => {
-  let accessString: string, createdString: string
-  typeof lastAccessed === 'string'
-    ? (accessString = lastAccessed)
-    : (accessString = lastAccessed.toDateString())
-  typeof created === 'string'
-    ? (createdString = created)
-    : (createdString = created.toDateString())
-  return (
-    <Tr>
-      <Td>
-        <Checkbox isChecked={isChecked} onChange={onChange} {...register(id)} />
-      </Td>
-      <Td>{name}</Td>
-      <Td>{accessString}</Td>
-      <Td>{createdString}</Td>
-    </Tr>
+  const data = [name, lastAccessed, created]
+  const checkbox = (
+    <Checkbox isChecked={isChecked} onChange={onChange} {...register(id)} />
   )
+  return <TableRow data={data} preD={checkbox} />
 }
-
 interface ApiInputs {
   [key: string]: boolean
 }
 
 const ApiCard: React.FC = () => {
   const { register, handleSubmit } = useForm<ApiInputs>()
-  const apiKeys = testData
+  const [apiKeys] = useState(testData)
   const [checkedItems, setCheckedItems] = useState(apiKeys.map(_ => false))
 
   const allChecked = checkedItems.every(Boolean)
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked
+
+  const headers = ['Name', 'Last Accessed', 'Created']
+  const selectAllCheckbox = (
+    <Checkbox
+      isChecked={allChecked}
+      isIndeterminate={isIndeterminate}
+      onChange={e => setCheckedItems(apiKeys.map(_ => e.target.checked))}
+    />
+  )
 
   // eslint-disable-next-line no-console
   const onSubmit: SubmitHandler<ApiInputs> = (data, e) => console.log(data, e)
@@ -102,33 +89,15 @@ const ApiCard: React.FC = () => {
           <Icon as={FaTrash} />
         </Button>
         <Table>
-          <Thead>
-            <Tr>
-              <Th>
-                <Checkbox
-                  isChecked={allChecked}
-                  isIndeterminate={isIndeterminate}
-                  onChange={e =>
-                    setCheckedItems(apiKeys.map(_ => e.target.checked))
-                  }
-                />
-              </Th>
-              <Th>Name</Th>
-              <Th>Last Accessed</Th>
-              <Th>Created</Th>
-            </Tr>
-          </Thead>
+          <TableHeaderRow data={headers} preD={selectAllCheckbox} />
           <Tbody>
-            {testData.map(({ name, lastAccessed, created, id }, index) => (
+            {apiKeys.map((item, index) => (
               <ApiRow
-                name={name}
-                lastAccessed={lastAccessed}
-                created={created}
+                {...item}
                 register={register}
                 key={index}
                 isChecked={checkedItems[index]}
                 onChange={onCheckboxChange}
-                id={id}
               />
             ))}
           </Tbody>

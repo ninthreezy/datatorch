@@ -38,7 +38,7 @@ const SettingsSidebar: React.FC = () => {
         Notifications
       </SettingsButton>
       <SettingsButton href="/settings/account">Account</SettingsButton>
-      <SettingsButton>Billing</SettingsButton>
+      <SettingsButton href="/settings/billing">Billing</SettingsButton>
       <SettingsButton href="/settings/keys">API Keys</SettingsButton>
 
       <SettingsSection paddingTop={8}>Admin</SettingsSection>

@@ -13,12 +13,6 @@ interface ProfileInputs {
   location: string
 }
 
-interface PasswordInputs {
-  oldPassword: string
-  newPassword: string
-  confirmPassword: string
-}
-
 const ProfileCard: React.FC = () => {
   const {
     register,
