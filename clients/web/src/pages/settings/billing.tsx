@@ -2,18 +2,7 @@ import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { CardWithHeading } from '@/common/Card'
 import StatWithNumber from '@/common/StatWithNumber'
 import TableRow from '@/common/tables/TableRow'
-import {
-  HStack,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr
-} from '@chakra-ui/react'
+import { HStack, Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import React, { useState } from 'react'
 

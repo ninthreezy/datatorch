@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { NextPage } from 'next'
 import { CardWithHeading } from '@/common/Card'
@@ -13,7 +13,7 @@ interface ApiRowProps {
   created: string
   id: string
   isChecked: boolean
-  onChange: (event: any) => void
+  onCheckboxChange: (event: any) => void
   register: UseFormRegister<any>
 }
 
@@ -44,12 +44,17 @@ const ApiRow: React.FC<ApiRowProps> = ({
   created,
   id,
   isChecked,
-  onChange,
+  onCheckboxChange,
   register
 }) => {
   const data = [name, lastAccessed, created]
   const checkbox = (
-    <Checkbox isChecked={isChecked} onChange={onChange} {...register(id)} />
+    <Checkbox
+      id={id}
+      isChecked={isChecked}
+      onChange={onCheckboxChange}
+      // {...register(id)}
+    />
   )
   return <TableRow data={data} preD={checkbox} />
 }
@@ -59,33 +64,45 @@ interface ApiInputs {
 
 const ApiCard: React.FC = () => {
   const { register, handleSubmit } = useForm<ApiInputs>()
-  const [apiKeys] = useState(testData)
-  const [checkedItems, setCheckedItems] = useState(apiKeys.map(_ => false))
+  const apiKeys = testData
+  const [checkedItems, setCheckedItems] = useState(
+    apiKeys.map(key => ({ id: key.id, selected: false }))
+  )
 
-  const allChecked = checkedItems.every(Boolean)
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked
+  const allChecked = checkedItems.every(item => item.selected)
+  const isIndeterminate =
+    checkedItems.some(item => item.selected) && !allChecked
 
   const headers = ['Name', 'Last Accessed', 'Created']
   const selectAllCheckbox = (
     <Checkbox
       isChecked={allChecked}
       isIndeterminate={isIndeterminate}
-      onChange={e => setCheckedItems(apiKeys.map(_ => e.target.checked))}
+      onChange={e =>
+        setCheckedItems(
+          checkedItems.map(item => ({
+            id: item.id,
+            selected: e.target.checked
+          }))
+        )
+      }
     />
   )
 
   // eslint-disable-next-line no-console
   const onSubmit: SubmitHandler<ApiInputs> = (data, e) => console.log(data, e)
 
-  const onCheckboxChange = _ => {
+  const onCheckboxChange = event => {
     const newCheckedItems = [...checkedItems]
-    newCheckedItems
+    const index = newCheckedItems.findIndex(item => item.id === event.target.id)
+    newCheckedItems[index].selected = !newCheckedItems[index].selected
+    setCheckedItems(newCheckedItems)
   }
 
   return (
     <CardWithHeading name="Api Keys">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Button type="submit">
+        <Button>
           <Icon as={FaTrash} />
         </Button>
         <Table>
@@ -96,8 +113,8 @@ const ApiCard: React.FC = () => {
                 {...item}
                 register={register}
                 key={index}
-                isChecked={checkedItems[index]}
-                onChange={onCheckboxChange}
+                isChecked={checkedItems[index].selected}
+                onCheckboxChange={onCheckboxChange}
               />
             ))}
           </Tbody>
