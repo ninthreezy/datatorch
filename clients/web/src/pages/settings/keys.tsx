@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { NextPage } from 'next'
 import { CardWithHeading } from '@/common/Card'
@@ -7,6 +7,7 @@ import { Table, Tbody, Checkbox, Icon, Button } from '@chakra-ui/react'
 import { SubmitHandler, useForm, UseFormRegister } from 'react-hook-form'
 import { FaTrash } from 'react-icons/fa'
 import TableHeaderRow from '@/common/tables/TableHeaderRow'
+import { useEffect } from 'react'
 interface ApiRowProps {
   name: string
   lastAccessed: string
@@ -44,30 +45,35 @@ const ApiRow: React.FC<ApiRowProps> = ({
   created,
   id,
   isChecked,
-  onCheckboxChange,
-  register
+  onCheckboxChange
 }) => {
   const data = [name, lastAccessed, created]
-  const checkbox = (
-    <Checkbox
-      id={id}
-      isChecked={isChecked}
-      onChange={onCheckboxChange}
-      // {...register(id)}
+
+  return (
+    <TableRow
+      data={data}
+      prefixData={
+        <Checkbox id={id} isChecked={isChecked} onChange={onCheckboxChange} />
+      }
     />
   )
-  return <TableRow data={data} preD={checkbox} />
 }
 interface ApiInputs {
   [key: string]: boolean
 }
 
 const ApiCard: React.FC = () => {
-  const { register, handleSubmit } = useForm<ApiInputs>()
+  const { register, handleSubmit, setValue, formState } = useForm<ApiInputs>()
   const apiKeys = testData
   const [checkedItems, setCheckedItems] = useState(
     apiKeys.map(key => ({ id: key.id, selected: false }))
   )
+
+  useEffect(() => {
+    for (const { id, selected } of checkedItems) {
+      setValue(id, selected)
+    }
+  }, [checkedItems, setValue, formState])
 
   const allChecked = checkedItems.every(item => item.selected)
   const isIndeterminate =
@@ -102,11 +108,11 @@ const ApiCard: React.FC = () => {
   return (
     <CardWithHeading name="Api Keys">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Button>
+        <Button type="submit">
           <Icon as={FaTrash} />
         </Button>
         <Table>
-          <TableHeaderRow data={headers} preD={selectAllCheckbox} />
+          <TableHeaderRow data={headers} prefixData={selectAllCheckbox} />
           <Tbody>
             {apiKeys.map((item, index) => (
               <ApiRow

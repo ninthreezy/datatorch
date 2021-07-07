@@ -2,19 +2,17 @@ import { Td, Tr } from '@chakra-ui/react'
 import React from 'react'
 
 export interface TableRowProps {
-  data: string[]
-  preD?: JSX.Element
-  postD?: JSX.Element
+  data: any[]
+  prefixData?: JSX.Element
 }
 
-const TableRow: React.FC<TableRowProps> = ({ data, preD, postD }) => {
+const TableRow: React.FC<TableRowProps> = ({ data, prefixData }) => {
   return (
     <Tr>
-      {preD && <Td>{preD}</Td>}
+      {prefixData && <Td>{prefixData}</Td>}
       {data.map((d, i) => (
         <Td key={i}>{d}</Td>
       ))}
-      {postD && <Td>{postD}</Td>}
     </Tr>
   )
 }
