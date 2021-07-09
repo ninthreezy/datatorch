@@ -20,6 +20,21 @@ export interface FormFieldProps {
   isSubmitting?: boolean
 }
 
+export const FormInputWrapper: React.FC<FormFieldProps> = ({
+  field,
+  displayName,
+  error,
+  children
+}) => {
+  return (
+    <FormControl isInvalid={error?.message.length > 0} mt={3}>
+      <FormLabel htmlFor={field}>{displayName}</FormLabel>
+      {children}
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
+    </FormControl>
+  )
+}
+
 export const FormInput: React.FC<FormFieldProps> = ({
   type,
   required,
@@ -37,7 +52,7 @@ export const FormInput: React.FC<FormFieldProps> = ({
           required: required && `${displayName} Required`
         })}
       />
-      {error && <FormErrorMessage>{error.message}</FormErrorMessage>}
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
   )
 }
