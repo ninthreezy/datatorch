@@ -2,7 +2,6 @@ import { SettingsLayout } from '@/applets/settings/SettingsLayout'
 import { CardWithHeading } from '@/common/Card'
 import { FormButton } from '@/common/forms/FormButton'
 import { FormInput } from '@/common/forms/FormField'
-import _ from 'lodash'
 import { NextPage } from 'next'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -49,6 +48,7 @@ const DeletionModal: React.FC<DeletionModalProps> = ({ isOpen, onClose }) => {
     getValues
   } = useForm<DeleteAccountInputs>({ mode: 'onChange' })
 
+  // eslint-disable-next-line no-console
   const onSubmit = (data, e) => console.log('onSubmit: ', data, e)
 
   const currentPassword = getValues('password')
