@@ -20,6 +20,9 @@ export interface FormFieldProps {
   isSubmitting?: boolean
 }
 
+/**
+ * A modified version of FormInput that allows for greater control over the input by passing in a child.
+ */
 export const FormInputWrapper: React.FC<FormFieldProps> = ({
   field,
   displayName,
@@ -35,6 +38,9 @@ export const FormInputWrapper: React.FC<FormFieldProps> = ({
   )
 }
 
+/**
+ * A component that uses react-hook-form to implement a form input in Chakra UI.
+ */
 export const FormInput: React.FC<FormFieldProps> = ({
   type,
   required,
@@ -57,6 +63,9 @@ export const FormInput: React.FC<FormFieldProps> = ({
   )
 }
 
+/**
+ * A component that uses react-hook-form to implement a form textarea in Chakra UI.
+ */
 export const FormTextarea: React.FC<FormFieldProps> = ({
   field,
   displayName,
@@ -72,6 +81,9 @@ export const FormTextarea: React.FC<FormFieldProps> = ({
   )
 }
 
+/**
+ * A component that uses react-hook-form to implement a form toggle in Chakra UI.
+ */
 export const FormToggle: React.FC<FormFieldProps> = ({
   field,
   displayName,

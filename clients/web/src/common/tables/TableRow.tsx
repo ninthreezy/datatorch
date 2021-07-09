@@ -6,6 +6,9 @@ export interface TableRowProps {
   prefixData?: JSX.Element
 }
 
+/**
+ * A Chakra Table row with an option to add components before the data.
+ */
 const TableRow: React.FC<TableRowProps> = ({ data, prefixData }) => {
   return (
     <Tr>

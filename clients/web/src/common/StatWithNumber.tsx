@@ -7,6 +7,9 @@ interface StatWithNumberProps {
   helpText?: string
 }
 
+/**
+ * A Chakra Stat prop with a label, number, and help text.
+ */
 const StatWithNumber: React.FC<StatWithNumberProps> = ({
   label,
   number,

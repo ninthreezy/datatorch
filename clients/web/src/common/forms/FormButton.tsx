@@ -5,6 +5,9 @@ interface FormButtonProps {
   isSubmitting: boolean
 }
 
+/**
+ * A Chakra Button with app stylings.
+ */
 export const FormButton: React.FC<FormButtonProps> = ({
   isSubmitting,
   name

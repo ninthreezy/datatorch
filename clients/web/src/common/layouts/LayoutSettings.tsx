@@ -16,6 +16,9 @@ interface ButtonProps {
   href?: string
 }
 
+/**
+ * Buttons for the settings navigation sidebar.
+ */
 export const SettingsButton: React.FC<ButtonProps> = ({
   children,
   href = '/settings'
