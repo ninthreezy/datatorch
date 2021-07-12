@@ -40,7 +40,7 @@ const DeletionModal: React.FC<DeletionModalProps> = ({ isOpen, onClose }) => {
   const {
     register,
     handleSubmit,
-    formState: { isValid, isDirty, errors },
+    formState: { isDirty, errors },
     reset,
     getValues
   } = useForm<DeleteAccountInputs>()
