@@ -5,7 +5,7 @@
   "license": "private",
   "version": "1.0.0",
   "scripts": {
-    "generate": "npx prisma generate"
+    "generate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "2.25.0",
