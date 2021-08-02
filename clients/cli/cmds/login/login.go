@@ -10,7 +10,7 @@ import (
 // NewCmdLogin Creates login command
 func NewCmdLogin() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "login",
+		Use:   "login",
 		Short: "Authenticate with DataTorch host",
 		Long: heredoc.Doc(`
 			Authenticate with DataTorch host.

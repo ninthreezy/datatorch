@@ -34,7 +34,7 @@ export const CreateMenu: React.FC = () => {
             New Project
           </MenuItem>
         </NextLink>
-        <NextLink href="/orgs/new" passHref>
+        <NextLink href="/organizations/new" passHref>
           <MenuItem as={LinkBox} cursor="pointer" icon={<Icon as={FaUsers} />}>
             New Organization
           </MenuItem>
@@ -50,10 +50,12 @@ export const UserMenu: React.FC = () => (
     <MenuList>
       <MenuItem>Profile</MenuItem>
       <MenuItem>Projects</MenuItem>
+      <NextLink href="/organizations" passHref>
+        <MenuItem as={LinkBox}>Organizations</MenuItem>
+      </NextLink>
       <MenuItem>Starred</MenuItem>
       <MenuItem>Agents</MenuItem>
       <MenuDivider />
-
       <NextLink href="/settings" passHref>
         <MenuItem as={LinkBox}>Settings</MenuItem>
       </NextLink>
