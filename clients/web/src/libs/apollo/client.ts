@@ -10,7 +10,11 @@ import {
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-const createHttpLink = (uri: string) => new HttpLink({ uri })
+const createHttpLink = (uri: string) =>
+  new HttpLink({
+    uri
+    // credentials: 'same-origin',
+  })
 const createWebsocketLink = (uri: string) =>
   new WebSocketLink({ uri, options: { reconnect: true } })
 
@@ -43,6 +47,7 @@ export const createApollo = () => {
   return new ApolloClient({
     uri: fqdn,
     link: createLink(fqdn),
+    credentials: 'same-origin',
     ssrMode: typeof window === 'undefined',
     cache: new InMemoryCache()
   })

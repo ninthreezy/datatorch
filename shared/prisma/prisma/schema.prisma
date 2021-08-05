@@ -8,11 +8,14 @@ datasource db {
 
 generator prisma_client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
 }
 
 generator datatorch_prisma {
   provider = "prisma-client-js"
   output = "../../js/db"
+  previewFeatures = ["referentialActions"]
+
 }
 
 generator nexusPrisma {
@@ -29,7 +32,7 @@ model ProjectOwner {
   disabled        Boolean           @default(false)
   type            ProjectOwnerType  
   role            Role              @default(USER)
-  userCredentials UserCredentials?
+  userCredentials UserCredentials?  
   profile         Profile?
   projects        Project[]
   apiKeys         ApiKey[] 
@@ -42,7 +45,7 @@ model UserCredentials {
   password        String
   count           Int               @default(0)
   isVerified      Boolean           @default(false)
-  projectOwner    ProjectOwner      @relation(fields: [projectOwnerId], references: [id])
+  projectOwner    ProjectOwner      @relation(fields: [projectOwnerId], references: [id], onDelete: Cascade)
   projectOwnerId  String            @unique
 }
 

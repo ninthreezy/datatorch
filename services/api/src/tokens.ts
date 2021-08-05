@@ -40,7 +40,11 @@ function setToken(
     expires,
     httpOnly: true,
     secure: true,
-    signed: true
+    signed: true,
+    path: '/',
+    maxAge: 10000,
+    sameSite: 'none',
+    domain: 'http://localhost:4000/api/graphql'
   })
 }
 
@@ -100,7 +104,6 @@ export async function tokenHook(
   // retrieve tokens from the request
   const signedRefreshToken = request.cookies['refresh-token']
   const signedAccessToken = request.cookies['access-token']
-
   // if we don't find any, continue onwards
   if (!signedRefreshToken && !signedAccessToken) return
 
