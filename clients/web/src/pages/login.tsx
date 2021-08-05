@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
 import {
   Text,
   Link as ChakraLink,
@@ -31,20 +32,21 @@ const Login: NextPage = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loginMutation] = useLoginMutation()
+  const router = useRouter()
 
   const onSubmit = async (data, _) => {
     const { username, password, remember } = data
     try {
-      const result = await loginMutation({
+      await loginMutation({
         variables: {
           login: username,
           password,
           remember
         }
       })
-      setSuccess(
-        `Login succeeded for ${result.data.login.userId}. Redirecting.`
-      )
+      setError('')
+      setSuccess(`Login succeeded. Redirecting.`)
+      router.push('/home')
     } catch (e) {
       setSuccess('')
       setError('Invalid credentials.')

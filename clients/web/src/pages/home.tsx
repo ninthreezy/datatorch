@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NextPage } from 'next'
 import { LayoutNavbarSidebar } from '@/common/layouts/LayoutNavbarSidebar'
 import { AppNavbar } from '@/common/navbar/AppNavbar'
@@ -24,6 +24,7 @@ import { Card } from '@/common/Card'
 import { FaBook } from 'react-icons/fa'
 import { SiGraphql } from 'react-icons/si'
 import { MdFeedback } from 'react-icons/md'
+import { useViewerQuery } from '@/generated/graphql'
 
 const FooterButton: React.FC<{ leftIcon?: ButtonProps['leftIcon'] }> = ({
   leftIcon,
@@ -47,6 +48,12 @@ const FooterButton: React.FC<{ leftIcon?: ButtonProps['leftIcon'] }> = ({
 }
 
 const HomeSidebar: React.FC = () => {
+  const [login, setLogin] = useState('')
+  const { data } = useViewerQuery()
+  useEffect(() => {
+    const newLogin = data?.viewer.login ?? ''
+    setLogin(newLogin)
+  }, [data])
   return (
     <Flex
       backgroundColor={mode('gray.100', 'gray.800')}
@@ -68,7 +75,7 @@ const HomeSidebar: React.FC = () => {
             name="Dan Abrahmov"
             src="https://bit.ly/dan-abramov"
           />
-          <Text paddingLeft={5}>jsbroks</Text>
+          <Text paddingLeft={5}>{login}</Text>
         </Flex>
       </Button>
 
