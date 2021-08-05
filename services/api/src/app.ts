@@ -7,7 +7,7 @@ import { logger } from './logger'
 import cookie from 'fastify-cookie'
 import cors from 'fastify-cors'
 import { tokenHook } from './tokens'
-import { GRAPHQL_ENDPOINT } from './config'
+import { GRAPHQL_ENDPOINT, FRONTEND_ENDPOINT } from './config'
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 
 /**
@@ -22,9 +22,13 @@ export const createApp = async () => {
   await graphql.start()
   const app = fastify({ logger })
   app.register(cookie, { secret: TOKEN_SECRET })
-  app
+  app.register(cors, {
+    origin: FRONTEND_ENDPOINT,
+    credentials: true,
+    methods: ['GET', 'POST']
+  })
   app.decorateRequest('user', null)
   app.addHook('onRequest', tokenHook)
-  app.register(graphql.createHandler({ path: GRAPHQL_ENDPOINT }))
+  app.register(graphql.createHandler({ path: GRAPHQL_ENDPOINT, cors: false }))
   return app
 }

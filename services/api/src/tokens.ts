@@ -20,8 +20,11 @@ export type UserData = {
 }
 
 // Two different types of payloads for refresh and access tokens
-type AccessData = Pick<UserData, 'userId' | 'siteRole' | 'email' | 'login'>
-type RefreshData = Pick<UserData, 'userId' | 'remember'>
+type AccessData = Pick<
+  UserData,
+  'userId' | 'siteRole' | 'email' | 'login' | 'count'
+>
+type RefreshData = Pick<UserData, 'userId' | 'remember' | 'count'>
 
 // Function that signs
 function createToken(userOptions: AccessData | RefreshData, expiresIn: string) {
@@ -38,13 +41,12 @@ function setToken(
 ): void {
   reply.setCookie(name, token, {
     expires,
-    httpOnly: true,
-    secure: true,
+    // httpOnly: true,
+    // secure: true,
     signed: true,
     path: '/',
-    maxAge: 10000,
-    sameSite: 'none',
-    domain: 'http://localhost:4000/api/graphql'
+    // maxAge: 10000,
+    sameSite: 'lax'
   })
 }
 
@@ -68,18 +70,20 @@ export function issueTokens(
     expires = addDays(new Date(), 7)
   }
 
-  const { userId, login, email, siteRole } = userData
+  const { userId, login, email, siteRole, count } = userData
 
   const refreshData: RefreshData = {
     userId,
-    remember
+    remember,
+    count
   }
 
   const accessData: AccessData = {
     userId,
     login,
     email,
-    siteRole
+    siteRole,
+    count
   }
 
   const refreshToken = createToken(refreshData, expiresIn)
@@ -102,6 +106,7 @@ export async function tokenHook(
   reply: FastifyReply
 ): Promise<onRequestAsyncHookHandler> {
   // retrieve tokens from the request
+
   const signedRefreshToken = request.cookies['refresh-token']
   const signedAccessToken = request.cookies['access-token']
   // if we don't find any, continue onwards
@@ -113,7 +118,6 @@ export async function tokenHook(
     const { valid, value: accessToken } =
       request.unsignCookie(signedAccessToken)
     if (!valid) return
-
     const data = verify(accessToken, TOKEN_SECRET) as UserData
     request.user = data
     return
@@ -125,7 +129,6 @@ export async function tokenHook(
     // check if the signature is valid
     const unsignedRefreshToken = request.unsignCookie(signedRefreshToken)
     if (!unsignedRefreshToken.valid) return
-
     const refreshToken = unsignedRefreshToken.value
     const data = verify(refreshToken, TOKEN_SECRET) as UserData
     const prisma = new PrismaClient()
@@ -136,7 +139,6 @@ export async function tokenHook(
 
     // if the refresh token has been invalidated server-side, return
     if (!userCredentials || userCredentials.count !== data.count) return
-
     const userData = {
       userId: data.userId,
       siteRole: data.siteRole,

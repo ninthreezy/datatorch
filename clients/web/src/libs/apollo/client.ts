@@ -47,7 +47,6 @@ export const createApollo = () => {
   return new ApolloClient({
     uri: fqdn,
     link: createLink(fqdn),
-    credentials: 'same-origin',
     ssrMode: typeof window === 'undefined',
     cache: new InMemoryCache()
   })

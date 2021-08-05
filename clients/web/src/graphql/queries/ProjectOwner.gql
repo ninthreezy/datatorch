@@ -26,6 +26,10 @@ mutation Login($login: String!, $password: String!, $remember: Boolean!) {
   }
 }
 
+mutation Logout {
+  logout
+}
+
 # query Viewer {
 #   viewer {
 #     id

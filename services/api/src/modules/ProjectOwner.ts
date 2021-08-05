@@ -192,8 +192,8 @@ export const login = mutationField('login', {
 export const logout = mutationField('logout', {
   type: 'Boolean',
   resolve(_root, _args, ctx) {
-    ctx.reply.clearCookie('refresh-token', { path: '/api' })
-    ctx.reply.clearCookie('access-token', { path: '/api' })
+    ctx.reply.clearCookie('refresh-token', { path: '/' })
+    ctx.reply.clearCookie('access-token', { path: '/' })
     return true
   }
 })
