@@ -192,3 +192,14 @@ const Index: NextPage = () => {
   )
 }
 export default Index
+
+export async function getServerSideProps({ req, res }) {
+  if (!req.cookies['refresh-token']) {
+    res.statusCode = 302
+    res.setHeader('Location', '/login')
+    res.end()
+  }
+  return {
+    props: {}
+  }
+}

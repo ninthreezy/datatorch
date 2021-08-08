@@ -5,11 +5,6 @@ import { sign, verify } from 'jsonwebtoken'
 import { addDays, addHours, addMinutes } from 'date-fns'
 import { Role, PrismaClient } from '@prisma/client'
 
-export enum AuthAction {
-  LOGIN,
-  REGISTER
-}
-
 export type UserData = {
   userId: string
   siteRole: Role
@@ -20,20 +15,36 @@ export type UserData = {
 }
 
 // Two different types of payloads for refresh and access tokens
+export enum AuthAction {
+  LOGIN,
+  REGISTER
+}
 type AccessData = Pick<
   UserData,
   'userId' | 'siteRole' | 'email' | 'login' | 'count'
 >
 type RefreshData = Pick<UserData, 'userId' | 'remember' | 'count'>
 
-// Function that signs
+/**
+ * Helper function that signs our tokens
+ * @param userOptions the data to be signed, a subset of user info
+ * @param expiresIn the expiry to be set on the token
+ * @returns a string representing the signed token
+ */
 function createToken(userOptions: AccessData | RefreshData, expiresIn: string) {
   return sign(userOptions, TOKEN_SECRET, {
     expiresIn
   })
 }
 
-function setToken(
+/**
+ * Helper funtion that sets our cookies, using fastify-cookie
+ * @param reply the Fastify Reply object
+ * @param name the cookie name to be set
+ * @param token the token that represents our user session
+ * @param expires the expiry to be set on the cookie, usually the same as the internal token
+ */
+function setCookie(
   reply: FastifyReply,
   name: string,
   token: string,
@@ -41,15 +52,23 @@ function setToken(
 ): void {
   reply.setCookie(name, token, {
     expires,
-    // httpOnly: true,
-    // secure: true,
+    httpOnly: true,
+    secure: true,
     signed: true,
     path: '/',
-    // maxAge: 10000,
-    sameSite: 'lax'
+    sameSite: 'strict'
   })
 }
 
+/**
+ * Primary function for issuing user sessions to the browser.
+ * Will set cookies in the browser and also return the authorization
+ * payload for APIs to consume.
+ * @param reply The Fastify reply object
+ * @param userData The user data to be added to the user session
+ * @param authAction A string representing a login or registration action.
+ * @returns an AuthPayload containing both refresh and acccess tokens and the user's id
+ */
 export function issueTokens(
   reply: FastifyReply,
   userData: UserData,
@@ -66,6 +85,7 @@ export function issueTokens(
       expires = addHours(new Date(), 4)
     }
   } else {
+    // expiry for registration
     expiresIn = '7d'
     expires = addDays(new Date(), 7)
   }
@@ -77,6 +97,7 @@ export function issueTokens(
     remember,
     count
   }
+  const refreshToken = createToken(refreshData, expiresIn)
 
   const accessData: AccessData = {
     userId,
@@ -85,12 +106,10 @@ export function issueTokens(
     siteRole,
     count
   }
-
-  const refreshToken = createToken(refreshData, expiresIn)
   const accessToken = createToken(accessData, '15min')
 
-  setToken(reply, 'refresh-token', refreshToken, expires)
-  setToken(reply, 'access-token', accessToken, addMinutes(new Date(), 15))
+  setCookie(reply, 'refresh-token', refreshToken, expires)
+  setCookie(reply, 'access-token', accessToken, addMinutes(new Date(), 15))
   return { refreshToken, accessToken, userId }
 }
 
@@ -106,10 +125,10 @@ export async function tokenHook(
   reply: FastifyReply
 ): Promise<onRequestAsyncHookHandler> {
   // retrieve tokens from the request
-
   const signedRefreshToken = request.cookies['refresh-token']
   const signedAccessToken = request.cookies['access-token']
-  // if we don't find any, continue onwards
+
+  // if we don't find any tokens, return
   if (!signedRefreshToken && !signedAccessToken) return
 
   // if we have a valid access token, use the data inside.
@@ -117,7 +136,9 @@ export async function tokenHook(
     // check if the signature is valid
     const { valid, value: accessToken } =
       request.unsignCookie(signedAccessToken)
+
     if (!valid) return
+
     const data = verify(accessToken, TOKEN_SECRET) as UserData
     request.user = data
     return
@@ -127,10 +148,11 @@ export async function tokenHook(
   // refresh token.
   try {
     // check if the signature is valid
-    const unsignedRefreshToken = request.unsignCookie(signedRefreshToken)
-    if (!unsignedRefreshToken.valid) return
-    const refreshToken = unsignedRefreshToken.value
-    const data = verify(refreshToken, TOKEN_SECRET) as UserData
+    const { valid, value } = request.unsignCookie(signedRefreshToken)
+    if (!valid) return
+    const data = verify(value, TOKEN_SECRET) as UserData
+
+    // retrieve the credentials from the server
     const prisma = new PrismaClient()
     const userCredentials = await prisma.userCredentials.findUnique({
       where: { projectOwnerId: data.userId },
@@ -139,6 +161,8 @@ export async function tokenHook(
 
     // if the refresh token has been invalidated server-side, return
     if (!userCredentials || userCredentials.count !== data.count) return
+
+    // reissue tokens
     const userData = {
       userId: data.userId,
       siteRole: data.siteRole,
@@ -147,8 +171,6 @@ export async function tokenHook(
       count: data.count,
       remember: data.remember
     }
-
-    // reissue tokens
     issueTokens(reply, userData, AuthAction.LOGIN)
     request.user = userData
   } catch {}

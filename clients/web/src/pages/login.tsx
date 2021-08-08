@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import {
   Text,
@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useLoginMutation } from '@/generated/graphql'
 
-type Inputs = {
+interface Inputs {
   username: string
   password: string
   remember: boolean
@@ -29,13 +29,15 @@ const Login: NextPage = () => {
     formState: { errors, isSubmitting }
   } = useForm<Inputs>()
 
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
   const [loginMutation] = useLoginMutation()
   const router = useRouter()
 
-  const onSubmit = async (data, _) => {
-    const { username, password, remember } = data
+  const onSubmit: SubmitHandler<Inputs> = async (
+    { username, password, remember },
+    _
+  ) => {
     try {
       await loginMutation({
         variables: {
@@ -44,11 +46,11 @@ const Login: NextPage = () => {
           remember
         }
       })
-      setError('')
-      setSuccess(`Login succeeded. Redirecting.`)
+      setError(null)
+      setSuccess(`Login succeeded. Redirecting...`)
       router.push('/home')
     } catch (e) {
-      setSuccess('')
+      setSuccess(null)
       setError('Invalid credentials.')
     }
   }

@@ -1,27 +1,3 @@
-// import { ProjectOwner as ProjectOwnerEntity } from 'nexus-prisma'
-// import {
-//   entityCreate,
-//   entityCreateType,
-//   entityDelete,
-//   entityReadUnique
-// } from './utils/graphqlPrisma'
-
-// export const ProjectOwnerReadUniqueQuery = entityReadUnique(ProjectOwnerEntity)
-// export const ProjectOwnerCreateMutation = entityCreate(ProjectOwnerEntity)
-// export const ProjectOwnerDeleteMutation = entityDelete(ProjectOwnerEntity)
-// export const ProjectOwner = entityCreateType({
-//   entity: ProjectOwnerEntity,
-//   properties: [
-//     'id',
-//     'name',
-//     'createdAt',
-//     'updatedAt',
-//     'disabled',
-//     'type',
-//     'role'
-//   ]
-// })
-
 import {
   booleanArg,
   enumType,
@@ -35,7 +11,13 @@ import {
 import { ProjectOwner, Profile, Role, ProjectOwnerType } from 'nexus-prisma'
 import argon2 from 'argon2'
 import { issueTokens, AuthAction } from '@api/tokens'
+import { ApolloError } from 'apollo-server-core'
 
+/**
+ * The core user of the application. Contains all info necessary to interact
+ * with the application needing authorization. Independent of the UserCredential
+ * model which is internal to the server and is not exposed.
+ */
 export const projectOwner = objectType({
   name: ProjectOwner.$name,
   description: ProjectOwner.$description,
@@ -51,6 +33,10 @@ export const projectOwner = objectType({
   }
 })
 
+/**
+ * Decorative information that is used for
+ * populating a user's profile.
+ */
 export const profile = objectType({
   name: Profile.$name,
   description: Profile.$description,
@@ -65,24 +51,6 @@ export const profile = objectType({
     t.string(Profile.githubId.name, Profile.githubId)
     t.string(Profile.facebookId.name, Profile.facebookId)
     t.string(Profile.twitterId.name, Profile.twitterId)
-  }
-})
-
-export const projectOwnerQuery = queryField('projectOwner', {
-  type: ProjectOwner.$name,
-  args: {
-    id: nonNull(stringArg())
-  },
-  resolve(_root, args, ctx) {
-    return ctx.db.projectOwner.findUnique({ where: args })
-  }
-})
-
-export const viewerQuery = queryField('viewer', {
-  type: 'ViewerPayload',
-  resolve(_root, _, ctx) {
-    const login = ctx.request.user.login
-    return { login }
   }
 })
 
@@ -109,10 +77,39 @@ export const ViewerPayload = objectType({
   name: 'ViewerPayload',
   definition(t) {
     t.string('login')
+    t.string('email')
+    t.string('userId')
+    t.string('siteRole')
   }
 })
 
-// Register
+export const projectOwnerQuery = queryField('projectOwner', {
+  type: ProjectOwner.$name,
+  args: {
+    id: nonNull(stringArg())
+  },
+  resolve(_root, args, ctx) {
+    return ctx.db.projectOwner.findUnique({ where: args })
+  }
+})
+
+/**
+ * Returns the user data from the user field on the request if logged in.
+ */
+export const viewerQuery = queryField('viewer', {
+  type: 'ViewerPayload',
+  resolve(_root, _, ctx) {
+    const user = ctx.request.user
+    if (!user) throw new ApolloError('User not logged in.')
+
+    const { login, email, userId, siteRole } = user
+    return { login, email, userId, siteRole }
+  }
+})
+
+/**
+ * Registration for project owners.
+ */
 export const register = mutationField('register', {
   type: 'AuthPayload',
   args: {
@@ -150,12 +147,14 @@ export const register = mutationField('register', {
       const authPayload = issueTokens(ctx.reply, userData, AuthAction.REGISTER)
       return authPayload
     } catch (e) {
-      throw new Error('Registration failed.')
+      throw new ApolloError('Registration failed.')
     }
   }
 })
 
-// Login
+/**
+ * Login for project owners.
+ */
 export const login = mutationField('login', {
   type: 'AuthPayload',
   args: {
@@ -169,11 +168,11 @@ export const login = mutationField('login', {
       where: { login: args.login },
       include: { projectOwner: true }
     })
-    if (!userCredentials) return null
+    if (!userCredentials) throw new ApolloError('Invalid credentials.')
 
     // check for valid password
     const valid = await argon2.verify(userCredentials.password, args.password)
-    if (!valid) return null
+    if (!valid) throw new ApolloError('Invalid credentials.')
 
     const userData = {
       userId: userCredentials.projectOwnerId,
@@ -189,30 +188,28 @@ export const login = mutationField('login', {
   }
 })
 
+/**
+ * Remove and invalidates all tokens.
+ * Cookies are cleared and count is incremented.
+ */
 export const logout = mutationField('logout', {
   type: 'Boolean',
-  resolve(_root, _args, ctx) {
-    ctx.reply.clearCookie('refresh-token', { path: '/' })
-    ctx.reply.clearCookie('access-token', { path: '/' })
+  async resolve(_root, _args, ctx) {
+    try {
+      const userCredentials = ctx.db.userCredentials
+      const user = await userCredentials.findUnique({
+        where: { id: ctx.request.user.userId }
+      })
+      await userCredentials.update({
+        where: { id: ctx.request.user.userId },
+        data: { count: user.count + 1 }
+      })
+    } catch {
+    } finally {
+      // clear cookies regardless of success.
+      ctx.reply.clearCookie('refresh-token', { path: '/' })
+      ctx.reply.clearCookie('access-token', { path: '/' })
+    }
     return true
   }
 })
-
-// export const viewer = queryField('viewer', {
-//   type: 'ProjectOwner',
-//   async resolve(_root, _, ctx) {
-//     if (ctx.request.user) {
-//       const user = ctx.request.user
-//       const projectOwner = await ctx.db.projectOwner.findUnique({
-//         where: { id: user.userId },
-//         include: { profile: true }
-//       })
-//       ctx.db.projectOwner.update({
-//         where: { id: user.userId },
-//         data: { lastSeenAt: new Date() }
-//       })
-//       return projectOwner
-//     }
-//     return null
-//   }
-// })

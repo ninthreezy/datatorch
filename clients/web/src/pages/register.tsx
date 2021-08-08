@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { useRegisterMutation } from '@/generated/graphql'
 
-type Inputs = {
+interface Inputs {
   email: string
   username: string
   password: string
@@ -27,26 +27,24 @@ const Register: NextPage = () => {
     formState: { errors, isSubmitting }
   } = useForm<Inputs>()
 
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const [registerMutation, registerStatus] = useRegisterMutation()
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
+  const [registerMutation] = useRegisterMutation()
 
   const onSubmit = async data => {
     const { username, email, password } = data
     try {
-      const result = await registerMutation({
+      await registerMutation({
         variables: {
           login: username,
           email,
           password
         }
       })
-      setError('')
-      setSuccess(
-        `Registration succeeded. Your user id is: ${result.data.register?.userId}`
-      )
+      setError(null)
+      setSuccess(`Registration succeeded! Redirecting...`)
     } catch (e) {
-      setSuccess('')
+      setSuccess(null)
       setError('Registration failed.')
     }
   }
