@@ -21,7 +21,7 @@ export enum AuthAction {
 }
 type AccessData = Pick<
   UserData,
-  'userId' | 'siteRole' | 'email' | 'login' | 'count'
+  'userId' | 'siteRole' | 'email' | 'login' | 'count' | 'remember'
 >
 type RefreshData = Pick<UserData, 'userId' | 'remember' | 'count'>
 
@@ -104,7 +104,8 @@ export function issueTokens(
     login,
     email,
     siteRole,
-    count
+    count,
+    remember
   }
   const accessToken = createToken(accessData, '15min')
 
@@ -139,7 +140,7 @@ export async function tokenHook(
 
     if (!valid) return
 
-    const data = verify(accessToken, TOKEN_SECRET) as UserData
+    const data = verify(accessToken, TOKEN_SECRET) as AccessData
     request.user = data
     return
   } catch {}
@@ -150,7 +151,7 @@ export async function tokenHook(
     // check if the signature is valid
     const { valid, value } = request.unsignCookie(signedRefreshToken)
     if (!valid) return
-    const data = verify(value, TOKEN_SECRET) as UserData
+    const data = verify(value, TOKEN_SECRET) as RefreshData
 
     // retrieve the credentials from the server
     const prisma = new PrismaClient()
@@ -162,14 +163,20 @@ export async function tokenHook(
     // if the refresh token has been invalidated server-side, return
     if (!userCredentials || userCredentials.count !== data.count) return
 
+    const {
+      email,
+      login,
+      projectOwner: { role: siteRole }
+    } = userCredentials
+    const { userId, count, remember } = data
     // reissue tokens
     const userData = {
-      userId: data.userId,
-      siteRole: data.siteRole,
-      email: data.email,
-      login: data.login,
-      count: data.count,
-      remember: data.remember
+      userId,
+      siteRole,
+      email,
+      login,
+      count,
+      remember
     }
     issueTokens(reply, userData, AuthAction.LOGIN)
     request.user = userData
