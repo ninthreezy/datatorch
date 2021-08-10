@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-fastify'
 import fastify from 'fastify'
 
-import { createContext as context, TOKEN_SECRET } from './context'
+import { createContext as context, COOKIE_SECRET } from './context'
 import { schema } from './schema'
 import { logger } from './logger'
 import cookie from 'fastify-cookie'
@@ -25,7 +25,7 @@ export const createApp = async () => {
   const app = fastify({ logger })
 
   // Logic for our cookie and CORS system.
-  app.register(cookie, { secret: TOKEN_SECRET })
+  app.register(cookie, { secret: COOKIE_SECRET })
   app.register(cors, {
     origin: FRONTEND_ENDPOINT,
     credentials: true,

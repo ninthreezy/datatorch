@@ -7,6 +7,13 @@ query ProjectOwner($id: String!) {
 query Viewer {
   viewer {
     login
+    email
+    userId
+    siteRole
+    authPayload {
+      refreshToken
+      accessToken
+    }
   }
 }
 

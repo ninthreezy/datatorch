@@ -80,6 +80,9 @@ export const ViewerPayload = objectType({
     t.string('email')
     t.string('userId')
     t.string('siteRole')
+    t.field('authPayload', {
+      type: 'AuthPayload'
+    })
   }
 })
 
@@ -101,9 +104,10 @@ export const viewerQuery = queryField('viewer', {
   resolve(_root, _, ctx) {
     const user = ctx.request.user
     if (!user) throw new ApolloError('User not logged in.')
-
     const { login, email, userId, siteRole } = user
-    return { login, email, userId, siteRole }
+    const authPayload = issueTokens(ctx.reply, user, AuthAction.LOGIN)
+
+    return { login, email, userId, siteRole, authPayload }
   }
 })
 

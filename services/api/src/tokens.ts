@@ -128,7 +128,6 @@ export async function tokenHook(
   // retrieve tokens from the request
   const signedRefreshToken = request.cookies['refresh-token']
   const signedAccessToken = request.cookies['access-token']
-
   // if we don't find any tokens, return
   if (!signedRefreshToken && !signedAccessToken) return
 
@@ -149,6 +148,7 @@ export async function tokenHook(
   // refresh token.
   try {
     // check if the signature is valid
+
     const { valid, value } = request.unsignCookie(signedRefreshToken)
     if (!valid) return
     const data = verify(value, TOKEN_SECRET) as RefreshData

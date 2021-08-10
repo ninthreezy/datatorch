@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { NextPage } from 'next'
+import React from 'react'
+import {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+  NextPage
+} from 'next'
 import { LayoutNavbarSidebar } from '@/common/layouts/LayoutNavbarSidebar'
 import { AppNavbar } from '@/common/navbar/AppNavbar'
 import {
@@ -24,7 +28,7 @@ import { Card } from '@/common/Card'
 import { FaBook } from 'react-icons/fa'
 import { SiGraphql } from 'react-icons/si'
 import { MdFeedback } from 'react-icons/md'
-import { useViewerQuery } from '@/generated/graphql'
+import { cookieChecker, redirectToLogin, UserData } from '@/libs/utils/cookies'
 
 const FooterButton: React.FC<{ leftIcon?: ButtonProps['leftIcon'] }> = ({
   leftIcon,
@@ -47,13 +51,7 @@ const FooterButton: React.FC<{ leftIcon?: ButtonProps['leftIcon'] }> = ({
   )
 }
 
-const HomeSidebar: React.FC = () => {
-  const [login, setLogin] = useState('')
-  const { data } = useViewerQuery()
-  useEffect(() => {
-    const newLogin = data?.viewer.login ?? ''
-    setLogin(newLogin)
-  }, [data])
+const HomeSidebar: React.FC<IndexProps> = ({ user }) => {
   return (
     <Flex
       backgroundColor={mode('gray.100', 'gray.800')}
@@ -75,7 +73,7 @@ const HomeSidebar: React.FC = () => {
             name="Dan Abrahmov"
             src="https://bit.ly/dan-abramov"
           />
-          <Text paddingLeft={5}>{login}</Text>
+          <Text paddingLeft={5}>{user?.login ?? ''}</Text>
         </Flex>
       </Button>
 
@@ -140,12 +138,12 @@ const HomeSidebar: React.FC = () => {
   )
 }
 
-const LayoutHome: React.FC = ({ children }) => {
+const LayoutHome: React.FC<IndexProps> = ({ children, user }) => {
   const scrollCss = useScrollBarTheme()
   return (
     <LayoutNavbarSidebar
       navbar={AppNavbar}
-      sidebar={<HomeSidebar />}
+      sidebar={<HomeSidebar user={user} />}
       contentContainer={{ css: scrollCss }}
     >
       {children}
@@ -153,10 +151,16 @@ const LayoutHome: React.FC = ({ children }) => {
   )
 }
 
-const Index: NextPage = () => {
+interface IndexProps {
+  user: UserData
+}
+
+const Index: NextPage<IndexProps> = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
   const isLg = useBreakpointValue({ base: false, lg: true })
   return (
-    <LayoutHome>
+    <LayoutHome {...props}>
       <Flex paddingTop={5}>
         <Container maxWidth="4xl" flexGrow={1}>
           <Alert
@@ -193,13 +197,10 @@ const Index: NextPage = () => {
 }
 export default Index
 
-export async function getServerSideProps({ req, res }) {
-  if (!req.cookies['refresh-token']) {
-    res.statusCode = 302
-    res.setHeader('Location', '/login')
-    res.end()
-  }
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const user = await cookieChecker(context)
+  if (!user) return redirectToLogin(context.res)
   return {
-    props: {}
+    props: { user }
   }
 }
