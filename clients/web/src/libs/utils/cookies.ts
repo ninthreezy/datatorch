@@ -78,13 +78,16 @@ async function verifyRefreshAndReissue(req, res) {
  * @param req The request object for Nextjs
  * @returns
  */
-function verifyAccessToken(req) {
+function verifyAccessToken(req, res) {
   const accessToken = req.cookies['access-token']
-  const accessData = verify(
-    cookie.unsign(accessToken, COOKIE_SECRET),
-    TOKEN_SECRET
-  ) as AccessData
-  return accessData
+  try {
+    const token = cookie.unsign(accessToken, COOKIE_SECRET)
+    if (!token) return verifyRefreshAndReissue(req, res)
+    const accessData = verify(token, TOKEN_SECRET) as AccessData
+    return accessData
+  } catch {
+    return verifyRefreshAndReissue(req, res)
+  }
 }
 
 /**
@@ -103,6 +106,6 @@ export const cookieChecker = async ({
   } else if (!req.cookies['access-token']) {
     return verifyRefreshAndReissue(req, res)
   } else {
-    return verifyAccessToken(req)
+    return verifyAccessToken(req, res)
   }
 }

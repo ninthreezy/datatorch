@@ -48,13 +48,13 @@ export const CreateMenu: React.FC = () => {
 
 export const UserMenu: React.FC = () => {
   const router = useRouter()
-  const [logoutMutation, { error }] = useLogoutMutation()
+  const [logoutMutation] = useLogoutMutation()
   const onSignout = async () => {
     try {
       await logoutMutation()
-      router.push('/login')
     } catch {
-      console.log('logout failed, ', error)
+    } finally {
+      router.push('/login')
     }
   }
 

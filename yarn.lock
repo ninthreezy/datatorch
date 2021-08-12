@@ -2443,6 +2443,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/cookie-signature@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/cookie-signature/-/cookie-signature-1.0.3.tgz#4761a0c31ad159306564a6b41a3f8b014c47eab2"
+  integrity sha512-0jpd4oizLaBybWBCew/lx4iAjjNWmCfzbspvnjoppyGEquN51BjShmPCksiH2IXLwtxQ2F/e2PkFy0LL7jpLsw==
+
 "@types/cross-spawn@^6.0.1":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@types/cross-spawn/-/cross-spawn-6.0.2.tgz#168309de311cd30a2b8ae720de6475c2fbf33ac7"

@@ -129,7 +129,9 @@ export async function tokenHook(
   const signedRefreshToken = request.cookies['refresh-token']
   const signedAccessToken = request.cookies['access-token']
   // if we don't find any tokens, return
-  if (!signedRefreshToken && !signedAccessToken) return
+  if (!signedRefreshToken && !signedAccessToken) {
+    return
+  }
 
   // if we have a valid access token, use the data inside.
   try {
