@@ -5,7 +5,8 @@
   "license": "private",
   "version": "1.0.0",
   "scripts": {
-    "generate": "prisma migrate dev"
+    "generate": "prisma migrate dev",
+    "reset": "prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "^2.28.0",

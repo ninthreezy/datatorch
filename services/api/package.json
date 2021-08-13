@@ -21,6 +21,7 @@
     "graphql": "^15.5.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-middleware": "^6.0.10",
+    "graphql-request": "^3.5.0",
     "graphql-scalars": "^1.9.3",
     "jsonwebtoken": "^8.5.1",
     "nexus": "^1.1.0",

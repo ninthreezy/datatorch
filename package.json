@@ -30,7 +30,9 @@
     "test:web": "yarn workspace @datatorch/web test:unit",
     "test:cy": "yarn workspace @datatorch/e2e cypress run",
     "test:open": "yarn workspace @datatorch/e2e cypress open",
-    "test:e2e": "start-server-and-test dev:web http://localhost:3000 test:cy"
+    "test:e2e": "start-server-and-test dev:web http://localhost:3000 test:cy",
+    "db:reset": "yarn workspace @datatorch/db reset",
+    "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\""
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.27.0",

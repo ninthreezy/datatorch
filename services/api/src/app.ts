@@ -10,17 +10,19 @@ import { tokenHook } from './tokens'
 import { GRAPHQL_ENDPOINT, FRONTEND_ENDPOINT } from './config'
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 
+export const apolloServerConfig = {
+  schema,
+  context,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground()]
+}
+
 /**
  * Creates Fastify server and registers all plugins and hooks
  */
 export const createApp = async () => {
   // We are overwriting the new Apollo GUI for now. The old
   // playground works fine.
-  const graphql = new ApolloServer({
-    schema,
-    context,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()]
-  })
+  const graphql = new ApolloServer(apolloServerConfig)
   await graphql.start()
   const app = fastify({ logger })
 
@@ -35,7 +37,6 @@ export const createApp = async () => {
   app.decorateRequest('user', null)
   app.addHook('onRequest', tokenHook)
   // CORS must be overriden here in order for our cors options to not be ovewritten.
-
   app.register(graphql.createHandler({ path: GRAPHQL_ENDPOINT, cors: false }))
   return app
 }

@@ -13,6 +13,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import { useRegisterMutation } from '@/generated/graphql'
+import { useRouter } from 'next/router'
 
 interface Inputs {
   email: string
@@ -30,6 +31,7 @@ const Register: NextPage = () => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [registerMutation] = useRegisterMutation()
+  const router = useRouter()
 
   const onSubmit = async data => {
     const { username, email, password } = data
@@ -43,6 +45,7 @@ const Register: NextPage = () => {
       })
       setError(null)
       setSuccess(`Registration succeeded! Redirecting...`)
+      router.push('/home')
     } catch (e) {
       setSuccess(null)
       setError('Registration failed.')
