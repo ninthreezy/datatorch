@@ -9,6 +9,7 @@ import {
 import * as panels from '../panels'
 import { usePanels } from '@/libs/panels/'
 import { Box, Flex } from '@chakra-ui/react'
+import { DataBrowser } from '../tabs/DataBrowser'
 import { Classification } from '../tabs/Classification'
 import { Objects } from '../tabs/Objects'
 import { Tools } from '../tabs/Tools'
@@ -130,8 +131,8 @@ const jsonLayoutModel: IJsonModel = {
               {
                 type: 'tab',
                 id: '#323',
-                name: 'New Tab',
-                component: 'TabsList'
+                name: 'Data Browser',
+                component: 'DataBrowser'
               }
             ]
           },
@@ -223,6 +224,9 @@ export const Annotator: React.FC = () => {
             }
             if (component === 'Test') {
               return <Test />
+            }
+            if (component === 'DataBrowser') {
+              return <DataBrowser />
             }
           }}
         />

@@ -21,7 +21,7 @@ const allTabs: Array<TabDragConfig> = [
   },
   {
     title: 'Data Browser',
-    componentType: 'Test',
+    componentType: 'DataBrowser',
     description: 'Quickly access files within datasets.'
   },
   {
@@ -83,7 +83,6 @@ export const TabsListItem = memo<
   TabDragConfig & { layout: RefObject<Layout & Model>; nodeId: string }
 >(({ title, componentType, description, layout, nodeId }) => {
   const onClick = () => {
-    //layout.current?.newItem({ type: 'component', title, componentType })
     layout.current?.addTabToActiveTabSet({
       type: 'tab',
       name: componentType,
