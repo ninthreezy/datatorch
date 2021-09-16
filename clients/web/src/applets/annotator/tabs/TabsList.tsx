@@ -1,6 +1,6 @@
 import React, { memo, RefObject, useState } from 'react'
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react'
-import { GoldenLayout } from 'golden-layout'
+import { Layout, Model, TabNode, IJsonModel, Actions } from 'flexlayout-react'
 import {
   useMatchSorter,
   UseMatchSorterOptions
@@ -13,21 +13,66 @@ interface TabDragConfig {
 }
 
 const allTabs: Array<TabDragConfig> = [
-  { title: 'Test', componentType: 'Test', description: 'Panel for debugging.' },
+  // { title: 'Test', componentType: 'Test', description: 'Panel for debugging.' },
   {
-    title: 'Tab List',
+    title: 'New Tab',
     componentType: 'TabsList',
-    description: 'Add other tabs to your layout.'
+    description: 'Create new tabs.'
+  },
+  {
+    title: 'Data Browser',
+    componentType: 'Test',
+    description: 'Quickly access files within datasets.'
   },
   {
     title: 'Visualizer',
     componentType: 'Visualizer',
-    description: 'Interactive tab for creating and displaying annotation.'
+    description: 'Visualize and annotate data.'
   },
   {
     title: 'Classification',
     componentType: 'Classification',
-    description: 'Add labels to files for classification.'
+    description: 'Create metadata to classify individual files.'
+  },
+  {
+    title: 'Ontology',
+    componentType: 'Test',
+    description: 'View and create labels for data annotation.'
+  },
+  {
+    title: 'Examples',
+    componentType: 'Test',
+    description: 'Share ideal examples of label classes for annotation work.'
+  },
+  {
+    title: 'Tool',
+    componentType: 'Test',
+    description: 'Fine tune settings for your selected tool.'
+  },
+  {
+    title: 'Reviewer',
+    componentType: 'Test',
+    description: 'Approve or deny files and annotations.'
+  },
+  {
+    title: 'Jobs',
+    componentType: 'Test',
+    description: 'See assigned tasks and job progress.'
+  },
+  {
+    title: 'Discussion',
+    componentType: 'Test',
+    description: 'Messaging to discuss files and annotations.'
+  },
+  {
+    title: 'Info',
+    componentType: 'Test',
+    description: 'View info about the selected file.'
+  },
+  {
+    title: 'Settings',
+    componentType: 'Test',
+    description: 'View info about the selected file.'
   }
 ]
 const searchOptions: UseMatchSorterOptions<TabDragConfig> = {
@@ -35,10 +80,17 @@ const searchOptions: UseMatchSorterOptions<TabDragConfig> = {
 }
 
 export const TabsListItem = memo<
-  TabDragConfig & { layout: RefObject<GoldenLayout> }
->(({ title, componentType, description, layout }) => {
+  TabDragConfig & { layout: RefObject<Layout & Model>; nodeId: string }
+>(({ title, componentType, description, layout, nodeId }) => {
   const onClick = () => {
-    layout.current?.newItem({ type: 'component', title, componentType })
+    //layout.current?.newItem({ type: 'component', title, componentType })
+    layout.current?.addTabToActiveTabSet({
+      type: 'tab',
+      name: componentType,
+      component: componentType
+    })
+    //This is if you want to go from master tab to one that transforms
+    //layout.current?.doAction(Actions.deleteTab(nodeId))
   }
 
   return (
@@ -55,18 +107,25 @@ export const TabsListItem = memo<
         wordWrap: 'break-word'
       }}
     >
-      <Text fontSize="md">{title}</Text>
+      <Text fontSize="sm">{title}</Text>
 
-      <Text fontSize="sm" color="gray" textAlign="left" marginTop="0.5">
+      <Text
+        fontSize="12px"
+        color="gray"
+        textAlign="left"
+        marginTop="0.5"
+        fontWeight="100"
+      >
         {description}
       </Text>
     </Button>
   )
 })
 
-export const TabsList: React.FC<{ layout: RefObject<GoldenLayout> }> = ({
-  layout
-}) => {
+export const TabsList: React.FC<{
+  layout: RefObject<Layout & Model>
+  nodeId: string
+}> = ({ layout, nodeId }) => {
   const [search, setSearch] = useState('')
   const matchList = useMatchSorter(allTabs, search, searchOptions)
   return (
@@ -89,7 +148,12 @@ export const TabsList: React.FC<{ layout: RefObject<GoldenLayout> }> = ({
         borderTopColor="gray.700"
       >
         {matchList.map(config => (
-          <TabsListItem {...config} layout={layout} key={config.title} />
+          <TabsListItem
+            {...config}
+            layout={layout}
+            nodeId={nodeId}
+            key={config.title}
+          />
         ))}
       </Box>
     </Flex>

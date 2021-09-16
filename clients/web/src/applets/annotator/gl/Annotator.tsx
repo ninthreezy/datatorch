@@ -18,13 +18,39 @@ import { usePanels } from '@/libs/panels/'
 
 const config: LayoutConfig = {
   settings: {
-    constrainDragToContainer: false
+    constrainDragToContainer: false,
+    hasHeaders: true,
+    reorderEnabled: true,
+    popoutWholeStack: false,
+    blockedPopoutsThrowError: true,
+    closePopoutsOnUnload: true,
+    showPopoutIcon: true,
+    showMaximiseIcon: true,
+    showCloseIcon: true
+  },
+  header: {
+    show: 'top',
+  },
+  dimensions: {
+    borderWidth: 5,
+    minItemHeight: 10,
+    minItemWidth: 10,
+    headerHeight: 20,
+    dragProxyWidth: 300,
+    dragProxyHeight: 200
+  },
+  labels: {
+    close: 'close',
+    maximise: 'maximise',
+    minimise: 'minimise',
+    popout: 'open in new window'
   },
   root: {
     type: 'row',
     content: [
+      //{ type: 'component', componentType: 'Test', width: 1 },
       { type: 'component', componentType: 'TabsList', width: 1 },
-      { type: 'component', componentType: 'Visualizer' }
+      //{ type: 'component', componentType: 'Visualizer' }
     ]
   }
 }
@@ -67,7 +93,8 @@ export const Annotator: React.FC = () => {
     panels
   )
 
-  const { element, renderPanels, layout } = useGoldenLayout(config, tabs)
+  const { element, layout, renderPanels } = useGoldenLayout(config, tabs)
+  
   useEvent('resize', () => {
     if (layout.current == null) return
     layout.current.setSize(window.innerWidth, window.innerHeight)

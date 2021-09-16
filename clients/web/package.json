@@ -37,6 +37,7 @@
     "@next/bundle-analyzer": "^11.0.0",
     "@react-three/drei": "^4.0.3",
     "@types/jest": "^26.0.23",
+    "flexlayout-react": "^0.5.14",
     "framer-motion": "^4.1.17",
     "golden-layout": "^2.2.1",
     "graphql": "^15.5.0",
