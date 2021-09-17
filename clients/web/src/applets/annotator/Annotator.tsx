@@ -13,6 +13,10 @@ import { Classification } from './tabs/Classification'
 import { Objects } from './tabs/Objects'
 import { Tools } from './tabs/Tools'
 import { Panel } from './tabs/Panel'
+import { DataBrowser } from './tabs/DataBrowser'
+import { Ontology } from './tabs/Ontology'
+import { Examples } from './tabs/Examples'
+import { Tab } from './tabs/Tab'
 
 export interface AnnotatorProps {
   context: AnnotatorContext
@@ -52,20 +56,32 @@ export const Annotator: React.FC = () => {
   return (
     <AnnotatorPanel.Provider value={panel}>
       <Flex height="full">
+        {/* Col 1 */}
         <Flex
-          width={350}
-          p={2}
+          width={375}
+          px={2}
           height="full"
           borderRight="4px"
           borderColor="gray.900"
           direction="column"
+          overflow="scroll"
         >
-          <Classification />
-          <Objects />
+          <Tab name={'Raw Tab Component'} />
+          <DataBrowser />
+          <Tab name={'Classification'} />
+          <Tab name={'Ontology'} />
+          <Tab name={'Tool'} />
+          <Tab name={'Reviewer'} />
+          <Tab name={'Jobs'} />
+          <Tab name={'Discussion'} />
+          <Tab name={'Info'} />
+          <Tab name={'Settings'} />
         </Flex>
+        {/* Col 2 */}
         <Box borderRight="4px" borderColor="gray.900" p={1}>
           <Tools />
         </Box>
+        {/* Col 3 */}
         <Box flexGrow={1}>
           <Panel />
         </Box>

@@ -1,6 +1,6 @@
 import { Box, Text, HStack, Button, Icon, Divider } from '@chakra-ui/react'
 import React from 'react'
-import { FaFile } from 'react-icons/fa'
+import { FaDatabase } from 'react-icons/fa'
 
 const ClassificationHeader = (): JSX.Element => (
   <Box>
@@ -12,11 +12,11 @@ const ClassificationHeader = (): JSX.Element => (
         marginLeft={2}
         marginRight={1}
       >
-        Classification
+        Examples
       </Text>
       <Divider orientation="vertical" />
       <Button variant="outline" border="0px" maxH="24px" px={1}>
-        <Icon as={FaFile} color="gray.500" />
+        <Icon as={FaDatabase} aria-label="Select dataset" color="gray.500" />
         <Text
           aria-label="Current Dataset"
           fontWeight="normal"
@@ -24,7 +24,7 @@ const ClassificationHeader = (): JSX.Element => (
           fontSize="sm"
           marginLeft={2}
         >
-          Filename.jpg
+          Dataset 1
         </Text>
       </Button>
     </HStack>
@@ -32,7 +32,7 @@ const ClassificationHeader = (): JSX.Element => (
   </Box>
 )
 
-export const Classification: React.FC = () => {
+export const Examples: React.FC = () => {
   return (
     <Box>
       <ClassificationHeader />

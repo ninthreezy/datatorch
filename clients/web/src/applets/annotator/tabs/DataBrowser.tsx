@@ -1,102 +1,68 @@
-import {
-  Box,
-  Text,
-  Image,
-  Container,
-  HStack,
-  Divider,
-  Icon,
-  Button
-} from '@chakra-ui/react'
-import { GridLayer } from 'leaflet'
-
+import { Box, Text, Image, HStack, VStack, Checkbox } from '@chakra-ui/react'
 import React from 'react'
+import { FaDatabase } from 'react-icons/fa'
+import { Tab } from './Tab'
 
-import {
-  FaLifeRing,
-  FaDatabase,
-  FaRocket,
-  FaArchive,
-  FaBrain,
-  FaVial,
-  FaTags,
-  FaHdd,
-  FaFolder,
-  FaUsers,
-  FaThumbtack,
-  FaEdit,
-  FaCog,
-  FaBook,
-  FaComment
-} from 'react-icons/fa'
-
-interface DataBrowserEntryInput {
-  filename: string
-}
-
-const DataBrowserEntry = ({ filename }: DataBrowserEntryInput): JSX.Element => (
-  <Box>
-    <HStack color="white" spacing="12px" p={1}>
-      <Image boxSize="48px" minW="48px"></Image>
-      <Text>testasdfasdfasdfaskdfsdalkslk</Text>
+const DataBrowserEntry = (filename): React.ReactNode => (
+  <Box
+    as="button"
+    p={2}
+    width="full"
+    backgroundColor="transparent"
+    _hover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+    _focus={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }}
+  >
+    <HStack>
+      <Image
+        boxSize="48px"
+        minW="48px"
+        fallbackSrc="https://via.placeholder.com/48"
+        borderRadius="7px"
+      ></Image>
+      <VStack align="left">
+        <Text align="left">{filename}</Text>
+        <HStack>
+          <Checkbox />
+          <Checkbox />
+          <Checkbox />
+          <Checkbox />
+          <Checkbox />
+        </HStack>
+      </VStack>
     </HStack>
   </Box>
 )
 
-const DataBrowserHeader = (): JSX.Element => (
-  <Box>
-    <HStack color="black" spacing="12px">
-      <Button
-        variant="outline"
-        border="0px"
-        borderRadius="0px"
-        p={0}
-        maxH="14px"
-      >
-        <Icon
-          aria-label="Search database"
-          icon={<FaDatabase />}
-          variant="outline"
-          color="gray.400"
-          m={0}
-          p={0}
-        />
-        <Text
-          aria-label="Current Dataset"
-          fontWeight="semibold"
-          color="gray.400"
-          fontSize="md"
-          m={0}
-          p={0}
-        >
-          Dataset 1
-        </Text>
-      </Button>
-    </HStack>
-    <Divider />
-  </Box>
+const endOfList: React.FC = () => (
+  <Text
+    align="center"
+    fontSize="small"
+    color="gray.600"
+    backgroundColor="rgba(0, 0, 0, 0.1)"
+  >
+    End of List.
+  </Text>
 )
 
-export const DataBrowser: React.FC = () => {
-  return (
-    <Box bg="transparent">
-      <DataBrowserHeader />
-      <Box overflow="scroll">
-        <DataBrowserEntry filename="file1" />
-        <DataBrowserEntry filename="file2" />
-        <DataBrowserEntry filename="file3" />
-        <DataBrowserEntry filename="file4" />
-      </Box>
-      <Text
-        fontWeight="semibold"
-        color="gray.400"
-        letterSpacing="wider"
-        fontSize="sm"
-        casing="uppercase"
-      >
-        No files in queue.
-      </Text>
-      <Box></Box>
-    </Box>
-  )
+const componentsToRender = (): React.ReactNode => {
+  return [
+    DataBrowserEntry('File 1'),
+    DataBrowserEntry('File 2'),
+    DataBrowserEntry('File 3'),
+    DataBrowserEntry('File 4'),
+    DataBrowserEntry('File 5'),
+    DataBrowserEntry('File 6'),
+    DataBrowserEntry('File 7'),
+    endOfList(null)
+  ]
 }
+
+export const DataBrowser = (): JSX.Element => (
+  <Tab
+    name={'Data Browser'}
+    buttonIcon={FaDatabase}
+    buttonText={'Database1'}
+    componentsToRender={componentsToRender()}
+    heightPx={240}
+  />
+)

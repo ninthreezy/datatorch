@@ -7,8 +7,6 @@ import { theme } from '@/theme'
 import { useApollo } from '@/libs/apollo'
 import { ApolloProvider } from '@apollo/client'
 
-import '@/applets/annotator/fl/layout/golden-layout.scss'
-
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState)
   return (
