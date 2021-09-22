@@ -11,7 +11,6 @@ import {
   Text,
   useColorModeValue as mode,
   Container,
-  useBreakpointValue,
   Divider,
   VStack,
   Icon,
