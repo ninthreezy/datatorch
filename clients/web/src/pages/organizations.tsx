@@ -148,7 +148,7 @@ const LayoutHome: React.FC = ({ children }) => {
 }
 
 const Index: NextPage = () => {
-  const isLg = useBreakpointValue({ base: false, lg: true })
+  //const isLg = useBreakpointValue({ base: false, lg: true })
   return (
     <LayoutHome>
       <Flex paddingTop={5}>
@@ -162,37 +162,44 @@ const Index: NextPage = () => {
             </Button>
           </Flex>
 
-          {/* This section contains a card for each org the user is in */ }
+          {/* This section contains a card for each org the user is in */}
 
           {/* Example of an owner card */}
           <Card marginY={3}>
             <Flex align="center">
-              <Image fallbackSrc="https://via.placeholder.com/150" w="40px" objectFit="cover"/>
-              <Text fontSize="md" fontWeight="bold" mx={3}>DataTorch</Text>
+              <Image
+                fallbackSrc="https://via.placeholder.com/150"
+                w="40px"
+                objectFit="cover"
+              />
+              <Text fontSize="md" fontWeight="bold" mx={3}>
+                DataTorch
+              </Text>
               <Text fontSize="xs">Owner</Text>
-            <Spacer />
-            <Button size="sm" mx={3}>
-              Settings
-            </Button>
-            <Button size="sm">
-              Leave
-            </Button>
+              <Spacer />
+              <Button size="sm" mx={3}>
+                Settings
+              </Button>
+              <Button size="sm">Leave</Button>
             </Flex>
           </Card>
 
           {/* Example of a member card */}
           <Card marginY={3}>
             <Flex align="center">
-              <Image fallbackSrc="https://via.placeholder.com/150" w="40px" objectFit="cover"/>
-              <Text fontSize="md" fontWeight="bold" mx={3}>MeditateAI</Text>
+              <Image
+                fallbackSrc="https://via.placeholder.com/150"
+                w="40px"
+                objectFit="cover"
+              />
+              <Text fontSize="md" fontWeight="bold" mx={3}>
+                MeditateAI
+              </Text>
               <Text fontSize="xs">Member and Collaborator on 1 project</Text>
               <Spacer />
-              <Button size="sm">
-                Leave
-              </Button>
+              <Button size="sm">Leave</Button>
             </Flex>
           </Card>
-
         </Container>
 
         {/*isLg && (

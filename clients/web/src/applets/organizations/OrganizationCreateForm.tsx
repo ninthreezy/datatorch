@@ -14,9 +14,7 @@ import {
   useColorModeValue as mode,
   Divider,
   Heading,
-  Button,
-  TextProps,
-  useBreakpointValue
+  Button
 } from '@chakra-ui/react'
 import { MdLock, MdPublic, MdPeople, MdBusiness } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'
