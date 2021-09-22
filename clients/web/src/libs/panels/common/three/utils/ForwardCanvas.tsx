@@ -1,7 +1,7 @@
 import { theme } from '@/theme'
 import { ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
-import { Canvas, ContainerProps } from 'react-three-fiber'
+import { Canvas } from 'react-three-fiber'
 
 const ThemeProvider: React.FC = ({ children }) => (
   <ChakraProvider theme={theme}>{children}</ChakraProvider>
