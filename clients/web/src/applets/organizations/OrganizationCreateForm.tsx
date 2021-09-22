@@ -23,12 +23,6 @@ import { FaPlus } from 'react-icons/fa'
 import { Controller, useForm } from 'react-hook-form'
 import slugify from 'slugify'
 
-const Slash: React.FC<TextProps> = props => (
-  <Text fontWeight="bold" fontSize="2xl" marginX="3" {...props}>
-    /
-  </Text>
-)
-
 interface OrganizationCreateFormInputs {
   ownerId: string
   name: string
@@ -39,12 +33,8 @@ interface OrganizationCreateFormInputs {
 }
 
 export const OrganizationCreateForm: React.FC = () => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState
-  } = useForm<OrganizationCreateFormInputs>()
+  const { control, register, handleSubmit, formState } =
+    useForm<OrganizationCreateFormInputs>()
 
   const onSubmit = handleSubmit(inputs => {
     const slug = slugify(inputs.name)
@@ -53,7 +43,7 @@ export const OrganizationCreateForm: React.FC = () => {
     console.log(variables)
   })
 
-  const isGteMd = useBreakpointValue({ base: false, md: true })
+  /** const isGteMd = useBreakpointValue({ base: false, md: true }) **/
 
   return (
     <form onSubmit={onSubmit}>
@@ -61,14 +51,24 @@ export const OrganizationCreateForm: React.FC = () => {
         <Text color={mode('gray.600', 'gray.300')} fontSize="sm">
           Tell us about your organization
         </Text>
-        <Heading fontSize="3xl" letterSpacing="wide" marginBottom={1} justifyContent="center">
+        <Heading
+          fontSize="3xl"
+          letterSpacing="wide"
+          marginBottom={1}
+          justifyContent="center"
+        >
           Create your Organization
         </Heading>
       </Box>
 
       <Divider my="5" />
 
-      <Heading fontSize="xl" letterSpacing="wide" marginBottom={3} justifyContent="center">
+      <Heading
+        fontSize="xl"
+        letterSpacing="wide"
+        marginBottom={3}
+        justifyContent="center"
+      >
         Pick a plan
       </Heading>
 
@@ -101,7 +101,8 @@ export const OrganizationCreateForm: React.FC = () => {
                         Team - $4 per user/month
                       </Text>
                       <FormHelperText marginTop={0} fontSize="xs">
-                        Private organizations with enhanced capabilities for teams.
+                        Private organizations with enhanced capabilities for
+                        teams.
                       </FormHelperText>
                     </Box>
                   </Flex>
@@ -127,7 +128,12 @@ export const OrganizationCreateForm: React.FC = () => {
 
       <Divider my="5" />
 
-      <Heading fontSize="xl" letterSpacing="wide" marginBottom={3} justifyContent="center">
+      <Heading
+        fontSize="xl"
+        letterSpacing="wide"
+        marginBottom={3}
+        justifyContent="center"
+      >
         Enter details
       </Heading>
 
@@ -148,7 +154,12 @@ export const OrganizationCreateForm: React.FC = () => {
 
       <Divider marginY="7" />
 
-      <Heading fontSize="xl" letterSpacing="wide" marginBottom={3} justifyContent="center">
+      <Heading
+        fontSize="xl"
+        letterSpacing="wide"
+        marginBottom={3}
+        justifyContent="center"
+      >
         Choose access
       </Heading>
 
