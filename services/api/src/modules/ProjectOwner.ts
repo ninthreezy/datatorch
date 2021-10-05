@@ -1,6 +1,7 @@
 import {
   booleanArg,
   enumType,
+  list,
   mutationField,
   nonNull,
   objectType,
@@ -92,9 +93,21 @@ export const projectOwnerQuery = queryField('projectOwner', {
     id: nonNull(stringArg())
   },
   resolve(_root, args, ctx) {
-    return ctx.db.projectOwner.findUnique({ where: args })
+    return ctx.db.projectOwner.findUnique({where: args})
   }
 })
+
+/**
+ * For debugging only, gets all project owners
+ */
+export const projectOwnersQuery = queryField('projectOwners', {
+  type: list(ProjectOwner.$name),
+  resolve(_root, args, ctx) {
+    return ctx.db.projectOwner.findMany()
+  }
+})
+
+
 
 /**
  * Returns the user data from the user field on the request if logged in.
@@ -135,7 +148,7 @@ export const register = mutationField('register', {
               password: hashedPassword
             }
           },
-          name: args.name
+          name: args.login
         }
       })
 

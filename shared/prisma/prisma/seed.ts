@@ -49,7 +49,19 @@ export async function seed() {
       }
     })
 
-    console.log({ kevin, michael, justin })
+    const exampleDraft = await prisma.articleDraft.create({
+      data: {
+        author: {
+          connect: {
+            id: michael.id
+          }
+        },
+        title:"test title",
+        content:"test content"
+      }
+    })
+
+    console.log({ kevin, michael, justin, exampleDraft })
   } catch (e) {
     console.error(e)
     process.exit(1)

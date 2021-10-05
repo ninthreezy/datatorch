@@ -30,6 +30,10 @@ import { SiGraphql } from 'react-icons/si'
 import { MdFeedback } from 'react-icons/md'
 import { cookieChecker, redirectToLogin, UserData } from '@/libs/utils/cookies'
 
+export interface IndexProps {
+  user?: UserData
+}
+
 const FooterButton: React.FC<{ leftIcon?: ButtonProps['leftIcon'] }> = ({
   leftIcon,
   children
@@ -151,11 +155,7 @@ const LayoutHome: React.FC<IndexProps> = ({ children, user }) => {
   )
 }
 
-interface IndexProps {
-  user: UserData
-}
-
-const Index: NextPage<IndexProps> = (
+const Home: NextPage<IndexProps> = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
   const isLg = useBreakpointValue({ base: false, lg: true })
@@ -195,7 +195,7 @@ const Index: NextPage<IndexProps> = (
     </LayoutHome>
   )
 }
-export default Index
+export default Home
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const user = await cookieChecker(context)

@@ -15,6 +15,7 @@
     "dev:cli": "go run ./clients/cli",
     "generate": "yarn generate:db && yarn generate:api && yarn generate:web",
     "generate:db": "yarn workspace @datatorch/db generate",
+    "generate:db:reset" :"yarn workspace @datatorch/db prisma migrate reset",
     "generate:api": "yarn workspace @datatorch/api generate",
     "generate:web": "yarn workspace @datatorch/web generate",
     "build": "true",

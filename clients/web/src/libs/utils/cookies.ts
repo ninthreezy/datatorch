@@ -48,29 +48,33 @@ export function redirectToLogin(res) {
  * @param res The response object for Nextjs
  * @returns AccessData payload
  */
-async function verifyRefreshAndReissue(req, res) {
-  const { data, error } = await client.query({
-    query: viewerQuery,
-    context: {
-      headers: {
-        Cookie: `refresh-token=${req.cookies['refresh-token']}`
+async function verifyRefreshAndReissue(req, res, redirect=true) {
+  try{
+    const { data, error } = await client.query({
+      query: viewerQuery,
+      context: {
+        headers: {
+          Cookie: `refresh-token=${req.cookies['refresh-token']}`
+        }
       }
-    }
-  })
-  if (error) return redirectToLogin(res)
+    })
 
-  // reissue both access and refresh tokens
-  const accessToken = data.viewer.authPayload.accessToken
-  const refreshToken = data.viewer.authPayload.refreshToken
-  const signedAccessToken = cookie.sign(accessToken, COOKIE_SECRET)
-  const signedRefreshToken = cookie.sign(refreshToken, COOKIE_SECRET)
+    // reissue both access and refresh tokens
+    const accessToken = data.viewer.authPayload.accessToken
+    const refreshToken = data.viewer.authPayload.refreshToken
+    const signedAccessToken = cookie.sign(accessToken, COOKIE_SECRET)
+    const signedRefreshToken = cookie.sign(refreshToken, COOKIE_SECRET)
 
-  res.setHeader('set-cookie', [
-    `access-token=${signedAccessToken}; Path=/; HttpOnly; Secure; SameSite=Strict`,
-    `refresh-token=${signedRefreshToken}; Path=/; HttpOnly; Secure; SameSite=Strict`
-  ])
-  const accessData = verify(accessToken, TOKEN_SECRET) as AccessData
-  return accessData
+    res.setHeader('set-cookie', [
+      `access-token=${signedAccessToken}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+      `refresh-token=${signedRefreshToken}; Path=/; HttpOnly; Secure; SameSite=Strict`
+    ])
+    const accessData = verify(accessToken, TOKEN_SECRET) as AccessData
+    return accessData
+  } catch (e) {
+    if (redirect) return redirectToLogin(res)
+    else return {} as AccessData
+  }
 }
 
 /**
@@ -95,17 +99,18 @@ function verifyAccessToken(req, res) {
  * manages keeping cookies up-to-date when not making API calls client-side.
  * @param req The request object for Nextjs
  * @param res The response object for Nextjs
+ * @param redirect Set to false to check without redirecting
  * @returns either void if redirected or an AccessData payload
  */
 export const cookieChecker = async ({
   req,
   res
-}: GetServerSidePropsContext) => {
-  if (!req.cookies['refresh-token']) {
-    redirectToLogin(res)
-  } else if (!req.cookies['access-token']) {
-    return verifyRefreshAndReissue(req, res)
-  } else {
-    return verifyAccessToken(req, res)
-  }
+}: GetServerSidePropsContext,redirect=true) => {
+    if (!req.cookies['refresh-token'] && redirect) {
+      redirectToLogin(res)
+    } else if (!req.cookies['access-token']) {
+      return verifyRefreshAndReissue(req, res, redirect)
+    } else {
+      return verifyAccessToken(req, res)
+    }
 }
